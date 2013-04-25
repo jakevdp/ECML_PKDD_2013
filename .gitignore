@@ -1,3 +1,7 @@
+# Vim temporaries
+.*.sw[op]
+
+# LaTeX cruft
 *.aux
 *.glo
 *.idx
