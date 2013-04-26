@@ -1,6 +1,11 @@
 # Vim temporaries
 .*.sw[op]
 
+# LaTeX output
+*.dvi
+*.pdf
+*.ps
+
 # LaTeX cruft
 *.aux
 *.glo
