@@ -1,22 +1,39 @@
 \section{Application programming interface (API)}
 
+\subsection{Estimators}
+
+% TODO describe transformer vs. classifiers/regressors
+
 The bulk of the scikit-learn application programming interface
 consists of so-called \textit{estimator} objects.
 All learning algorithms for classification, regression and clustering
 are offered as such objects,
 but so are feature extraction, feature selection and dimensionality reduction.
-What all estimators have in common is a method called \texttt{fit},
-which causes the estimator to learn from data supplied as an argument.
-Such a method may seem superfluous for tasks such as vectorizing text documents
-for subsequent learning,
-but even the classes that handle this task can be said
-to learn their vocabulary from the training corpus.
-(Only in a very small number of cases,
-specifically two estimators that implement the ``hashing trick'' of
-\citealt{weinberger2009} for feature extraction,
-is \texttt{fit} a no-op offered only for consistency and composibility.)
 
-The \texttt{fit} method's task is to learn model-specific parameters
+Construction and application of an estimator object
+proceeds in a way that is somewhat reminiscent of partial function application.
+The constructor, \texttt{\_\_init\_\_}\footnote{
+  Strictly speaking, \texttt{\_\_init\_\_} is Python's
+  class \textit{initialization} method,
+  while \texttt{\_\_new\_\_} is the constructor.
+  The distinction is not relevant to the present description of scikit-learn.}
+takes a set of named (hyper-)parameters
+and attaches these to the estimator as public attributes.\footnote{
+  The Python language does not actually distinguish between public and private
+  attributes and methods,
+  but by convention, any identifier prefixed with an underscore (\texttt{\_})
+  is considered ``a non-public part of the API\ldots
+  an implementation detail and subject to change without notice.''
+  % TODO cite Python tutorial here
+  }
+It never performs actual learning, nor does it even see a training set.
+
+The workhorse of most estimators, and one of the few methods
+that all estimators have in common, is called \texttt{fit}.
+Calling this method causes the estimator to learn from a training set,
+supplied as one or more arguments.
+Its task, from an API point of view,
+is to determine (via a learning algorithm) model-specific parameters
 from a training set and set these as attributes on the estimator object,
 which can then be used to transform data or make predictions.
 As in other object-oriented machine learning libraries
@@ -30,12 +47,7 @@ an estimator object serves dual purpose as a model
 (and is referred to as such in the documentation).
 
 Importantly, the parameters learned by an estimator
-are exposed as \textit{public} attributes on the trained object.\footnote{
-  The Python language does not actually distinguish between public and private
-  attributes and methods,
-  but by convention, any identifier prefixed with an underscore (\texttt{\_})
-  is considered ``a non-public part of the API\ldots
-  an implementation detail and subject to change without notice.''}
+are exposed as \textit{public} attributes on the trained object.
 This facilitates model inspection
 and makes it possible to train a model using scikit-learn,
 export it to a (standardized or custom) external data format
@@ -49,11 +61,29 @@ be considered the internals of objects,
 since authors are client code are allowed to rely
 on the names and formats of model parameters.
 
-% subsection here? also discuss scipy.sparse?
+A \texttt{fit} method is present even on objects
+that perform seemingly mundane tasks such as vectorizing text documents
+for subsequent learning.
+Such classes, however, can be said to learn their vocabulary
+from the training corpus,
+and follow the conventions set out above.
+Even those estimators that are entirely stateless and therefore
+do not require a \texttt{fit} method to perform useful work,
+nevertheless have such a method for consistency and composibility,
+and to perform parameter validation.
+Examples of this latter kind of objects are the normalizing transformer,
+kernel approximation transformers,
+and two feature extraction classes that implement the ``hashing trick''
+\citep{weinberger2009}.
+
+
+\subsection{Data formats}
+
+% TODO also discuss scipy.sparse
 Input to an estimator is typically given as NumPy arrays \citep{vanderwalt2011};
 typically, a clustering or dimensionality reduction algorithm
-takes a single NumPy array, conventionally called $X$ of size $n \times m$
-to represent $n$ samples of $m$ features each.
+takes a single NumPy array, conventionally called $X$ of size $n \times d$
+to represent $n$ samples of $d$ features each.
 A regression or classification estimator takes, at training time,
 an additional array of size $n$, by convention called $y$,
 that represents the target variable.
@@ -82,12 +112,13 @@ would require a conversion \textit{in any case}.
 A distinguishing feature of scikit-learn estimators
 is that they can be composed into \texttt{Pipeline} objects.
 Not only do such objects combine typical machine learning workflows
-(extract features, center/scale/normalize, select features, 
-make predictions) in a single object that is itself an estimator
-whose methods cause data to flow through the pipeline,
-but more importantly they can be used for
+(extracting features, centering/scaling/normalization,
+feature selection, making predictions)
+in a single object that is itself an estimator,
+and whose methods cause data to flow through the pipeline.
+More importantly, though, they can be used for
 systematic, automated model selection.
-This is best explained by an example.
+This is best explained by example.
 
 By composing, say, a \texttt{CountVectorizer} object
 (which extracts term frequency features from text documents
