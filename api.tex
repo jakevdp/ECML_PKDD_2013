@@ -49,6 +49,33 @@ be considered the internals of objects,
 since authors are client code are allowed to rely
 on the names and formats of model parameters.
 
+% subsection here? also discuss scipy.sparse?
+Input to an estimator is typically given as NumPy arrays \citep{vanderwalt2011};
+typically, a clustering or dimensionality reduction algorithm
+takes a single NumPy array, conventionally called $X$ of size $n \times m$
+to represent $n$ samples of $m$ features each.
+A regression or classification estimator takes, at training time,
+an additional array of size $n$, by convention called $y$,
+that represents the target variable.
+While the NumPy array may seem like a ``bare'' representation of data
+when compared to more object-oriented representations
+(again, Weka is an example of this style of API),
+it brings the prime advantages of allowing \textit{vector operations}
+on entire arrays,
+which are often orders of magnitude faster than the corresponding Python loops
+while at the same time keeping the code short and readable.
+Although conversion to the NumPy format may seem like a burden on the user,
+we argue that this is not the case.
+Python's lists (its dynamic array structure)
+are easily transformed into NumPy arrays
+and many scientific users of Python will already be handling such arrays,
+since they pervade in other science-oriented Python packages.
+For tasks where input is likely to consists of text files
+or semi-structured objects, ``vectorizers'' are provided
+that efficiently convert from such data formats to the NumPy format.
+Finally, offering a custom datatype for samples
+would require a conversion \textit{in any case}.
+
 
 \subsection{Pipelines and model selection}
 
