@@ -7,10 +7,8 @@
 \title{Python as a machine learning language:
        experiences from the scikit-learn project}
 
-% Dutch name sorting hack as per http://tex.stackexchange.com/q/40747/2806;
-% XXX doesn't sort correctly in the bibliography, but it gets the capitalization
-% of "van" right.
-\newcommand{\noopsort}[2]{#2}
+% Dutch name sorting hack as per http://tex.stackexchange.com/a/40750/2806
+\DeclareRobustCommand{\VAN}[3]{#2}
 
 \begin{document}
 
@@ -19,6 +17,7 @@
 \input{api}
 
 \bibliographystyle{plainnat}
+\DeclareRobustCommand{\VAN}[3]{#3}
 \bibliography{paper}
 
 \end{document}
