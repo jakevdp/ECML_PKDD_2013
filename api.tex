@@ -1,0 +1,173 @@
+\section{Application programming interface (API)}
+
+\subsection{Estimators}
+
+% TODO describe transformer vs. classifiers/regressors
+
+The bulk of the scikit-learn application programming interface
+consists of so-called \textit{estimator} objects.
+All learning algorithms for classification, regression and clustering
+are offered as such objects,
+but so are feature extraction, feature selection and dimensionality reduction.
+
+Construction and application of an estimator object
+proceeds in a way that is somewhat reminiscent of partial function application.
+The constructor, \texttt{\_\_init\_\_}\footnote{
+  Strictly speaking, \texttt{\_\_init\_\_} is Python's
+  class \textit{initialization} method,
+  while \texttt{\_\_new\_\_} is the constructor.
+  The distinction is not relevant to the present description of scikit-learn.}
+takes a set of named (hyper-)parameters
+and attaches these to the estimator as public attributes.\footnote{
+  The Python language does not actually distinguish between public and private
+  attributes and methods,
+  but by convention, any identifier prefixed with an underscore (\texttt{\_})
+  is considered ``a non-public part of the API\ldots
+  an implementation detail and subject to change without notice.''
+  \Citep{pythontut}
+  }
+It never performs actual learning, nor does it even see a training set.
+
+The workhorse of most estimators, and one of the few methods
+that all estimators have in common, is called \texttt{fit}.
+Calling this method causes the estimator to learn from a training set,
+supplied as one or more arguments.
+Its task, from an API point of view,
+is to determine (via a learning algorithm) model-specific parameters
+from a training set and set these as attributes on the estimator object,
+which can then be used to transform data or make predictions.
+As in other object-oriented machine learning libraries
+(e.g.\ Weka's Java API, \citealp{hall2009weka})
+no distinction is made in the type hierarchy
+between what is variously called an estimator or a \textit{learner}
+in the machine learning literature,
+and the \textit{model} that results from applying an estimator to data.
+When the \texttt{fit} method has been called,
+an estimator object serves dual purpose as a model
+(and is referred to as such in the documentation).
+
+An example to clarify the partial application style
+is the following code snippet.
+If $X$ is a dataset in the format described below and $k$ is some integer,
+then the Python code to train a $k$-means clustering model on it
+can be written as
+% XXX we could use Pygments for syntax highlighting
+\begin{verbatim}
+km = KMeans(n_clusters=k).fit(X)
+\end{verbatim}
+This snippet relies on the fact that the \texttt{fit} method
+always returns the object it was called on (its ``\texttt{self}''),
+making a method chaining style possible.
+
+Importantly, the parameters learned by an estimator
+are exposed as \textit{public} attributes on the trained object.
+This facilitates model inspection
+and makes it possible to train a model using scikit-learn,
+export it to a (standardized or custom) external data format
+and use the learned parameters in a different piece of code,
+perhaps a prediction algorithm implemented in a different language
+or one that combines the model parameters with other information
+to build a custom model.
+Of course, it also forces the developers to think carefully
+about what might in a more ``black box''-style toolkit
+be considered the internals of objects,
+since authors are client code are allowed to rely
+on the names and formats of model parameters.
+
+A \texttt{fit} method is present even on objects
+that perform seemingly mundane tasks such as vectorizing text documents
+for subsequent learning.
+Such classes, however, can be said to learn their vocabulary
+from the training corpus,
+and follow the conventions set out above.
+Even those estimators that are entirely stateless and therefore
+do not require a \texttt{fit} method to perform useful work,
+nevertheless have such a method for consistency and composibility,
+and to perform parameter validation.
+Examples of this latter kind of objects are the normalizing transformer,
+kernel approximation transformers
+\citep{rahimi2007random, li2010random, vedaldi2010efficient},
+and two feature extraction classes that implement the ``hashing trick''
+\citep{weinberger2009}.
+
+
+\subsection{Data formats}
+
+% TODO also discuss scipy.sparse
+Input to an estimator is typically given as NumPy arrays
+\Citep{vanderwalt2011};
+typically, a clustering or dimensionality reduction algorithm
+takes a single NumPy array, conventionally called $X$ of size $n \times d$
+to represent $n$ samples of $d$ features each.
+A regression or classification estimator takes, at training time,
+an additional array of size $n$, by convention called $y$,
+that represents the target variable.
+While the NumPy array may seem like a ``bare'' representation of data
+when compared to more object-oriented representations
+(again, Weka is an example of this style of API),
+it brings the prime advantages of allowing \textit{vector operations}
+on entire arrays,
+which are often orders of magnitude faster than the corresponding Python loops
+while at the same time keeping the code short and readable.
+Although conversion to the NumPy format may seem like a burden on the user,
+we argue that this is not the case.
+Python's lists (its dynamic array structure)
+are easily transformed into NumPy arrays
+and many scientific users of Python will already be handling such arrays,
+since they are pervasive in other science-oriented Python packages.
+For tasks where input is likely to consists of text files
+or semi-structured objects, ``vectorizers'' are provided
+that efficiently convert from such data formats to the NumPy format.
+Finally, offering a custom datatype for samples
+would require a conversion \textit{in any case}.
+
+
+\subsection{Pipelines and model selection}
+
+A distinguishing feature of scikit-learn estimators
+is that they can be composed into \texttt{Pipeline} objects.
+Not only do such objects combine typical machine learning workflows
+(extracting features, centering/scaling/normalization,
+feature selection, making predictions)
+in a single object that is itself an estimator,
+and whose methods cause data to flow through the pipeline.
+More importantly, though, they can be used for
+systematic, automated model selection.
+This is best explained by example.
+
+By composing, say, a \texttt{CountVectorizer} object
+(which extracts term frequency features from text documents
+according to a bag-words model),
+a \textsf{tf--idf} transformer, a $\chi^2$ feature selector and a linear SVM,
+one obtains a pipeline object with various hyperparameters:
+whether to do stopword filtering,
+linear vs.\ logarithmic \textsf{tf}, number of features to keep,
+SVM regularization ($L_1$ or $L_2$ norm, strength $C$) a.o.
+Such a composite \texttt{Pipeline} object
+exposes all of these parameters using a special syntax;
+each estimators must be given a name,
+and if the SVM's name is, e.g., \texttt{linearsvm},
+then its $C$ parameter is exposed as \texttt{linearsvm\_\_C}.
+
+The aforementioned \texttt{Pipeline} object
+can be passed as an argument to a model selection algorithm.
+Available algorithms at the time of writing include random search
+\citep{bergstra2012} and ``grid search''.
+The latter, which we shall use in this example,
+performs an exhaustive search through a grid formed by the Cartesian product
+of a set of possible values for each parameter, specified by the user.
+In our example, this grid might be given as
+
+\begin{align*}
+         & \textsf{stopwords} \in \{0, 1\}                      \\
+  \times & \; \textsf{tf} \in \{\textsf{linear}, \textsf{log}\} \\
+  \times & \; n_\textsf{features} \in \{1000, 2000, 5000\}      \\
+  \times & \; \textsf{norm} \in \{L_1, L_2\}                    \\
+  \times & \; C \in \{10, 100, 1000\}
+\end{align*}
+
+At each point in this grid, $k$-fold cross validation is run
+to estimate the performance of the estimator according to some measure
+(e.g.\ accuracy, $F_\beta$-score or a host of clustering quality metrics)
+and the best performing set of hyperparameters is stored
+on the \texttt{GridSearchCV} object; again, as a public attribute.
