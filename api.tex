@@ -46,6 +46,19 @@ When the \texttt{fit} method has been called,
 an estimator object serves dual purpose as a model
 (and is referred to as such in the documentation).
 
+An example to clarify the partial application style
+is the following code snippet.
+If $X$ is a dataset in the format described below and $k$ is some integer,
+then the Python code to train a $k$-means clustering model on it
+can be written as
+% XXX we could use Pygments for syntax highlighting
+\begin{verbatim}
+km = KMeans(n_clusters=k).fit(X)
+\end{verbatim}
+This snippet relies on the fact that the \texttt{fit} method
+always returns the object it was called on (its ``\texttt{self}''),
+making a method chaining style possible.
+
 Importantly, the parameters learned by an estimator
 are exposed as \textit{public} attributes on the trained object.
 This facilitates model inspection
