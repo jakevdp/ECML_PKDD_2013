@@ -68,10 +68,10 @@ denoted by \Xtr ~and test data (i.e., unseen data to which the learning
 algorithm need be able to generalize) by \Xte.  Following the discussion above,
 we represent \Xtr ~and \Xte ~by 2-dimensional NumPy arrays or SciPy sparse
 matrices. Using NumPy/SciPy's notation, \Xtr\texttt{[i, j]} denotes the
-$i^{th}$ training sample's $j^{th}$ feature. For supervised learning tasks,
+$i^\textrm{th}$ training sample's $j^\textrm{th}$ feature. For supervised learning tasks,
 such as classification or regression, we denote the training and test labels by
 \ytr ~and \yte, respectively. We typically store \ytr ~and \yte ~as
-1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^{th}$ training
+1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^\textrm{th}$ training
 sample's label value).
 
 \section{Application programming interface (API)}
@@ -244,7 +244,7 @@ some of the core algorithms have to be implemented in Cython.\footnote{
   promises to solve this problem by JIT compilation,
   but does not yet interoperate with NumPy and SciPy.
 }
-Examples include the aforementioned *k*-means implementation,
+Examples include the aforementioned $k$-means implementation,
 stochastic gradient descent for linear models
 and some graph-based clustering algorithms.
 
