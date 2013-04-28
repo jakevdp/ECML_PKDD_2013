@@ -55,8 +55,13 @@ other scientific Python packages.  For tasks where input is likely to consist
 of text files or semi-structured objects, we provide ``vectorizers'' -- objects
 that efficiently convert such data to the NumPy or SciPy formats.
 % FIXME: elaborate what is meant below
+% Lars: elaborated, but I'm not sure how important this is.
+% It mostly reflects experiences with OO libraries that require conversions
+% between types just to pass information to a method.
 %Finally, offering a custom datatype for samples would require a conversion
-%\textit{in any case}.
+%\textit{in any case}, since such a datatype would be toolkit-specific
+%and no program would store its data using such a type
+%if it weren't from the outset designed to use scikit-learn.
 
 In the remainder of the paper, we use the following notation. Training data are
 denoted by \Xtr ~and test data (i.e., unseen data to which the learning
