@@ -23,7 +23,19 @@
 
 \subsection{General principles}
 
-ToDo.
+scikit-learn \citep{pedregosa2011} is a machine learning library
+for the Python programming language,
+intended to tie in with the set of numeric and scientific packages
+centered around the NumPy and SciPy libraries
+\Citep{vanderwalt2011, varoquaux2013scipy}.
+It is a library, rather than a novel (domain-specific) programming language,
+intended to be called from Python programs;
+at present, it offers no command line interface or GUI.
+
+The main goal of the scikit-learn project
+is to provide high-quality implementations
+of ``classic'' machine learning algorithms
+with a consistent API.
 
 \subsection{Data formats}
 
@@ -32,10 +44,11 @@ make is how to represent data.  Rather than reinventing the wheel, we opted for
 NumPy multidimensional arrays \Citep{vanderwalt2011} for dense data and SciPy
 sparse matrices for sparse data.  While those may seem like a ``bare''
 representation of data when compared to more object-oriented representations
-(Weka is an example of this style of representation), it brings the prime
-advantage of allowing us to rely on NumPy and SciPy's \textit{vector
-operations} which are often orders of magnitude faster than the corresponding
-Python loops, while at the same time keeping the code short and readable.
+(Weka is an example of this style of representation, \citealp{hall2009weka}),
+it brings the prime advantage of allowing us to rely on NumPy and SciPy's
+\textit{vector operations} which are often orders of magnitude faster
+than the corresponding Python loops,
+while at the same time keeping the code short and readable.
 Conversion to NumPy and SciPy formats is usually easy and many scientific users
 of Python will already be used to such formats, since they are pervasive in
 other scientific Python packages.  For tasks where input is likely to consist
@@ -95,7 +108,7 @@ is to determine (via a learning algorithm) model-specific parameters
 from a training set and set these as attributes on the estimator object,
 which can then be used to transform data or make predictions.
 As in other object-oriented machine learning libraries
-(e.g.\ Weka's Java API, \citealp{hall2009weka})
+(e.g.\ Weka's Java API)
 no distinction is made in the type hierarchy
 between what is variously called an estimator or a \textit{learner}
 in the machine learning literature,
