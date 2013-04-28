@@ -216,6 +216,38 @@ to estimate the performance of the estimator according to some measure
 and the best performing set of hyperparameters is stored
 on the \texttt{GridSearchCV} object; again, as a public attribute.
 
+\section{Implementation}
+
+scikit-learn is primarily implemented in Python and Cython
+\citep{behnel2011cython},
+a language that extends Python with static typing
+and a compiler that produces C extension modules
+for the Python runtime system.
+In addition, it includes (modified versions of)
+the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
+used for training support vector machines
+and logistic regression models \citep{chang2011libsvm, fan2008}.
+These libraries, both written in C{}\verb!++!,
+and wrapped using Cython modules.
+
+As much as possible is implemented in ``pure'' Python,
+to avoid the compile-edit-debug cycle needed for Cython
+and to keep the codebase readable for as large an audience as possible.
+However, since the speed of the current Python implementation
+is not sufficient for numeric programming
+and NumPy's vector operations are not appropriate for all use cases
+(among other factors, because they often have linear space requirements),
+some of the core algorithms have to be implemented in Cython.\footnote{
+  The only Python implementation currently supported by scikit-learn
+  is the reference implementation, CPython.
+  The alternative Python implementation PyPy \citep{bolz2009tracing}
+  promises to solve this problem by JIT compilation,
+  but does not yet interoperate with NumPy and SciPy.
+}
+Examples include the aforementioned *k*-means implementation,
+stochastic gradient descent for linear models
+and some graph-based clustering algorithms.
+
 \section{Comparison with other packages}
 
 ToDo.
