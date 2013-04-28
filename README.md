@@ -1,6 +1,8 @@
-ECML_PKDD_2013
-==============
+ECML/PKDD 2013 workshop paper
+=============================
 
-Paper by scikit-learn contributers for ECML/PKDD 2013 conference
+Paper by scikit-learn contributers for the ECML/PKDD 2013 Workshop "Languages
+for Data Mining and Machine Learning".
 
-Conference website: http://dtai.cs.kuleuven.be/lml/
+Website: http://dtai.cs.kuleuven.be/lml/
+Submission deadline: Fri. 28 June
