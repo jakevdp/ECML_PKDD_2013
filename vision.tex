@@ -1,0 +1,41 @@
+\newcommand{\Xtr}{\texttt{X\_tr}}
+\newcommand{\Xte}{\texttt{X\_te}}
+\newcommand{\ytr}{\texttt{y\_tr}}
+\newcommand{\yte}{\texttt{y\_te}}
+
+\section{Projection vision}
+
+\subsection{General principles}
+
+ToDo.
+
+\subsection{Data formats}
+
+As a machine learning library, one of the most important decisions we had to
+make is how to represent data.  Rather than reinventing the wheel, we opted for
+NumPy multidimensional arrays \Citep{vanderwalt2011} for dense data and SciPy
+sparse matrices for sparse data.  While those may seem like a ``bare''
+representation of data when compared to more object-oriented representations
+(Weka is an example of this style of representation), it brings the prime
+advantage of allowing us to rely on NumPy and SciPy's \textit{vector
+operations} which are often orders of magnitude faster than the corresponding
+Python loops, while at the same time keeping the code short and readable.
+Conversion to NumPy and SciPy formats is usually easy and many scientific users
+of Python will already be used to such formats, since they are pervasive in
+other scientific Python packages.  For tasks where input is likely to consist
+of text files or semi-structured objects, we provide ``vectorizers'' -- objects
+that efficiently convert such data to the NumPy or SciPy formats.
+% FIXME: elaborate what is meant below
+%Finally, offering a custom datatype for samples would require a conversion
+%\textit{in any case}.
+
+In the remaing of the paper, we use the following notation. Training data are
+denoted by \Xtr ~and test data (i.e., unseen data to which the learning
+algorithm need be able to generalize) by \Xte.  Following the discussion above,
+we represent \Xtr ~and \Xte ~by 2-dimensional NumPy arrays or SciPy sparse
+matrices. Using NumPy/SciPy's notation, \Xtr\texttt{[i, j]} denotes the
+$i^{th}$ training sample's $j^{th}$ feature. For supervised learning tasks,
+such as classification or regression, we denote the training and test labels by
+\ytr ~and \yte, respectively. We typically store \ytr ~and \yte ~as
+1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^{th}$ training
+sample's label value).

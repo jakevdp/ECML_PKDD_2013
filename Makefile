@@ -1,4 +1,4 @@
-paper.pdf: paper.tex api.tex
+paper.pdf: paper.tex vision.tex api.tex
 	pdflatex paper.tex
 	bibtex paper
 	pdflatex paper.tex
