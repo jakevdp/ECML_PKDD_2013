@@ -248,6 +248,16 @@ Examples include the aforementioned $k$-means implementation,
 stochastic gradient descent for linear models
 and some graph-based clustering algorithms.
 
+While object-oriented techniques and design patterns
+are used throughout scikit-learn,
+they mostly serve to facilitate code reuse and are not considered a project goal.
+Where possible, the Python principle of ``duck typing'' is exploited
+to simplify the implementation and skip the introduction of superfluous classes.
+This allows for extensibility and flexibility at the same time:
+user-defined estimators that follow scikit-learn conventions
+should be usable in pipelines and other composite objects
+without them actually inheriting from scikit-learn base classes.
+
 \section{Comparison with other packages}
 
 ToDo.
