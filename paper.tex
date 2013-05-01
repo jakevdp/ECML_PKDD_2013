@@ -46,7 +46,7 @@ the popular programmer's Q~\&{}A site StackOverflow\footnote{
 lists 322 scikit-learn-related questions.
 At the time of writing,  % ddaa494c116e3c16bf032003c5cccbed851733d2
 version control logs for the development version of scikit-learn
-show 183 contributors to the project's code and documentation
+show 183 contributors to the project's source code and documentation
 (after manual deduplication).
 
 The main goal of the scikit-learn project
@@ -209,6 +209,15 @@ exposes all of these parameters using a special syntax;
 each estimators must be given a name,
 and if the SVM's name is, e.g., \texttt{linearsvm},
 then its $C$ parameter is exposed as \texttt{linearsvm\_\_C}.
+The pipeline's \texttt{set\_params} splits the parameter names
+on double underscores, uses the first part of the result
+to look up the estimator,
+and passes the second part to the estimator's own \texttt{set\_params}
+as a keyword argument; due to Python's dynamic parameter passing,
+the result is the same as if the user had called \texttt{set\_params}
+on the SVM themselves.
+(The double underscore syntax is not special to pipelines;
+it is also employed in ensemble estimators such as random forests.)
 
 The aforementioned \texttt{Pipeline} object
 can be passed as an argument to a model selection algorithm.
