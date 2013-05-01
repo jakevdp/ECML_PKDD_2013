@@ -354,6 +354,26 @@ This is, of course, as much an artifact of the design choice
 to not implement separate classes and interfaces for samples/instances
 as it a consequence of SciPy's implementation of sparse matrices.
 
+\subsection{Parallelism}
+
+At this point in time, support for multi-core programming in Python,
+at least in the CPython reference implementation targeted by scikit-learn,
+is downright weak.
+The interpreter supports multithreading, but due to the ``Global Interpreter Lock'' (GIL),
+no two threads in a process may at the same time execute Python code.
+It follows that multithreading is not a viable solution
+even two embarrassingly parallel problems,
+such as fitting and evaluation multiple models in a grid search procedure.
+The workaround is to use Python's multiprocessing module,
+which emulates threads using multiple operating system-level processes,
+but this in turn leads to high memory use and overhead
+because of the copying of training and test sets
+into the various processes' address spaces.\footnote{
+  The fact that copying occurs at all is an artifact of NumPy's implementation;
+  no attempt at implementing a multiprocessing module
+  that shares NumPy arrays using copy-on-write semantics or memory mapping
+  has so far been completed.}
+
 \subsection{Python/Cython mismatch}
 
 The Python/Cython divide is another source of potential difficulties
