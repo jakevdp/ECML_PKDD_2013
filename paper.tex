@@ -117,7 +117,7 @@ that efficiently convert such data to the NumPy or SciPy formats.
 
 In the remainder of the paper, we use the following notation. Training data are
 denoted by \Xtr ~and test data (i.e., unseen data to which the learning
-algorithm need be able to generalize) by \Xte.  Following the discussion above,
+algorithm needs to be able to generalize) by \Xte.  Following the discussion above,
 we represent \Xtr ~and \Xte ~by 2-dimensional NumPy arrays or SciPy sparse
 matrices. Using NumPy/SciPy's notation, \Xtr\texttt{[i, j]} denotes the
 $i^\textrm{th}$ training sample's $j^\textrm{th}$ feature. For supervised learning tasks,
@@ -136,7 +136,8 @@ The bulk of the scikit-learn application programming interface
 consists of so-called \textit{estimator} objects.
 All learning algorithms for classification, regression and clustering
 are offered as such objects,
-but so are feature extraction, feature selection and dimensionality reduction.
+but so are feature extraction, feature selection and dimensionality reduction
+algorithms.
 
 Construction and application of an estimator object
 proceeds in a way that is somewhat reminiscent of partial function application.
@@ -196,10 +197,11 @@ and use the learned parameters in a different piece of code,
 perhaps a prediction algorithm implemented in a different language
 or one that combines the model parameters with other information
 to build a custom model.
+% XXX Hard to follow phrasing below
 Of course, it also forces the developers to think carefully
-about what might in a more ``black box''-style toolkit
+about what might, in a more ``black box''-style toolkit,
 be considered the internals of objects,
-since authors are client code are allowed to rely
+since authors of client code are allowed to rely
 on the names and formats of model parameters.
 
 A \texttt{fit} method is present even on objects
@@ -215,6 +217,7 @@ and to perform parameter validation.
 Examples of this latter kind of objects are the normalizing transformer,
 kernel approximation transformers
 \citep{rahimi2007random, li2010random, vedaldi2010efficient},
+% XXX is it relevant that they are exactly two? Propose s/two/the
 and two feature extraction classes that implement the ``hashing trick''
 \citep{weinberger2009}.
 
@@ -222,7 +225,7 @@ and two feature extraction classes that implement the ``hashing trick''
 
 A distinguishing feature of scikit-learn estimators
 is that they can be composed into \texttt{Pipeline} objects.
-Not only do such objects combine typical machine learning workflows
+Such objects combine typical machine learning workflows
 (extracting features, centering/scaling/normalization,
 feature selection, making predictions)
 in a single object that is itself an estimator,
@@ -252,7 +255,11 @@ as a keyword argument; due to Python's dynamic parameter passing,
 the result is the same as if the user had called \texttt{set\_params}
 on the SVM themselves.
 (The double underscore syntax is not special to pipelines;
-it is also employed in ensemble estimators such as random forests.)
+it is also employed in ensemble estimators such as random forests
+% Is the following clear? Suggestions to replace "direct attributes" with"?
+It is chosen as a convention to avoid ambiguity, as direct
+attributes and methods of scikit-learn objects never contain
+double underscores.)
 
 The aforementioned \texttt{Pipeline} object
 can be passed as an argument to a model selection algorithm.
@@ -261,7 +268,7 @@ Available algorithms at the time of writing include random search
 The latter, which we shall use in this example,
 performs an exhaustive search through a grid formed by the Cartesian product
 of a set of possible values for each parameter, specified by the user.
-In our example, this grid might be given as
+In our example, this grid might be given as:
 
 \begin{align*}
          & \textsf{stopwords} \in \{0, 1\}                      \\
@@ -275,7 +282,7 @@ At each point in this grid, $k$-fold cross validation is run
 to estimate the performance of the estimator according to some measure
 (e.g.\ accuracy, $F_\beta$-score or a host of clustering quality metrics)
 and the best performing set of hyperparameters is stored
-on the \texttt{GridSearchCV} object; again, as a public attribute.
+on the \texttt{GridSearchCV} object, again, as a public attribute.
 
 \section{Implementation}
 
@@ -288,7 +295,7 @@ In addition, it includes (modified versions of)
 the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
 used for training support vector machines
 and logistic regression models \citep{chang2011libsvm, fan2008}.
-These libraries, both written in C{}\verb!++!,
+These libraries are both written in C{}\verb!++!
 and wrapped using Cython modules.
 
 As much as possible is implemented in ``pure'' Python,
