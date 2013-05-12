@@ -333,6 +333,30 @@ to estimate the performance of the estimator according to some measure
 and the best performing set of hyperparameters is stored
 on the \texttt{GridSearchCV} object; again, as a public attribute.
 
+\subsection{Recursive pipelines}
+
+In some cases, it is useful to build recursive pipelines,
+and scikit-learn has support for these:
+pipelines are themselves estimators,
+and can thus be nested inside larger pipelines.
+
+While direct use of this idiom would not have any benefit
+over using the individual stages of the sub-pipeline directly,
+the recursion support shines when in more complex situations
+that involve the construction of estimators using \textit{meta-estimators}.
+These are objects in the scikit-learn API
+that wrap an estimator to give it additional functionality.
+An example of meta-estimators are object of the class
+\texttt{OneVsRestClassifier},
+which can be used to construct a multi-label classifier
+\citep{tsoumakas2007multi}
+from an ordinary binary classifier object
+by constructing one binary classifier per class
+(a strategy variously called one-vs.-the-rest,
+one-vs.-all or binary relevance).
+
+% TODO insert example from http://stackoverflow.com/q/16437022/166749 here
+
 \section{Implementation}
 
 scikit-learn is primarily implemented in Python and Cython
