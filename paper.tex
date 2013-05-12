@@ -1,11 +1,12 @@
 \documentclass[a4paper]{article}
+
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{hyperref}
 \usepackage[round]{natbib}
 
 % working title, please change
-\title{Python as a machine learning language:
-       experiences from the scikit-learn project}
+\title{APIs for hyperparameter optimization in scikit-learn}
 
 % Add your name and affiliation here.
 % Don't worry too much about the formatting,
@@ -49,14 +50,15 @@ it has gathered a sizeable user base.
 
 This paper discusses design choices made
 in both the programmers' interface (API) and the implementation
-of scikit-learn.
-It also highlights obstacles faced by users and implementers
-of machine learning algorithms in the Python language.
+of scikit-learn,
+with a focus on the problem of hyperparameter optimization.
+%It also highlights obstacles faced by users and implementers
+%of machine learning algorithms in the Python language.
 \end{abstract}
 
-\section{Project vision}
+\section{Introduction}
 
-\subsection{General principles}
+\subsection{Project vision}
 
 % XXX the following is more of a general introduction than a project vision
 scikit-learn \citep{pedregosa2011} is an open source machine learning library
@@ -88,6 +90,13 @@ The main goal of the scikit-learn project
 is to provide high-quality implementations
 of ``classic'' machine learning algorithms
 with a consistent API.
+This paper explores the role that such an API plays
+for handling the problem of hyperparameter optimization,
+or \textit{model selection} as it is called in the statistics literature.
+
+The rest of this section explains some fundamental design choices
+made throughout scikit-learn.
+% TODO and the rest of the paper...
 
 \subsection{Data formats}
 
@@ -126,6 +135,48 @@ such as classification or regression, we denote the training and test labels by
 1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^\textrm{th}$ training
 sample's label value).
 
+
+\section{The hyperparameter optimization problem}
+
+The focus of many machine learning toolkits is the \textit{learning} task,
+which, at least in the supervised case,
+can be formalized as the problem of finding a function
+$\mathsf{model} : \mathcal{X} \to \mathcal{Y}$,
+where $\mathcal{X}$ is some set of inputs
+and $\mathcal{Y}$ some set of targets
+($\mathbb{R}^k$ in regression, $\{1,\dots,K\}$ in classification).
+An algorithm that finds such a function is called a \textit{learner}
+% TODO: cite Mitchell 1998
+or alternatively an \textit{estimator}
+(in the scikit-learn documentation, and therefore in this paper).
+Using function currying, its function signature is
+
+\[
+  L : \mathcal{H} \to \mathcal{X} \to \mathcal{Y}
+\]
+
+where $\mathcal{H}$ is the set of all possible \textit{hyperparameter} settings
+for the estimator in question.\footnote{
+  We disregard the fact that different estimators
+  have widely varying sets of hyperparameters for notational simplicity.}
+Hyperparameters include, for example,
+regularization strength of linear models or SVMs,
+choice of loss function for generic linear model learners,
+or the number of features to keep in a feature selection method.
+They are often treated as user-settable parameters
+and not part of the learning problem proper,
+either because they would affect the learning problem
+in a way that would make it intractable \citep{bergstra2012}
+or because their effects cannot properly be measured
+in terms of a loss function on a training set.
+
+However, in recent years, algorithms have been published
+that systematically explore spaces of possible hyperparameter settings.
+The problem of hyperparameter tuning
+is crucial to achieving good generalization performance in machine learning.
+The present paper does not go into hyperparameter optimization algorithms
+in depth, focusing instead on API support for using them.
+
 \section{Application programming interface (API)}
 
 \subsection{Estimators}
@@ -133,10 +184,16 @@ sample's label value).
 % TODO describe transformer vs. classifiers/regressors
 
 The bulk of the scikit-learn application programming interface
-consists of so-called \textit{estimator} objects.
+consists of estimator classes.
 All learning algorithms for classification, regression and clustering
-are offered as such objects,
+are offered as such classes,
 but so are feature extraction, feature selection and dimensionality reduction.
+The three latter types of estimator are examples of a subtype
+called \textit{transformers}:
+in this case, both input and output are NumPy arrays representing samples,
+but commonly with different numbers of columns.
+Transformers that perform feature extraction on e.g.\ free text
+are an exception in that their input is not usually a NumPy array.
 
 Construction and application of an estimator object
 proceeds in a way that is somewhat reminiscent of partial function application.
@@ -167,16 +224,14 @@ which can then be used to transform data or make predictions.
 As in other object-oriented machine learning libraries
 (e.g.\ Weka's Java API)
 no distinction is made in the type hierarchy
-between what is variously called an estimator or a \textit{learner}
-in the machine learning literature,
-and the \textit{model} that results from applying an estimator to data.
+between an estimator and the model that results from applying it to data.
 When the \texttt{fit} method has been called,
-an estimator object serves dual purpose as a model
-(and is referred to as such in the documentation).
+an estimator object serves dual purpose as a model.
 
-An example to clarify the partial application style
-is the following code snippet.
-If $X$ is a dataset in the format described below and $k$ is some integer,
+As an example to clarify the partial application style,
+consider a linear support vector machine (SVM).
+% Rewrite example using LinearSVC
+If $X$ is a dataset in the format described above and $k$ is some integer,
 then the Python code to train a $k$-means clustering model on it
 can be written as
 % XXX we could use Pygments for syntax highlighting
@@ -218,10 +273,11 @@ kernel approximation transformers
 and two feature extraction classes that implement the ``hashing trick''
 \citep{weinberger2009}.
 
-\section{Pipelines and model selection}
+\section{Pipelines}
 
-A distinguishing feature of scikit-learn estimators
-is that they can be composed into \texttt{Pipeline} objects.
+A feature of scikit-learn estimators
+that makes effective hyperparameter optimization possible
+is the fact that they can be composed into \texttt{Pipeline} objects.
 Not only do such objects combine typical machine learning workflows
 (extracting features, centering/scaling/normalization,
 feature selection, making predictions)
