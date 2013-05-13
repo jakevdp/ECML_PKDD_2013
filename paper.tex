@@ -124,16 +124,16 @@ that efficiently convert such data to the NumPy or SciPy formats.
 %and no program would store its data using such a type
 %if it weren't from the outset designed to use scikit-learn.
 
-In the remainder of the paper, we use the following notation. Training data are
-denoted by \Xtr ~and test data (i.e., unseen data to which the learning
-algorithm need be able to generalize) by \Xte.  Following the discussion above,
-we represent \Xtr ~and \Xte ~by 2-dimensional NumPy arrays or SciPy sparse
-matrices. Using NumPy/SciPy's notation, \Xtr\texttt{[i, j]} denotes the
-$i^\textrm{th}$ training sample's $j^\textrm{th}$ feature. For supervised learning tasks,
-such as classification or regression, we denote the training and test labels by
-\ytr ~and \yte, respectively. We typically store \ytr ~and \yte ~as
-1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^\textrm{th}$ training
-sample's label value).
+%In the remainder of the paper, we use the following notation. Training data are
+%denoted by \Xtr ~and test data (i.e., unseen data to which the learning
+%algorithm need be able to generalize) by \Xte.  Following the discussion above,
+%we represent \Xtr ~and \Xte ~by 2-dimensional NumPy arrays or SciPy sparse
+%matrices. Using NumPy/SciPy's notation, \Xtr\texttt{[i, j]} denotes the
+%$i^\textrm{th}$ training sample's $j^\textrm{th}$ feature. For supervised learning tasks,
+%such as classification or regression, we denote the training and test labels by
+%\ytr ~and \yte, respectively. We typically store \ytr ~and \yte ~as
+%1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^\textrm{th}$ training
+%sample's label value).
 
 
 \section{The hyperparameter optimization problem}
