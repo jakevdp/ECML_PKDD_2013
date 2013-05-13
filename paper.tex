@@ -216,20 +216,29 @@ and attaches these to the estimator as public attributes.\footnote{
   }
 It never performs actual learning, nor does it even see a training set.
 
-The algorithmic workhorse of most estimators, and one of the few methods
-that all estimators have in common, is called \texttt{fit}.
+Instead, the actual learning is performed by a method called \texttt{fit}.
+This is one of the very few methods that all estimators have in common.
 Invoking this method causes the estimator to learn from a training set,
 supplied as one or more arguments.
 Its task, from an API point of view,
 is to determine (via a learning algorithm) model-specific parameters
-from a training set and set these as attributes on the estimator object,
-which can then be used to transform data or make predictions.
-As in other object-oriented machine learning libraries
+from a training set and set these as attributes on the estimator object.
+To distinguish learned parameters from hyperparameters,
+the former always have a trailing underscore appended to their name;
+e.g., the weights of a linear model are stored in attributes
+\texttt{coef\_} and \texttt{intercept\_}
+(the underscore is suggestive of a hat,
+commonly used to denote estimates in mathematical notation: $\hat{w}$).
+
+After learning, the estimator object serves dual purpose as a model
+and can then be used to transform data or make predictions;
+as in other object-oriented machine learning libraries
 (e.g.\ Weka's Java API)
 no distinction is made in the type hierarchy
 between an estimator and the model that results from applying it to data.
-When the \texttt{fit} method has been called,
-an estimator object serves dual purpose as a model.
+While it would be possible to decouple models and estimators
+at the class hierarchy level,
+doing so would complicate APIs for online learning.
 
 As an example to clarify the partial application style,
 consider a linear support vector machine (SVM).
