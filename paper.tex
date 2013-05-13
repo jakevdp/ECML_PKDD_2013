@@ -137,6 +137,7 @@ sample's label value).
 
 
 \section{The hyperparameter optimization problem}
+\label{hyperparams}
 
 The focus of many machine learning toolkits is the \textit{learning} task,
 which, at least in the supervised case,
@@ -196,7 +197,9 @@ Transformers that perform feature extraction on e.g.\ free text
 are an exception in that their input is not usually a NumPy array.
 
 Construction and application of an estimator object
-proceeds in a way that is somewhat reminiscent of partial function application.
+proceeds in a way that is similar to partial function application,
+mirroring the $L : \mathcal{H} \to \mathcal{X} \to \mathcal{Y}$ notation
+given for the supervised learning problem in Section~\ref{hyperparams}.
 The constructor, \texttt{\_\_init\_\_}\footnote{
   Strictly speaking, \texttt{\_\_init\_\_} is Python's
   class \textit{initialization} method,
