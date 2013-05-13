@@ -89,7 +89,7 @@ show 183 contributors to the project's source code and documentation
 The main goal of the scikit-learn project
 is to provide high-quality implementations
 of ``classic'' machine learning algorithms
-with a consistent API.
+with a consistent and clear API.
 This paper explores the role that such an API plays
 for handling the problem of hyperparameter optimization,
 also known as \textit{model selection} (\citealp{elemstatlearn}:219--257).
@@ -564,16 +564,18 @@ to take functions as arguments
 (e.g., in the case of kernel machine learning,
 where one might like to use a custom kernel),
 but such usage is not at present possible and may never be.
-Passing C or Cython-compiled functions would require an API for the kernel method
-to be implemented at the C or Cython level,
+Passing C or Cython-compiled functions would require an API
+for the kernel method to be implemented at the C or Cython level,
 only to be used from compiled code.
 Passing arbitrary Python functions would be possible,
 but performance can be expected to degrade significantly
 because of the runtime checks needed for each invocation of the kernel function.
-(The current solution in scikit-learn is to let the user pass not a kernel function,
-but a precomputed Gram matrix for an entire set of objects.
+(The current solution in scikit-learn is to let the user pass
+not a kernel function, but a precomputed Gram matrix
+for an entire set of objects.
 The linear, polynomial and RBF kernels are treated as special cases in
-the \textsf{LIBSVM}-based SVM learner, where they are implemented in C{}\verb!++!.)
+the \textsf{LIBSVM}-based SVM learner,
+where they are implemented in C{}\verb!++!.)
 
 \section{Comparison with other packages}
 
