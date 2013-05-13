@@ -354,9 +354,69 @@ which can be used to construct a multi-label classifier
 from an ordinary binary classifier object
 by constructing one binary classifier per class
 (a strategy variously called one-vs.-the-rest,
-one-vs.-all or binary relevance).
+one-vs.-all or binary relevance):
 
-% TODO insert example from http://stackoverflow.com/q/16437022/166749 here
+\begin{verbatim}
+ovr_svm = OneVsRestClassifier(LinearSVC())
+\end{verbatim}
+
+The \texttt{ovr\_svm} object can be passed to a hyperparameter search
+producedure directly to determine parameters such as $C$,
+but the syntax to do that has changed.
+The object under consideration is no longer a \texttt{LinearSVC}
+but a \texttt{OneVsRestClassifier},
+which exposes the former object as its public attribute \texttt{estimator}.
+Double underscore syntax must be used to address $C$,
+i.e.\ \texttt{estimator\_\_C}.
+
+To make this example more interesting,
+feature selection using $\chi^2$ tests can be added to the SVM,
+such that each of the separate binary classification problems
+gets its own set of features.
+This can be done by wrapping a pipeline in an OvR object:
+
+\begin{verbatim}
+svm_chi2 = Pipeline(["chi2", SelectKBest(chi2)],
+                    ["svm", LinearSVC()])
+ovr_svm = OneVsRestClassifier(svm_chi2)
+\end{verbatim}
+
+Now, the parameter $k$ specifying number of features to be kept
+in each $\chi^2$ feature selection step
+is exposed by \texttt{ovr\_svm} as \texttt{estimator\_\_chi2\_\_k},
+mirroring the nesting of estimators in meta-estimators,
+and can be optimized by grid search or random search.
+
+Taking the example one step further to arrive at recursive pipelines,
+the \texttt{ovr\_svm} object can be combined
+with a \textsf{tf--idf} document vectorizer
+to obtain a full document classification pipeline
+that takes a stream of text files, paired with class labels, as input:
+
+\begin{verbatim}
+doc_clf = Pipeline(["tfidf", TfidfVectorizer()],
+                   ["clf", ovr_svm])
+\end{verbatim}
+
+The double underscore syntax again serves to address attributes
+in this triply nested structure,
+so the linear SVM's $C$ parameter
+is now called \texttt{clf\_\_estimator\_\_svm\_\_C}.
+
+Following the Python mantra that ``explicit is better than implicit,''
+the implementers of scikit-learn have resisted the temptation
+to implement shortcuts in the notation,
+for example to allow addressing of attributes
+of the underlying estimator of the OvR classifier
+without the intermediate \texttt{estimator}.
+Doing so might require conflict resolution
+when an attribute of the meta-estimator object itself
+has the same name as an attribute on the wrapped estimator.
+The rules for such conflict resolution would need to be
+designed, implemented, tested, and, equally important, documented
+such as to be understandable for users.
+So, the cost of ``syntactic sugar'' was avoided
+at the expense of some typing by the user and some loss of elegance.
 
 \section{Implementation}
 
