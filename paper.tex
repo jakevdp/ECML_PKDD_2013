@@ -156,7 +156,7 @@ Using function currying, its function signature is
   L : \mathcal{H} \to \mathcal{X} \to \mathcal{Y}
 \]
 
-where $\mathcal{H}$ is the set of all possible \textit{hyperparameter} settings
+Here, $\mathcal{H}$ is the set of all possible \textit{hyperparameter} settings
 for the estimator in question.\footnote{
   We disregard the fact that different estimators
   have widely varying sets of hyperparameters for notational simplicity.}
@@ -172,11 +172,19 @@ or because their effects cannot properly be measured
 in terms of a loss function on a training set.
 
 However, in recent years, algorithms have been published
-that systematically explore spaces of possible hyperparameter settings.
+that systematically explore spaces of possible hyperparameter settings,
+a problem that can be formalized as learning and optimization
+within the set of subset of hyperparameter space:
+
+\[
+  L' : 2^\mathcal{H} \to \mathcal{X} \to \mathcal{Y}
+\]
+
 The problem of hyperparameter tuning
 is crucial to achieving good generalization performance in machine learning.
 The present paper does not go into hyperparameter optimization algorithms
-in depth, focusing instead on API support for using them.
+in depth, but instead focuses on the design of an API
+that facilitates the use of such algorithms.
 
 \section{Application programming interface (API)}
 
