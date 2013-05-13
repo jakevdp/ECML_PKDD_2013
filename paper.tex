@@ -92,7 +92,7 @@ of ``classic'' machine learning algorithms
 with a consistent API.
 This paper explores the role that such an API plays
 for handling the problem of hyperparameter optimization,
-or \textit{model selection} as it is called in the statistics literature.
+also known as \textit{model selection} (\citealp{elemstatlearn}:219--257).
 
 The rest of this section explains some fundamental design choices
 made throughout scikit-learn.
@@ -340,9 +340,10 @@ and scikit-learn has support for these:
 pipelines are themselves estimators,
 and can thus be nested inside larger pipelines.
 
-While direct use of this idiom would not have any benefit
+Direct use of this idiom would not have any benefit
 over using the individual stages of the sub-pipeline directly,
-the recursion support shines when in more complex situations
+as both approaches would simply produce a linear pipeline.
+However, the recursion support shines in more complex situations
 that involve the construction of estimators using \textit{meta-estimators}.
 These are objects in the scikit-learn API
 that wrap an estimator to give it additional functionality.
