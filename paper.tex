@@ -1,4 +1,6 @@
-\documentclass[a4paper]{article}
+\documentclass{llncs}
+
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage[round]{natbib}
@@ -7,24 +9,15 @@
 \title{Python as a machine learning language:
        experiences from the scikit-learn project}
 
-% Add your name and affiliation here.
-% Don't worry too much about the formatting,
-% as we'll have to redo that for the LNCS format.
-\author{Mathieu Blondel \\
-        Graduate School of System Informatics \\
-        Kobe University \\
-        \small{\texttt{mblondel@ai.cs.kobe-u.ac.jp}}
-      \and
-        Lars Buitinck \\
-        Informatics Institute \\
-        University of Amsterdam \\
-        \small{\texttt{L.J.Buitinck@uva.nl}}
-      \and
-        Jake Vanderplas \\
-        Astronomy Department \\
-        University of Washington \\
-        \small{\texttt{vanderplas@astro.washington.edu}}
-}
+\author{Mathieu Blondel\inst{1} \and
+        Lars Buitinck\inst{2} \and
+        Gilles Louppe\inst{3} \and
+        Jake Vanderplas\inst{4}}
+
+\institute{Graduate School of System Informatics, Kobe University \and
+           Informatics Institute, University of Amsterdam \and
+           Dept. of EE \& CS, University of Liège \and
+           Astronomy Department, University of Washington}
 
 % Dutch name sorting hack as per http://tex.stackexchange.com/a/40750/2806
 \DeclareRobustCommand{\VAN}[3]{#2}
