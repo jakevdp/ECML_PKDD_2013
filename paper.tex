@@ -37,7 +37,7 @@ The \textit{scikit-learn} project is an increasingly popular open source machine
 learning library designed to be simple and efficient, accessible to non-experts,
 and reusable in various contexts. In this paper, we present and discuss our
 design choices for the application programming interface (API) of the project.
-In particular, we describe our core \textit{estimator} interface shared by all
+In particular, we describe the core \textit{estimator} interface shared by all
 learning and processing units in the library and then discuss its advantages in
 terms of composition and reusability. The paper also comments on implementation
 details specific to the Python ecosystem and highlights obstacles faced by users
@@ -112,6 +112,12 @@ statistics here.}} derived from our repositories and mailing lists.
 % with a consistent API.
 
 \section{API}
+
+In this section, we discuss the general principles of the application programming
+interface (API) of \textit{scikit-learn}. We first specify the representation
+of data and then proceed by describing the interface shared by all learning
+processing units of the library. We then discuss the composition and reusability
+advantages of that interface.
 
 \subsection{Data formats}
 
