@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{hyperref}
-\usepackage[round]{natbib}
+\usepackage[authoryear]{natbib}
 \usepackage{xcolor}
 
 % working title, please change
@@ -68,14 +68,16 @@ contributors proposing small code and/or documentation fixes or improvements.
 Because of this large base of developers, important efforts are demanded to make
 the project maintainable. In particular, we emphasize on high-quality and well-documented
 code  in order to ease future developments by external contributors.
+\textcolor{red}{TODO: Mention some good coding practices (automatic testing, code
+reviews, etc)}
 
 Within the past few years, the project has proven to be valuable to an  ever-
 increasing user base. Its popularity can be gauged from various indicators,
 including hundreds of citations in scientific papers, successes in various
-machine learning challenges, or statistics from our repositories and mailing
-lists.
+machine learning challenges, or statistics\footnote{\textcolor{red}{Cite some
+statistics here.}} from our repositories and mailing lists.
 
-\textcolor{red}{The rest of this text is organized as follows: in Section 2, ...}
+\textcolor{red}{TODO: The rest of this text is organized as follows: in Section 2, ...}
 
 
 % % XXX the following is more of a general introduction than a project vision
@@ -108,6 +110,8 @@ lists.
 % is to provide high-quality implementations
 % of ``classic'' machine learning algorithms
 % with a consistent API.
+
+\section{API}
 
 \subsection{Data formats}
 
@@ -145,8 +149,6 @@ that efficiently convert such data to the NumPy or SciPy formats.
 % \ytr ~and \yte, respectively. We typically store \ytr ~and \yte ~as
 % 1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^\textrm{th}$ training
 % sample's label value).
-
-\section{Application programming interface (API)}
 
 \subsection{Estimators}
 
@@ -241,7 +243,7 @@ kernel approximation transformers
 and two feature extraction classes that implement the ``hashing trick''
 \citep{weinberger2009}.
 
-\section{Pipelines and model selection}
+\subsection{Composition}
 
 A distinguishing feature of scikit-learn estimators
 is that they can be composed into \texttt{Pipeline} objects.
@@ -280,6 +282,8 @@ it is also employed in ensemble estimators such as random forests
 It is chosen as a convention to avoid ambiguity, as direct
 attributes and methods of scikit-learn objects never contain
 double underscores.)
+
+\subsection{Model selection}
 
 The aforementioned \texttt{Pipeline} object
 can be passed as an argument to a model selection algorithm.
