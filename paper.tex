@@ -44,6 +44,8 @@ details specific to the Python ecosystem and highlights obstacles faced by users
 and developers of the library.
 \end{abstract}
 
+\textcolor{red}{TODO: focus on the experience we accumulated (general remark).}
+
 \section{The \textit{scikit-learn} project}
 
 The \textit{scikit-learn} project~\citep{pedregosa2011} is an open source
@@ -314,9 +316,9 @@ the following snippet:
 \end{center}
 
 \textbf{Transformers.} Since it is common to modify or filter data before
-feeding it to a learning algorithm, some estimators in the library implement
-a \textit{transformer} interface which defines a \texttt{transform} method
-taking as input some dataset \texttt{X} and yielding as output a transformed
+feeding it to a learning algorithm, some estimators in the library implement a
+\textit{transformer} interface which defines a \texttt{transform} method. It
+takes as input some dataset \texttt{X} and yields as output a transformed
 version of \texttt{X}\footnote{From an implementation point of view, it may
 sometimes be more efficient to implement \texttt{fit} and \texttt{transform} in
 a single method. In that case, transformers may expose an additional
@@ -407,14 +409,14 @@ one could thus simply write:
 \subsection{Composition}
 
 A distinguishing feature of the \textit{scikit-learn} API is its ability to
-compose new estimators from other estimators. Such objects combine typical
-machine learning  workflows (e.g., feature extraction,
-centering/scaling/normalization, feature selection, learning) into  a single
-object which is itself an estimator. As such, composed estimators can be used
-anywhere usual estimators are used. In particular, they can be used within model
-selection routines, allowing one to optimize at once every step of a complex
-workflow. Composition of estimators can be done in two ways: either sequentially
-through \texttt{Pipeline} objects or in a parallel fashion through
+compose new estimators from several base estimators. Composition mechanisms can
+be used to combine typical machine learning workflows (e.g., feature extraction,
+centering/scaling/normalization, feature selection, learning) into a single
+object which is itself an estimator. Relying on duck typing, composed estimators
+can be used wherever usual estimators can be used. In particular, they integrate
+within model selection routines, allowing one to optimize at once every step of
+a complex workflow. Composition of estimators can be done in two ways: either
+sequentially through \texttt{Pipeline} objects or in a parallel fashion through
 \texttt{FeatureUnion} objects.
 
 \vspace{3cm}
