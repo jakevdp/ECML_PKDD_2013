@@ -227,8 +227,29 @@ The estimator interface also defines a \texttt{fit} method. Invoking this method
 causes the estimator to learn from a training set (e.g., supplied as two arrays
 \texttt{X} and \texttt{y} in supervised learning estimators). Its task, from an
 API point of view, is to run a learning algorithm and to determine model-
-specific parameters from the training data and set these as attributes on the
-estimator object.
+specific  parameters from the training data and set these as attributes on the
+estimator object. As a convention, the parameters learned by an estimator are
+exposed as public attributes\footnote{Note that the learned parameters are
+different from the hyper-parameters given to the constructor. To distinguish
+between the two, learned parameters are all suffixed with a trailing underscore
+(e.g., \texttt{clf.coef\_} in the case of linear models is the vector of
+coefficients learned from the data).} on the trained object.
+
+% Importantly, the parameters learned by an estimator
+% are exposed as \textit{public} attributes on the trained object.
+% This facilitates model inspection
+% and makes it possible to train a model using scikit-learn,
+% export it to a (standardized or custom) external data format
+% and use the learned parameters in a different piece of code,
+% perhaps a prediction algorithm implemented in a different language
+% or one that combines the model parameters with other information
+% to build a custom model.
+% % XXX Hard to follow phrasing below
+% Of course, it also forces the developers to think carefully
+% about what might, in a more ``black box''-style toolkit,
+% be considered the internals of objects,
+% since authors of client code are allowed to rely
+% on the names and formats of model parameters.
 
 As an example, let us consider a supervised learning task using linear regression.
 Given the API defined above, solving this problem is as simple as:
@@ -243,7 +264,7 @@ regularization, and using default values for all other hyper-parameters. Upon
 different learning algorithm is as simple as replacing the constructor. For
 example, to build a Random Forest on the same training data, one would simply
 have to replace \texttt{LinearRegression(penalty="l1")} in the snippet above by
-\texttt{RandomForestClassifier()}. Let us also note the snippet relies on the
+\texttt{RandomForestClassifier()}. Let us also note that the snippet relies on the
 fact that the \texttt{fit} method always returns the object it was called
 on\footnote{I.e., the \texttt{self} argument it was called on.}, hence making
 method chaining  possible.
@@ -254,16 +275,60 @@ vectorization of text documents, scaling of attributes, etc) or feature
 extraction techniques also implement the same interface. Even those estimators
 that are entirely stateless and therefore do not require the \texttt{fit} method
 to perform any useful work implement the estimator interface. As we will
-illustrate in the next section, this design pattern is indeed of prime
+illustrate in the next sections, this design pattern is indeed of prime
 importance for consistency, composition and parameter validation reasons.
 
-\textbf{Predictors.}
+\textbf{Predictors.} The \textit{predictor} interface defines a \texttt{predict}
+method taking as input some dataset \texttt{X} and producing as output
+predictions for \texttt{X} based on the learned parameters of the estimator. In
+the case of supervised learning estimators, this method typically returns the
+predicted labels or values computed by the model. Some unsupervised learning
+estimators may however also implement that interface: for example, in clustering
+estimators, \texttt{predict} returns the identifiers of the closest clusters for
+the samples in \texttt{X}.
 
-\textbf{Transformers.}
+Along with the \texttt{predict} method, predictors may also implement methods
+for quantifying the certainty of a prediction. In the case of estimators
+implementing linear models, the \texttt{decision\_function} method can be used
+to measure the distance of the samples from the discriminating hyperplane. Some
+predictors also provide a \texttt{predict\_proba} method which returns
+class probabilities for the input samples \texttt{X}.
 
+Finally, predictors should also provide a \texttt{score} function to assess the
+goodness of fit on some input data. In supervised learning estimators, this
+method takes as inputs a dataset \texttt{X} and \texttt{y} and typically
+computes the coefficient of determination between \texttt{y} and
+\texttt{predict(X)} in the case of classification or the mean squared error in
+the case of regression. Not however that, from an API point of view, the only
+guideline is that the \texttt{score} method returns a numerical value such that
+the higher the better. As such, some unsupervised learning estimators also
+exposes a \texttt{score} function, computing for instance the likelihood of the
+given data.
 
-\vspace{3cm}
+Continuing with the previous example, predictions on unseen data
+\texttt{X\_test}, \texttt{y\_test} can therefore be obtained and evaluated using
+the following snippet:
+\begin{center}
+\texttt{y\_hat = clf.predict(X\_test)}\\
+\texttt{score = clf.score(X\_test, y\_test)}
+\end{center}
 
+\textbf{Transformers.} Since it is common to modify or filter data before
+feeding it to some learning algorithm, some estimators in the library implement
+a \textit{transformer} interface which defines a \texttt{transform} method
+taking as input some dataset \texttt{X} and yielding as output a transformed
+version of \texttt{X}\footnote{From an implementation point of view, it may
+sometimes be more efficient to implement \texttt{fit} and \texttt{transform} in
+a single method. In that case, transformers may expose an additional
+\texttt{fit\_transform} method.}. In particular, all preprocessing algorithms
+and feature selection routines are offered as transformers within the library.
+
+In our example, if one wanted to transform the inputs \texttt{X} before
+fitting the linear regression estimator, e.g., by standardizing the feature values,
+one could thus simply write:
+\begin{center}
+\texttt{X = StandardScaler().fit(X).transform(X)}
+\end{center}
 
 % The bulk of the scikit-learn application programming interface
 % consists of so-called \textit{estimator} objects.
@@ -337,23 +402,6 @@ importance for consistency, composition and parameter validation reasons.
 % % XXX is it relevant that they are exactly two? Propose s/two/the
 % and two feature extraction classes that implement the ``hashing trick''
 % \citep{weinberger2009}.
-
-Importantly, the parameters learned by an estimator
-are exposed as \textit{public} attributes on the trained object.
-This facilitates model inspection
-and makes it possible to train a model using scikit-learn,
-export it to a (standardized or custom) external data format
-and use the learned parameters in a different piece of code,
-perhaps a prediction algorithm implemented in a different language
-or one that combines the model parameters with other information
-to build a custom model.
-% XXX Hard to follow phrasing below
-Of course, it also forces the developers to think carefully
-about what might, in a more ``black box''-style toolkit,
-be considered the internals of objects,
-since authors of client code are allowed to rely
-on the names and formats of model parameters.
-
 
 
 \subsection{Composition}
