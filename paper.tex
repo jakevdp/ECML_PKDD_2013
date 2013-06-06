@@ -218,14 +218,52 @@ behavior (e.g., the $C$ constant in SVMs). Parameters set as public attributes
 are also used for introspection purposes, e.g., in model selection routines. To
 ease their use, appropriate default hyper-parameter values are provided for all
 built-in estimators. These default values are set to be relevant in most common
-situations in order to make estimators as efficient as possible out-of-box for
-non-experts. Finally, the constructor of an estimator never performs any actual
-learning, nor does it even see any training dataset. Its only goal
-is to set the parameter values and freeze the behavior of the estimator.
+situations in order to make estimators as efficient as possible \textit{out-of-box}
+for non-experts. Finally, the constructor of an estimator never performs
+any actual learning, nor does it even see any training dataset. Its only goal is
+to set the parameter values and freeze the behavior of the estimator.
 
+The estimator interface also defines a \texttt{fit} method. Invoking this method
+causes the estimator to learn from a training set (e.g., supplied as two arrays
+\texttt{X} and \texttt{y} in supervised learning estimators). Its task, from an
+API point of view, is to run a learning algorithm and to determine model-
+specific parameters from the training data and set these as attributes on the
+estimator object.
+
+As an example, let us consider a supervised learning task using linear regression.
+Given the API defined above, solving this problem is as simple as:
+\begin{center}
+\texttt{clf = LinearRegression(penalty="l1").fit(X, y)}
+\end{center}
+In this snippet, a \texttt{LinearRegression} estimator is first initialized by
+setting the \texttt{penalty} hyper-parameter to \texttt{l1}, hence enabling $L1$
+regularization, and using default values for all other hyper-parameters. Upon
+\texttt{fit}, the model is then learned from the arrays \texttt{X} and
+\texttt{y}. Also, since all estimators share the same interface, using a
+different learning algorithm is as simple as replacing the constructor. For
+example, to build a Random Forest on the same training data, one would simply
+have to replace \texttt{LinearRegression(penalty="l1")} in the snippet above by
+\texttt{RandomForestClassifier()}. Let us also note the snippet relies on the
+fact that the \texttt{fit} method always returns the object it was called
+on\footnote{I.e., the \texttt{self} argument it was called on.}, hence making
+method chaining  possible.
+
+In \textit{scikit-learn}, classical learning algorithms are not the only objects
+to be implemented as estimators. For example, preprocessing routines (e.g.,
+vectorization of text documents, scaling of attributes, etc) or feature
+extraction techniques also implement the same interface. Even those estimators
+that are entirely stateless and therefore do not require the \texttt{fit} method
+to perform any useful work implement the estimator interface. As we will
+illustrate in the next section, this design pattern is indeed of prime
+importance for consistency, composition and parameter validation reasons.
+
+\textbf{Predictors.}
+
+\textbf{Transformers.}
 
 
 \vspace{3cm}
+
 
 % The bulk of the scikit-learn application programming interface
 % consists of so-called \textit{estimator} objects.
@@ -252,36 +290,53 @@ is to set the parameter values and freeze the behavior of the estimator.
 %   }
 % It never performs actual learning, nor does it even see a training set.
 
-The algorithmic workhorse of most estimators, and one of the few methods
-that all estimators have in common, is called \texttt{fit}.
-Invoking this method causes the estimator to learn from a training set,
-supplied as one or more arguments.
-Its task, from an API point of view,
-is to determine (via a learning algorithm) model-specific parameters
-from a training set and set these as attributes on the estimator object,
-which can then be used to transform data or make predictions.
-As in other object-oriented machine learning libraries
-(e.g.\ Weka's Java API)
-no distinction is made in the type hierarchy
-between what is variously called an estimator or a \textit{learner}
-in the machine learning literature,
-and the \textit{model} that results from applying an estimator to data.
-When the \texttt{fit} method has been called,
-an estimator object serves dual purpose as a model
-(and is referred to as such in the documentation).
+% The algorithmic workhorse of most estimators, and one of the few methods
+% that all estimators have in common, is called \texttt{fit}.
+% Invoking this method causes the estimator to learn from a training set,
+% supplied as one or more arguments.
+% Its task, from an API point of view,
+% is to determine (via a learning algorithm) model-specific parameters
+% from a training set and set these as attributes on the estimator object,
+% which can then be used to transform data or make predictions.
+% As in other object-oriented machine learning libraries
+% (e.g.\ Weka's Java API)
+% no distinction is made in the type hierarchy
+% between what is variously called an estimator or a \textit{learner}
+% in the machine learning literature,
+% and the \textit{model} that results from applying an estimator to data.
+% When the \texttt{fit} method has been called,
+% an estimator object serves dual purpose as a model
+% (and is referred to as such in the documentation).
 
-An example to clarify the partial application style
-is the following code snippet.
-If $X$ is a dataset in the format described below and $k$ is some integer,
-then the Python code to train a $k$-means clustering model on it
-can be written as
-% XXX we could use Pygments for syntax highlighting
-\begin{verbatim}
-km = KMeans(n_clusters=k).fit(X)
-\end{verbatim}
-This snippet relies on the fact that the \texttt{fit} method
-always returns the object it was called on (its ``\texttt{self}''),
-making a method chaining style possible.
+% An example to clarify the partial application style
+% is the following code snippet.
+% If $X$ is a dataset in the format described below and $k$ is some integer,
+% then the Python code to train a $k$-means clustering model on it
+% can be written as
+% % XXX we could use Pygments for syntax highlighting
+% \begin{verbatim}
+% km = KMeans(n_clusters=k).fit(X)
+% \end{verbatim}
+% This snippet relies on the fact that the \texttt{fit} method
+% always returns the object it was called on (its ``\texttt{self}''),
+% making a method chaining style possible.
+
+% A \texttt{fit} method is present even on objects
+% that perform seemingly mundane tasks such as vectorizing text documents
+% for subsequent learning.
+% Such classes, however, can be said to learn their vocabulary
+% from the training corpus,
+% and follow the conventions set out above.
+% Even those estimators that are entirely stateless and therefore
+% do not require a \texttt{fit} method to perform useful work,
+% nevertheless have such a method for consistency and composibility,
+% and to perform parameter validation.
+% Examples of this latter kind of objects are the normalizing transformer,
+% kernel approximation transformers
+% \citep{rahimi2007random, li2010random, vedaldi2010efficient},
+% % XXX is it relevant that they are exactly two? Propose s/two/the
+% and two feature extraction classes that implement the ``hashing trick''
+% \citep{weinberger2009}.
 
 Importantly, the parameters learned by an estimator
 are exposed as \textit{public} attributes on the trained object.
@@ -299,22 +354,7 @@ be considered the internals of objects,
 since authors of client code are allowed to rely
 on the names and formats of model parameters.
 
-A \texttt{fit} method is present even on objects
-that perform seemingly mundane tasks such as vectorizing text documents
-for subsequent learning.
-Such classes, however, can be said to learn their vocabulary
-from the training corpus,
-and follow the conventions set out above.
-Even those estimators that are entirely stateless and therefore
-do not require a \texttt{fit} method to perform useful work,
-nevertheless have such a method for consistency and composibility,
-and to perform parameter validation.
-Examples of this latter kind of objects are the normalizing transformer,
-kernel approximation transformers
-\citep{rahimi2007random, li2010random, vedaldi2010efficient},
-% XXX is it relevant that they are exactly two? Propose s/two/the
-and two feature extraction classes that implement the ``hashing trick''
-\citep{weinberger2009}.
+
 
 \subsection{Composition}
 
