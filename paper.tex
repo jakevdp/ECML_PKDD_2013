@@ -314,7 +314,7 @@ the following snippet:
 \end{center}
 
 \textbf{Transformers.} Since it is common to modify or filter data before
-feeding it to some learning algorithm, some estimators in the library implement
+feeding it to a learning algorithm, some estimators in the library implement
 a \textit{transformer} interface which defines a \texttt{transform} method
 taking as input some dataset \texttt{X} and yielding as output a transformed
 version of \texttt{X}\footnote{From an implementation point of view, it may
@@ -406,7 +406,23 @@ one could thus simply write:
 
 \subsection{Composition}
 
-A distinguishing feature of scikit-learn estimators
+A distinguishing feature of the \textit{scikit-learn} API is its ability to
+compose new estimators from other estimators. Such objects combine typical
+machine learning  workflows (e.g., feature extraction,
+centering/scaling/normalization, feature selection, learning) into  a single
+object which is itself an estimator. As such, composed estimators can be used
+anywhere usual estimators are used. In particular, they can be used within model
+selection routines, allowing one to optimize at once every step of a complex
+workflow. Composition of estimators can be done in two ways: either sequentially
+through \texttt{Pipeline} objects or in a parallel fashion through
+\texttt{FeatureUnion} objects.
+
+\vspace{3cm}
+
+
+
+
+A distinguishing feature of \textit{scikit-learn} estimators
 is that they can be composed into \texttt{Pipeline} objects.
 Such objects combine typical machine learning workflows
 (extracting features, centering/scaling/normalization,
