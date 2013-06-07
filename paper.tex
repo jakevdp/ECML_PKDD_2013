@@ -430,51 +430,67 @@ estimator in the pipe exposes. That is, if the last estimator is a predictor,
 the pipeline can be used itself as a predictor. If the last estimator is a
 transformer, then the pipeline is itself a transformer.
 
-\texttt{FeatureUnion} objects
+A \texttt{FeatureUnion} object is a transformer combining multiple transformers
+into a single one that joins their outputs. From an API point of view, a
+\texttt{FeatureUnion} takes as input a list of transformers. Calling
+\texttt{fit} on the union is the same as calling \texttt{fit} independently on
+each of the transformers. For transforming data, the base transformers are
+applied in parallel are their outputs are concatenated end-to-end into a larger
+output.
 
+As an example, the following snippet illustrates how to create a complex worflow
+computing both PCA and Kernel PCA components on \texttt{X\_train} (through a
+\texttt{FeatureUninon}), selecting the best of those features and then feeding
+them to a linear model:
+\begin{verbatim}
+Pipeline([("pca", FeatureUnion([('linear_pca', PCA()),
+                                ('kernel_pca', KernelPCA())])),
+          ("feature_selection", SelectKBest()),
+          ("linear_model", LinearRegression())
+]).fit(X_train, y_train).predict(X_test)
+\end{verbatim}
 
-\vspace{3cm}
+As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUninon}
+can be combined to create complex objects. In particular, since both
+are themselves estimators, they can be used to form nested workflows.
 
+% A distinguishing feature of \textit{scikit-learn} estimators
+% is that they can be composed into \texttt{Pipeline} objects.
+% Such objects combine typical machine learning workflows
+% (extracting features, centering/scaling/normalization,
+% feature selection, making predictions)
+% in a single object that is itself an estimator,
+% and whose methods cause data to flow through the pipeline.
+% More importantly, though, they can be used for
+% systematic, automated model selection.
+% This is best explained by example.
 
-
-
-A distinguishing feature of \textit{scikit-learn} estimators
-is that they can be composed into \texttt{Pipeline} objects.
-Such objects combine typical machine learning workflows
-(extracting features, centering/scaling/normalization,
-feature selection, making predictions)
-in a single object that is itself an estimator,
-and whose methods cause data to flow through the pipeline.
-More importantly, though, they can be used for
-systematic, automated model selection.
-This is best explained by example.
-
-By composing, say, a \texttt{CountVectorizer} object
-(which extracts term frequency features from text documents
-according to a bag-words model),
-a \textsf{tf--idf} transformer, a $\chi^2$ feature selector and a linear SVM,
-one obtains a pipeline object with various hyperparameters:
-whether to do stopword filtering,
-linear vs.\ logarithmic \textsf{tf}, number of features to keep,
-SVM regularization ($L_1$ or $L_2$ norm, strength $C$) a.o.
-Such a composite \texttt{Pipeline} object
-exposes all of these parameters using a special syntax;
-each estimators must be given a name,
-and if the SVM's name is, e.g., \texttt{linearsvm},
-then its $C$ parameter is exposed as \texttt{linearsvm\_\_C}.
-The pipeline's \texttt{set\_params} splits the parameter names
-on double underscores, uses the first part of the result
-to look up the estimator,
-and passes the second part to the estimator's own \texttt{set\_params}
-as a keyword argument; due to Python's dynamic parameter passing,
-the result is the same as if the user had called \texttt{set\_params}
-on the SVM themselves.
-(The double underscore syntax is not special to pipelines;
-it is also employed in ensemble estimators such as random forests
-% Is the following clear? Suggestions to replace "direct attributes" with"?
-It is chosen as a convention to avoid ambiguity, as direct
-attributes and methods of scikit-learn objects never contain
-double underscores.)
+% By composing, say, a \texttt{CountVectorizer} object
+% (which extracts term frequency features from text documents
+% according to a bag-words model),
+% a \textsf{tf--idf} transformer, a $\chi^2$ feature selector and a linear SVM,
+% one obtains a pipeline object with various hyperparameters:
+% whether to do stopword filtering,
+% linear vs.\ logarithmic \textsf{tf}, number of features to keep,
+% SVM regularization ($L_1$ or $L_2$ norm, strength $C$) a.o.
+% Such a composite \texttt{Pipeline} object
+% exposes all of these parameters using a special syntax;
+% each estimators must be given a name,
+% and if the SVM's name is, e.g., \texttt{linearsvm},
+% then its $C$ parameter is exposed as \texttt{linearsvm\_\_C}.
+% The pipeline's \texttt{set\_params} splits the parameter names
+% on double underscores, uses the first part of the result
+% to look up the estimator,
+% and passes the second part to the estimator's own \texttt{set\_params}
+% as a keyword argument; due to Python's dynamic parameter passing,
+% the result is the same as if the user had called \texttt{set\_params}
+% on the SVM themselves.
+% (The double underscore syntax is not special to pipelines;
+% it is also employed in ensemble estimators such as random forests
+% % Is the following clear? Suggestions to replace "direct attributes" with"?
+% It is chosen as a convention to avoid ambiguity, as direct
+% attributes and methods of scikit-learn objects never contain
+% double underscores.)
 
 \subsection{Model selection}
 
