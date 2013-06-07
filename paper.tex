@@ -39,7 +39,8 @@ details specific to the Python ecosystem and highlights obstacles faced by users
 and developers of the library.
 \end{abstract}
 
-\textcolor{red}{TODO: focus on the experience we accumulated (general remark).}
+\noindent \textcolor{red}{TODO: Focus on the experience we accumulated (general remark)}\\
+\textcolor{red}{TODO: Motivate our design choices.}
 
 \section{The \textit{scikit-learn} project}
 
@@ -451,9 +452,10 @@ Pipeline([("pca", FeatureUnion([('linear_pca', PCA()),
 ]).fit(X_train, y_train).predict(X_test)
 \end{verbatim}
 
-As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUninon}
-can be combined to create complex objects. In particular, since both
-are themselves estimators, they can be used to form nested workflows.
+As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUninon} can be
+combined to create complex objects. In particular, since both are themselves
+estimators, they can be used to form nested workflows. \textcolor{red}{TODO:
+elaborate a bit more on nested constructions.}
 
 % A distinguishing feature of \textit{scikit-learn} estimators
 % is that they can be composed into \texttt{Pipeline} objects.
@@ -495,14 +497,16 @@ are themselves estimators, they can be used to form nested workflows.
 
 \subsection{Model selection}
 
-\textcolor{red}{TODO: rewrite + describe Scorer API}
+\textcolor{red}{TODO: rewrite and briefly describe the API (see user guide)}\\
+\textcolor{red}{TODO: describe Scorer API?}\\
+\textcolor{red}{TODO: mention that GridSearchCV objects are themselves estimators}
 
 The aforementioned \texttt{Pipeline} object
 can be passed as an argument to a model selection algorithm.
 Available algorithms at the time of writing include random search
 \citep{bergstra2012} and ``grid search''.
 The latter, which we shall use in this example,
-performs an exhaustive search through a grid formed by the Cartesian product
+performs an exhaustive search through a grid formed by the cartesian product
 of a set of possible values for each parameter, specified by the user.
 In our example, this grid might be given as:
 
@@ -521,6 +525,9 @@ and the best performing set of hyperparameters is stored
 on the \texttt{GridSearchCV} object, again, as a public attribute.
 
 \section{Implementation}
+
+\noindent \textcolor{red}{TODO: Mention small set of dependencies.}\\
+\textcolor{red}{TODO: elaborate on use of mixins and duck typing}
 
 scikit-learn is primarily implemented in Python and Cython
 \citep{behnel2011cython},
@@ -563,6 +570,8 @@ should be usable in pipelines and other composite objects
 without them actually inheriting from scikit-learn base classes.
 
 \section{Weaknesses of the NumPy/SciPy environment}
+
+\textcolor{red}{TODO: move this into the Implementation section? These are mostly implementation considerations.}
 
 % This needs an introductory paragraph, but the best I could come up with was:
 As can be expected, the NumPy/SciPy environment is not completely flawless.
@@ -678,7 +687,9 @@ the \textsf{LIBSVM}-based SVM learner, where they are implemented in C{}\verb!++
 
 \section{Comparison with other packages}
 
-ToDo.
+\textcolor{red}{TODO: compare with weka, R, vowpal rabbit, ... ?}\\
+\textcolor{red}{TODO: emphasize scikit-learn's place in the overall scipy ecosystem, and its role in spurring the development of more basic tools.}\\
+\textcolor{red}{TODO: some packages start to adopt our own API.}
 
 \section{Future work}
 
