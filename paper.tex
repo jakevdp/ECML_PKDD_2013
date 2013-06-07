@@ -39,7 +39,7 @@ details specific to the Python ecosystem and highlights obstacles faced by users
 and developers of the library.
 \end{abstract}
 
-\textcolor{red}{TODO: focus on the experience we accumulated (general remark).}
+\textcolor{red}{TODO: Focus on the experience we accumulated (general remark); motivate our design choices.}
 
 \section{The \textit{scikit-learn} project}
 
@@ -495,14 +495,16 @@ are themselves estimators, they can be used to form nested workflows.
 
 \subsection{Model selection}
 
-\textcolor{red}{TODO: rewrite + describe Scorer API}
+\textcolor{red}{TODO: rewrite and briefly describe the API (see user guide)}\\
+\textcolor{red}{TODO: describe Scorer API?}\\
+\textcolor{red}{TODO: mention that GridSearchCV objects are themselves estimators}
 
 The aforementioned \texttt{Pipeline} object
 can be passed as an argument to a model selection algorithm.
 Available algorithms at the time of writing include random search
 \citep{bergstra2012} and ``grid search''.
 The latter, which we shall use in this example,
-performs an exhaustive search through a grid formed by the Cartesian product
+performs an exhaustive search through a grid formed by the cartesian product
 of a set of possible values for each parameter, specified by the user.
 In our example, this grid might be given as:
 
