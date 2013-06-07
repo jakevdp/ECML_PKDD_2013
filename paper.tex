@@ -23,11 +23,6 @@
 % Dutch name sorting hack as per http://tex.stackexchange.com/a/40750/2806
 \DeclareRobustCommand{\VAN}[3]{#2}
 
-\newcommand{\Xtr}{\texttt{X\_tr}}
-\newcommand{\Xte}{\texttt{X\_te}}
-\newcommand{\ytr}{\texttt{y\_tr}}
-\newcommand{\yte}{\texttt{y\_te}}
-
 \begin{document}
 
 \maketitle
@@ -410,14 +405,33 @@ one could thus simply write:
 
 A distinguishing feature of the \textit{scikit-learn} API is its ability to
 compose new estimators from several base estimators. Composition mechanisms can
-be used to combine typical machine learning workflows (e.g., feature extraction,
-centering/scaling/normalization, feature selection, learning) into a single
-object which is itself an estimator. Relying on duck typing, composed estimators
-can be used wherever usual estimators can be used. In particular, they integrate
-within model selection routines, allowing one to optimize at once every step of
-a complex workflow. Composition of estimators can be done in two ways: either
-sequentially through \texttt{Pipeline} objects or in a parallel fashion through
-\texttt{FeatureUnion} objects.
+be used to combine typical machine learning workflows into a single object which
+is itself an estimator. Through duck typing, composed
+estimators can be used wherever usual estimators can be used. In particular,
+they integrate within model selection routines, allowing one to optimize at once
+every step of a complex workflow. Composition of estimators can be done in two
+ways: either sequentially through \texttt{Pipeline} objects or in a parallel
+fashion through \texttt{FeatureUnion} objects.
+
+\texttt{Pipeline} objects are used for chaining multiple estimators into a
+single one. This is useful since a machine learning workflow typically involves
+a fixed sequence of steps in processing data (e.g., feature extraction,
+centering / scaling / normalization, feature selection, learning and making
+predictions). For convenience reasons, those steps can be combined into a
+pipeline such that \texttt{fit} and \texttt{predict} need to be called only once
+to fit the whole sequence. A pipeline also allows for the hyper-parameters of
+all the base estimators to be grid-searched all at once. From an API point of
+view, a \texttt{Pipeline} object takes as input a sequence of $N$ estimators,
+where all $N-1$ first are transformers and the last is either a predictor or a
+transformer. Calling \texttt{fit} on the pipeline is the same as calling
+\texttt{fit} on each estimator in turn, \texttt{transform} the input and then
+pass it on to the next step. The pipeline exposes all the methods the last
+estimator in the pipe exposes. That is, if the last estimator is a predictor,
+the pipeline can be used itself as a predictor. If the last estimator is a
+transformer, then the pipeline is itself a transformer.
+
+\texttt{FeatureUnion} objects
+
 
 \vspace{3cm}
 
@@ -463,6 +477,8 @@ attributes and methods of scikit-learn objects never contain
 double underscores.)
 
 \subsection{Model selection}
+
+\textcolor{red}{TODO: rewrite + describe Scorer API}
 
 The aforementioned \texttt{Pipeline} object
 can be passed as an argument to a model selection algorithm.
