@@ -321,11 +321,11 @@ a single method. In that case, transformers may expose an additional
 \texttt{fit\_transform} method.}. In particular, all preprocessing algorithms
 and feature selection routines are offered as transformers within the library.
 
-In our example, if one wanted to transform the inputs \texttt{X} before
+In our example, if one wanted to transform the inputs \texttt{X\_train} before
 fitting the logistic regression estimator, e.g., by standardizing the feature values,
 one could thus simply write:
 \begin{center}
-\texttt{X = StandardScaler().fit(X).transform(X)}
+\texttt{X\_train = StandardScaler().fit(X\_train).transform(X\_train)}
 \end{center}
 
 % The bulk of the scikit-learn application programming interface
@@ -443,12 +443,12 @@ output.
 As an example, the following snippet illustrates how to create a complex worflow
 computing both linear PCA and kernel PCA components on \texttt{X\_train} (through a
 \texttt{FeatureUninon}), selecting the best of those features and then feeding
-them to a linear model:
+them to a logistic regression model:
 \begin{verbatim}
 Pipeline([("pca", FeatureUnion([('linear_pca', PCA()),
                                 ('kernel_pca', KernelPCA())])),
           ("feature_selection", SelectKBest()),
-          ("linear_model", LinearRegression())
+          ("logistic_model", LogisticRegression())
 ]).fit(X_train, y_train).predict(X_test)
 \end{verbatim}
 
