@@ -261,7 +261,8 @@ Given the API defined above, solving this problem is as simple as:
 \texttt{clf = LogisticRegression(penalty="l1").fit(X\_train, y\_train)}
 \end{center}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
-setting the \texttt{penalty} hyper-parameter to \texttt{l1}, hence enabling $L1$
+setting the \texttt{penalty} hyper-parameter to \texttt{l1}, hence
+enabling $\ell_1$
 regularization, and using default values for all other hyper-parameters. Upon
 \texttt{fit}, the model is then learned from the training arrays \texttt{X\_train} and
 \texttt{y\_train}. Also, since all estimators share the same interface, using a
@@ -481,7 +482,7 @@ elaborate a bit more on nested constructions.}
 % one obtains a pipeline object with various hyperparameters:
 % whether to do stopword filtering,
 % linear vs.\ logarithmic \textsf{tf}, number of features to keep,
-% SVM regularization ($L_1$ or $L_2$ norm, strength $C$) a.o.
+% SVM regularization ($\ell_1$ or $\ell_2$ norm, strength $C$) a.o.
 % Such a composite \texttt{Pipeline} object
 % exposes all of these parameters using a special syntax;
 % each estimators must be given a name,
