@@ -1,111 +1,173 @@
-\documentclass[a4paper]{article}
+\documentclass{llncs}
+
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{hyperref}
-\usepackage[round]{natbib}
+\usepackage[authoryear]{natbib}
+\usepackage{xcolor}
 
 % working title, please change
 \title{Python as a machine learning language:
-       experiences from the scikit-learn project}
+       experiences from the \textit{scikit-learn} project}
 
-% Add your name and affiliation here.
-% Don't worry too much about the formatting,
-% as we'll have to redo that for the LNCS format.
-\author{Mathieu Blondel \\
-        Graduate School of System Informatics \\
-        Kobe University \\
-        \small{\texttt{mblondel@ai.cs.kobe-u.ac.jp}}
-      \and
-        Lars Buitinck \\
-        Informatics Institute \\
-        University of Amsterdam \\
-        \small{\texttt{L.J.Buitinck@uva.nl}}
-      \and
-        Jake Vanderplas \\
-        Astronomy Department \\
-        University of Washington \\
-        \small{\texttt{vanderplas@astro.washington.edu}}
-}
+\author{Mathieu Blondel\inst{1} \and
+        Lars Buitinck\inst{2} \and
+        Gilles Louppe\inst{3} \and
+        Jake Vanderplas\inst{4}}
+
+\institute{Graduate School of System Informatics, Kobe University \and
+           Informatics Institute, University of Amsterdam \and
+           Department of EE \& CS, University of Liège \and
+           Astronomy Department, University of Washington}
 
 % Dutch name sorting hack as per http://tex.stackexchange.com/a/40750/2806
 \DeclareRobustCommand{\VAN}[3]{#2}
-
-\newcommand{\Xtr}{\texttt{X\_tr}}
-\newcommand{\Xte}{\texttt{X\_te}}
-\newcommand{\ytr}{\texttt{y\_tr}}
-\newcommand{\yte}{\texttt{y\_te}}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-The scikit-learn project aims to create an open source
-machine learning library for the Python programming language,
-offering performant implementations of well-established learning algorithms,
-and tying in with the ecosystem of scientific software
-that has evolved around the NumPy and SciPy packages.
-Since the start of the project in 2009,
-it has gathered a sizeable user base.
-
-This paper discusses design choices made
-in both the programmers' interface (API) and the implementation
-of scikit-learn.
-It also highlights obstacles faced by users and implementers
-of machine learning algorithms in the Python language.
+The \textit{scikit-learn} project is an increasingly popular open source machine
+learning library designed to be simple and efficient, accessible to non-experts,
+and reusable in various contexts. In this paper, we present and discuss our
+design choices for the application programming interface (API) of the project.
+In particular, we describe the simple and limited interface shared by all
+learning and processing units in the library and then discuss its advantages in
+terms of composition and reusability. The paper also comments on implementation
+details specific to the Python ecosystem and highlights obstacles faced by users
+and developers of the library.
 \end{abstract}
 
-\section{Project vision}
+\noindent \textcolor{red}{TODO: Focus on the experience we accumulated (general remark)}\\
+\textcolor{red}{TODO: Motivate our design choices.}
 
-\subsection{General principles}
+\section{The \textit{scikit-learn} project}
 
-% XXX the following is more of a general introduction than a project vision
-scikit-learn \citep{pedregosa2011} is an open source machine learning library
-for the Python programming language,
-intended to tie in with the set of numeric and scientific packages
-centered around the NumPy and SciPy libraries
-\Citep{vanderwalt2011, varoquaux2013scipy}.
-It is a library, rather than a novel (domain-specific) programming language,
-intended to be called from Python programs;
-at present, it offers no command line interface or GUI.
+The \textit{scikit-learn} project~\citep{pedregosa2011} is an open source
+machine learning library for the Python programming language. The ambition of
+the project is to provide  effective and long-established machine learning tools
+within a programming environment that is accessible to non-machine learning
+experts, efficient, and reusable in various scientific areas. In itself, the
+project is a library of machine learning tools  rather than  a novel domain-
+specific programming language. Among other things, the library includes
+classical learning algorithms, model selection tools and preprocessing
+procedures. From its core, the library has been designed to tie in with the set
+of numeric and scientific packages centered around the Numpy and
+SciPy~\citep{vanderwalt2011, varoquaux2013scipy} libraries. As such, \textit
+{scikit-learn} is intended to be used within Python scripts and requires some
+Python programming knowledge. At the time, it offers no command line or
+graphical user interface.
 
-The scikit-learn project started in 2009 and has since been developed
-by a team largely consisting of scientists
-(both from computer science and other fields).
-Its popularity can be gauged from various sources:
-% TODO: list volume on the mailing list, number of contributors,
-% number of issues opened and closed, number of forks, number of surveys filled in.
-at the time of writing,
-the popular programmer's Q~\&{}A site StackOverflow\footnote{
-  \url{http://stackoverflow.com/questions/tagged/scikit-learn}}
-% update the following figure when paper is finalized
-lists 322 scikit-learn-related questions.
-The version control logs for the development version of scikit-learn
-% ddaa494c116e3c16bf032003c5cccbed851733d2
-show 183 contributors to the project's source code and documentation
-(after manual deduplication).
+Started in 2009, \textit{scikit-learn} counts a large team of volunteer
+international developers mainly consisting of scientists and researchers from
+various fields (e.g., machine learning, natural language processing or
+neuroscience). The project also greatly benefits from many occasional
+contributors proposing small code and/or documentation fixes or improvements.
+Because of this large base of developers, important efforts are deployed to make
+the project maintainable. In particular, we emphasize on high-quality and well-documented
+code  in order to ease future developments by external contributors.
+\textcolor{red}{TODO: Mention some good coding practices (automatic testing, code
+reviews, etc)}
 
-The main goal of the scikit-learn project
-is to provide high-quality implementations
-of ``classic'' machine learning algorithms
-with a consistent API.
+Within the past few years, the project has proven to be valuable to an  ever
+increasing user base. Its popularity can be gauged from various indicators,
+including hundreds of citations in scientific papers, successes in various
+machine learning challenges, or significant statistics\footnote{\textcolor{red}{Cite some
+statistics here.}} derived from our repositories and mailing lists.
 
-\subsection{Data formats}
+\textcolor{red}{TODO: The rest of this text is organized as follows: in Section 2, ...}
 
-For a machine learning library, one of the most important decisions we had to
-make is how to represent data.  Rather than reinventing the wheel, we opted for
-NumPy multidimensional arrays \Citep{vanderwalt2011} for dense data and SciPy
-sparse matrices for sparse data.  While those may seem like a ``bare''
-representation of data when compared to more object-oriented representations
-(Weka is an example of this style of representation, \citealp{hall2009weka}),
-it brings the prime advantage of allowing us to rely on NumPy and SciPy's
-\textit{vector operations} which are often orders of magnitude faster
-than the corresponding Python loops,
-while at the same time keeping the code short and readable.
-Conversion to NumPy and SciPy formats is usually easy and many scientific users
-of Python will already be used to such formats, since they are pervasive in
-other scientific Python packages.  For tasks where input is likely to consist
-of text files or semi-structured objects, we provide ``vectorizers'' -- objects
-that efficiently convert such data to the NumPy or SciPy formats.
+
+% % XXX the following is more of a general introduction than a project vision
+% scikit-learn \citep{pedregosa2011} is an open source machine learning library
+% for the Python programming language,
+% intended to tie in with the set of numeric and scientific packages
+% centered around the NumPy and SciPy libraries
+% \Citep{vanderwalt2011, varoquaux2013scipy}.
+% It is a library, rather than a novel (domain-specific) programming language,
+% intended to be called from Python programs;
+% at present, it offers no command line interface or GUI.
+
+% The scikit-learn project started in 2009 and has since been developed
+% by a team largely consisting of scientists
+% (both from computer science and other fields).
+% Its popularity can be gauged from various sources:
+% % TODO: list volume on the mailing list, number of contributors,
+% % number of issues opened and closed, number of forks, number of surveys filled in.
+% at the time of writing,
+% the popular programmer's Q~\&{}A site StackOverflow\footnote{
+%   \url{http://stackoverflow.com/questions/tagged/scikit-learn}}
+% % update the following figure when paper is finalized
+% lists 322 scikit-learn-related questions.
+% The version control logs for the development version of scikit-learn
+% % ddaa494c116e3c16bf032003c5cccbed851733d2
+% show 183 contributors to the project's source code and documentation
+% (after manual deduplication).
+
+% The main goal of the scikit-learn project
+% is to provide high-quality implementations
+% of ``classic'' machine learning algorithms
+% with a consistent API.
+
+\section{API}
+
+In this section, we discuss the general principles of the application
+programming interface (API) of \textit{scikit-learn}. We first specify the
+representation of data and then proceed by describing the interface shared by
+all objects of the library. We then discuss the composition and reusability
+advantages of that interface.
+
+\subsection{Data representation}
+
+In most machine learning tasks, data is modeled as a set of variables.  For
+example, in a classification or regression task, the goal is to find a mapping
+between input variables $X_1, ..., X_p$ -- called attributes or features -- and
+some output variable $Y$. A sample is then defined as a tuple of values $(x_1,
+..., x_p, y)$ of these variables and a dataset as a collection of such samples.
+As such, matrices of numerical values\footnote{In the case of categorical
+variables, numerical values can be obtained using various encoding schemes, such
+as one-hot encoding.} constitute a natural representation used almost
+unanimously within all areas of machine learning. In particular, each row in the
+matrix then corresponds to a sample of the dataset and each column to one of the
+variables of the problem.
+
+In \textit{scikit-learn}, we chose a representation of data that is as close as
+possible to the matrix representation: datasets are encoded as NumPy
+multidimensional arrays for dense data and as SciPy sparse matrices for sparse
+data. While those may seem like bare and minimalistic data representations
+when compared to more object-oriented
+representations\footnote{Weka~\citep{hall2009weka} is an example of a toolkit-specific
+object-oriented data representation.}, they bring the prime advantage
+of allowing us to rely on all NumPy and SciPy vector operations -- often orders
+of magnitude faster that the corresponding Python loops -- while allowing us at
+the same time to keep the code short and readable. From a practical point of
+view, these formats also provide a bunch of data loading and conversion tools
+which make them very easy to use in many contexts\footnote{For tasks where the
+inputs are text files or semi-structured objects, we provide \textit{vectorizer}
+objects that efficiently convert such data to the NumPy or SciPy formats.}.
+Finally, this design choice has also been motivated by the fact that, given
+their pervasiveness in many other scientific Python packages, many scientific
+users of Python are likely to be already familiar with those formats, hence helping
+them to familiarize with the project.
+
+
+% For a machine learning library, one of the most important decisions we had to
+% make is how to represent data.  Rather than reinventing the wheel, we opted for
+% NumPy multidimensional arrays \Citep{vanderwalt2011} for dense data and SciPy
+% sparse matrices for sparse data.  While those may seem like a ``bare''
+% representation of data when compared to more object-oriented representations
+% (Weka is an example of this style of representation, \citealp{hall2009weka}),
+% it brings the prime advantage of allowing us to rely on NumPy and SciPy's
+% \textit{vector operations} which are often orders of magnitude faster
+% than the corresponding Python loops,
+% while at the same time keeping the code short and readable.
+% Conversion to NumPy and SciPy formats is usually easy and many scientific users
+% of Python will already be used to such formats, since they are pervasive in
+% other scientific Python packages.  For tasks where input is likely to consist
+% of text files or semi-structured objects, we provide ``vectorizers'' -- objects
+% that efficiently convert such data to the NumPy or SciPy formats.
+
 % FIXME: elaborate what is meant below
 % Lars: elaborated, but I'm not sure how important this is.
 % It mostly reflects experiences with OO libraries that require conversions
@@ -115,158 +177,336 @@ that efficiently convert such data to the NumPy or SciPy formats.
 %and no program would store its data using such a type
 %if it weren't from the outset designed to use scikit-learn.
 
-In the remainder of the paper, we use the following notation. Training data are
-denoted by \Xtr ~and test data (i.e., unseen data to which the learning
-algorithm needs to be able to generalize) by \Xte.  Following the discussion above,
-we represent \Xtr ~and \Xte ~by 2-dimensional NumPy arrays or SciPy sparse
-matrices. Using NumPy/SciPy's notation, \Xtr\texttt{[i, j]} denotes the
-$i^\textrm{th}$ training sample's $j^\textrm{th}$ feature. For supervised learning tasks,
-such as classification or regression, we denote the training and test labels by
-\ytr ~and \yte, respectively. We typically store \ytr ~and \yte ~as
-1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^\textrm{th}$ training
-sample's label value).
+% In the remainder of the paper, we use the following notation. Training data are
+% denoted by \Xtr ~and test data (i.e., unseen data to which the learning
+% algorithm needs to be able to generalize) by \Xte.  Following the discussion above,
+% we represent \Xtr ~and \Xte ~by 2-dimensional NumPy arrays or SciPy sparse
+% matrices. Using NumPy/SciPy's notation, \Xtr\texttt{[i, j]} denotes the
+% $i^\textrm{th}$ training sample's $j^\textrm{th}$ feature. For supervised learning tasks,
+% such as classification or regression, we denote the training and test labels by
+% \ytr ~and \yte, respectively. We typically store \ytr ~and \yte ~as
+% 1-dimensional NumPy arrays (\ytr\texttt{[i]} denotes the $i^\textrm{th}$ training
+% sample's label value).
 
-\section{Application programming interface (API)}
+\subsection{Estimators, predictors and transformers}
 
-\subsection{Estimators}
+All objects within \textit{scikit-learn} share a uniform common basic API
+consisting of three complementary interfaces: an \textit{estimator} interface
+for building and fitting objects, a \textit{predictor} interface for making
+predictions and a \textit{transformer} interface for converting data.
+As much as possible, our design choices have been guided so as to avoid
+the proliferation of framework code. We try to adopt simple conventions and
+to limit to a minimum the number of methods an object must implement.
 
-% TODO describe transformer vs. classifiers/regressors
+\textbf{Estimators.} The \textit{estimator} interface is at the core of the
+library. It defines instantiation mechanisms of objects and exposes a
+\texttt{fit} method for learning a model from training data.  All supervised and
+unsupervised learning algorithms (e.g., for classification, regression or
+clustering) are offered as objects implementing that interface. Machine
+learning tasks like feature extraction, feature selection or dimensionality
+reduction are also provided as estimators.
 
-The bulk of the scikit-learn application programming interface
-consists of so-called \textit{estimator} objects.
-All learning algorithms for classification, regression and clustering
-are offered as such objects,
-but so are feature extraction, feature selection and dimensionality reduction
-algorithms.
+The constructor of an estimator object takes as input a set of named constant
+hyper-parameters. At initialization, all given parameters are attached to the
+estimator instance as public attributes\footnote{Python does not actually
+distinguish between public and private  attributes or methods. By convention
+however, any identifier prefixed with an underscore is considered a non-public
+part of the API~\citep{pythontut}.} and serve to determine the estimator
+behavior (e.g., the $C$ constant in SVMs). Parameters set as public attributes
+are also used for introspection purposes, e.g., in model selection routines. To
+ease their use, appropriate default hyper-parameter values are provided for all
+built-in estimators. These default values are set to be relevant in most common
+situations in order to make estimators as efficient as possible \textit{out-of-box}
+for non-experts. Finally, the constructor of an estimator never performs
+any actual learning, nor does it even see any training dataset. Its only goal is
+to set the parameter values and freeze the behavior of the estimator.
 
-Construction and application of an estimator object
-proceeds in a way that is somewhat reminiscent of partial function application.
-The constructor, \texttt{\_\_init\_\_}\footnote{
-  Strictly speaking, \texttt{\_\_init\_\_} is Python's
-  class \textit{initialization} method,
-  while \texttt{\_\_new\_\_} is the constructor.
-  The distinction is not relevant to the present description of scikit-learn.}
-takes a set of named (hyper-)parameters
-and attaches these to the estimator as public attributes.\footnote{
-  The Python language does not actually distinguish between public and private
-  attributes and methods,
-  but by convention, any identifier prefixed with an underscore (\texttt{\_})
-  is considered ``a non-public part of the API\ldots
-  an implementation detail and subject to change without notice.''
-  \Citep{pythontut}
-  }
-It never performs actual learning, nor does it even see a training set.
+The estimator interface also defines a \texttt{fit} method. Invoking this method
+causes the estimator to learn from a training set (e.g., supplied as two arrays
+\texttt{X} and \texttt{y} in supervised learning estimators). Its task, from an
+API point of view, is to run a learning algorithm and to determine model-
+specific  parameters from the training data and set these as attributes on the
+estimator object. As a convention, the parameters learned by an estimator are
+exposed as public attributes\footnote{Note that the learned parameters are
+different from the hyper-parameters given to the constructor. To distinguish
+between the two, learned parameters are all suffixed with a trailing underscore
+(e.g., \texttt{clf.coef\_} in the case of linear models is the vector of
+coefficients learned from the data).} on the trained object.
 
-The algorithmic workhorse of most estimators, and one of the few methods
-that all estimators have in common, is called \texttt{fit}.
-Invoking this method causes the estimator to learn from a training set,
-supplied as one or more arguments.
-Its task, from an API point of view,
-is to determine (via a learning algorithm) model-specific parameters
-from a training set and set these as attributes on the estimator object,
-which can then be used to transform data or make predictions.
-As in other object-oriented machine learning libraries
-(e.g.\ Weka's Java API)
-no distinction is made in the type hierarchy
-between what is variously called an estimator or a \textit{learner}
-in the machine learning literature,
-and the \textit{model} that results from applying an estimator to data.
-When the \texttt{fit} method has been called,
-an estimator object serves dual purpose as a model
-(and is referred to as such in the documentation).
+% Importantly, the parameters learned by an estimator
+% are exposed as \textit{public} attributes on the trained object.
+% This facilitates model inspection
+% and makes it possible to train a model using scikit-learn,
+% export it to a (standardized or custom) external data format
+% and use the learned parameters in a different piece of code,
+% perhaps a prediction algorithm implemented in a different language
+% or one that combines the model parameters with other information
+% to build a custom model.
+% % XXX Hard to follow phrasing below
+% Of course, it also forces the developers to think carefully
+% about what might, in a more ``black box''-style toolkit,
+% be considered the internals of objects,
+% since authors of client code are allowed to rely
+% on the names and formats of model parameters.
 
-An example to clarify the partial application style
-is the following code snippet.
-If $X$ is a dataset in the format described below and $k$ is some integer,
-then the Python code to train a $k$-means clustering model on it
-can be written as
-% XXX we could use Pygments for syntax highlighting
+As an example, let us consider a supervised learning task using logistic regression.
+Given the API defined above, solving this problem is as simple as:
+\begin{center}
+\texttt{clf = LogisticRegression(penalty="l1").fit(X\_train, y\_train)}
+\end{center}
+In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
+setting the \texttt{penalty} hyper-parameter to \texttt{l1}, hence enabling $L1$
+regularization, and using default values for all other hyper-parameters. Upon
+\texttt{fit}, the model is then learned from the training arrays \texttt{X\_train} and
+\texttt{y\_train}. Also, since all estimators share the same interface, using a
+different learning algorithm is as simple as replacing the constructor. For
+example, to build a Random Forest on the same training data, one would simply
+have to replace \texttt{LogisticRegression(penalty="l1")} in the snippet above by
+\texttt{RandomForestClassifier()}. Let us also note that the snippet relies on the
+fact that the \texttt{fit} method always returns the object it was called
+on\footnote{I.e., the \texttt{self} argument it was called on.}, hence making
+method chaining  possible.
+
+In \textit{scikit-learn}, classical learning algorithms are not the only objects
+to be implemented as estimators. For example, preprocessing routines (e.g.,
+vectorization of text documents, scaling of attributes, etc) or feature
+extraction techniques also implement the same interface. Even those estimators
+that are entirely stateless and therefore do not require the \texttt{fit} method
+to perform any useful work implement the estimator interface. As we will
+illustrate in the next sections, this design pattern is indeed of prime
+importance for consistency, composition and parameter validation reasons.
+
+\textbf{Predictors.} The \textit{predictor} interface defines a \texttt{predict}
+method taking as input some dataset \texttt{X} and producing as output
+predictions for \texttt{X} based on the learned parameters of the estimator. In
+the case of supervised learning estimators, this method typically returns the
+predicted labels or values computed by the model. Some unsupervised learning
+estimators may however also implement that interface: for example, in clustering
+estimators, \texttt{predict} returns the identifiers of the closest clusters for
+the samples in \texttt{X}.
+
+Along with the \texttt{predict} method, predictors may also implement methods
+for quantifying the certainty of a prediction. In the case of estimators
+implementing linear models, the \texttt{decision\_function} method can be used
+to measure the distance of the samples from the discriminating hyperplane. Some
+predictors also provide a \texttt{predict\_proba} method which returns
+class probabilities for the input samples \texttt{X}.
+
+Finally, predictors should also provide a \texttt{score} function to assess the
+goodness of fit on some input data. In supervised learning estimators, this
+method takes as inputs a dataset \texttt{X} and \texttt{y} and typically
+computes the coefficient of determination between \texttt{y} and
+\texttt{predict(X)} in the case of classification or the mean squared error in
+the case of regression. Not however that, from an API point of view, the only
+guideline is that the \texttt{score} method returns a numerical value such that
+the higher the better. As such, some unsupervised learning estimators also
+exposes a \texttt{score} function, computing for instance the likelihood of the
+given data.
+
+Continuing with the previous example, predictions on unseen data
+\texttt{X\_test}, \texttt{y\_test} can therefore be obtained and evaluated using
+the following snippet:
+\begin{center}
+\texttt{y\_hat = clf.predict(X\_test)}\\
+\texttt{score = clf.score(X\_test, y\_test)}
+\end{center}
+
+\textbf{Transformers.} Since it is common to modify or filter data before
+feeding it to a learning algorithm, some estimators in the library implement a
+\textit{transformer} interface which defines a \texttt{transform} method. It
+takes as input some dataset \texttt{X} and yields as output a transformed
+version of \texttt{X}\footnote{From an implementation point of view, it may
+sometimes be more efficient to implement \texttt{fit} and \texttt{transform} in
+a single method. In that case, transformers may expose an additional
+\texttt{fit\_transform} method.}. In particular, all preprocessing algorithms
+and feature selection routines are offered as transformers within the library.
+
+In our example, if one wanted to transform the inputs \texttt{X\_train} before
+fitting the logistic regression estimator, e.g., by standardizing the feature values,
+one could thus simply write:
+\begin{center}
+\texttt{X\_train = StandardScaler().fit(X\_train).transform(X\_train)}
+\end{center}
+
+% The bulk of the scikit-learn application programming interface
+% consists of so-called \textit{estimator} objects.
+% All learning algorithms for classification, regression and clustering
+% are offered as such objects,
+% but so are feature extraction, feature selection and dimensionality reduction
+% algorithms.
+
+% Construction and application of an estimator object
+% proceeds in a way that is somewhat reminiscent of partial function application.
+% The constructor, \texttt{\_\_init\_\_}\footnote{
+%   Strictly speaking, \texttt{\_\_init\_\_} is Python's
+%   class \textit{initialization} method,
+%   while \texttt{\_\_new\_\_} is the constructor.
+%   The distinction is not relevant to the present description of scikit-learn.}
+% takes a set of named (hyper-)parameters
+% and attaches these to the estimator as public attributes.\footnote{
+%   The Python language does not actually distinguish between public and private
+%   attributes and methods,
+%   but by convention, any identifier prefixed with an underscore (\texttt{\_})
+%   is considered ``a non-public part of the API\ldots
+%   an implementation detail and subject to change without notice.''
+%   \Citep{pythontut}
+%   }
+% It never performs actual learning, nor does it even see a training set.
+
+% The algorithmic workhorse of most estimators, and one of the few methods
+% that all estimators have in common, is called \texttt{fit}.
+% Invoking this method causes the estimator to learn from a training set,
+% supplied as one or more arguments.
+% Its task, from an API point of view,
+% is to determine (via a learning algorithm) model-specific parameters
+% from a training set and set these as attributes on the estimator object,
+% which can then be used to transform data or make predictions.
+% As in other object-oriented machine learning libraries
+% (e.g.\ Weka's Java API)
+% no distinction is made in the type hierarchy
+% between what is variously called an estimator or a \textit{learner}
+% in the machine learning literature,
+% and the \textit{model} that results from applying an estimator to data.
+% When the \texttt{fit} method has been called,
+% an estimator object serves dual purpose as a model
+% (and is referred to as such in the documentation).
+
+% An example to clarify the partial application style
+% is the following code snippet.
+% If $X$ is a dataset in the format described below and $k$ is some integer,
+% then the Python code to train a $k$-means clustering model on it
+% can be written as
+% % XXX we could use Pygments for syntax highlighting
+% \begin{verbatim}
+% km = KMeans(n_clusters=k).fit(X)
+% \end{verbatim}
+% This snippet relies on the fact that the \texttt{fit} method
+% always returns the object it was called on (its ``\texttt{self}''),
+% making a method chaining style possible.
+
+% A \texttt{fit} method is present even on objects
+% that perform seemingly mundane tasks such as vectorizing text documents
+% for subsequent learning.
+% Such classes, however, can be said to learn their vocabulary
+% from the training corpus,
+% and follow the conventions set out above.
+% Even those estimators that are entirely stateless and therefore
+% do not require a \texttt{fit} method to perform useful work,
+% nevertheless have such a method for consistency and composibility,
+% and to perform parameter validation.
+% Examples of this latter kind of objects are the normalizing transformer,
+% kernel approximation transformers
+% \citep{rahimi2007random, li2010random, vedaldi2010efficient},
+% % XXX is it relevant that they are exactly two? Propose s/two/the
+% and two feature extraction classes that implement the ``hashing trick''
+% \citep{weinberger2009}.
+
+
+\subsection{Composition}
+
+A distinguishing feature of the \textit{scikit-learn} API is its ability to
+compose new estimators from several base estimators. Composition mechanisms can
+be used to combine typical machine learning workflows into a single object which
+is itself an estimator. Through duck typing, composed
+estimators can be used wherever usual estimators can be used. In particular,
+they integrate within model selection routines, allowing one to optimize at once
+every step of a complex workflow. Composition of estimators can be done in two
+ways: either sequentially through \texttt{Pipeline} objects or in a parallel
+fashion through \texttt{FeatureUnion} objects.
+
+\texttt{Pipeline} objects are used for chaining multiple estimators into a
+single one. This is useful since a machine learning workflow typically involves
+a fixed sequence of steps in processing data (e.g., feature extraction,
+centering / scaling / normalization, feature selection, learning and making
+predictions). For convenience reasons, those steps can be combined into a
+pipeline such that \texttt{fit} and \texttt{predict} need to be called only once
+to fit the whole sequence. A pipeline also allows for the hyper-parameters of
+all the base estimators to be grid-searched all at once. From an API point of
+view, a \texttt{Pipeline} object takes as input a sequence of $N$ estimators,
+where all $N-1$ first are transformers and the last is either a predictor or a
+transformer. Calling \texttt{fit} on the pipeline is the same as calling
+\texttt{fit} on each estimator in turn, \texttt{transform} the input and then
+pass it on to the next step. The pipeline exposes all the methods the last
+estimator in the pipe exposes. That is, if the last estimator is a predictor,
+the pipeline can be used itself as a predictor. If the last estimator is a
+transformer, then the pipeline is itself a transformer. \textcolor{red}{TODO:
+Talk about nested attribute syntax.}
+
+A \texttt{FeatureUnion} object is a transformer combining multiple transformers
+into a single one that joins their outputs. From an API point of view, a
+\texttt{FeatureUnion} takes as input a list of transformers. Calling
+\texttt{fit} on the union is the same as calling \texttt{fit} independently on
+each of the transformers. For transforming data, the base transformers are
+applied in parallel are their outputs are concatenated end-to-end into a larger
+output.
+
+As an example, the following snippet illustrates how to create a complex worflow
+computing both linear PCA and kernel PCA components on \texttt{X\_train} (through a
+\texttt{FeatureUninon}), selecting the best of those features and then feeding
+them to a logistic regression model:
 \begin{verbatim}
-km = KMeans(n_clusters=k).fit(X)
+Pipeline([("pca", FeatureUnion([('linear_pca', PCA()),
+                                ('kernel_pca', KernelPCA())])),
+          ("feature_selection", SelectKBest()),
+          ("logistic_model", LogisticRegression())
+]).fit(X_train, y_train).predict(X_test)
 \end{verbatim}
-This snippet relies on the fact that the \texttt{fit} method
-always returns the object it was called on (its ``\texttt{self}''),
-making a method chaining style possible.
 
-Importantly, the parameters learned by an estimator
-are exposed as \textit{public} attributes on the trained object.
-This facilitates model inspection
-and makes it possible to train a model using scikit-learn,
-export it to a (standardized or custom) external data format
-and use the learned parameters in a different piece of code,
-perhaps a prediction algorithm implemented in a different language
-or one that combines the model parameters with other information
-to build a custom model.
-% XXX Hard to follow phrasing below
-Of course, it also forces the developers to think carefully
-about what might, in a more ``black box''-style toolkit,
-be considered the internals of objects,
-since authors of client code are allowed to rely
-on the names and formats of model parameters.
+As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUninon} can be
+combined to create complex objects. In particular, since both are themselves
+estimators, they can be used to form nested workflows. \textcolor{red}{TODO:
+elaborate a bit more on nested constructions.}
 
-A \texttt{fit} method is present even on objects
-that perform seemingly mundane tasks such as vectorizing text documents
-for subsequent learning.
-Such classes, however, can be said to learn their vocabulary
-from the training corpus,
-and follow the conventions set out above.
-Even those estimators that are entirely stateless and therefore
-do not require a \texttt{fit} method to perform useful work,
-nevertheless have such a method for consistency and composibility,
-and to perform parameter validation.
-Examples of this latter kind of objects are the normalizing transformer,
-kernel approximation transformers
-\citep{rahimi2007random, li2010random, vedaldi2010efficient},
-% XXX is it relevant that they are exactly two? Propose s/two/the
-and two feature extraction classes that implement the ``hashing trick''
-\citep{weinberger2009}.
+% A distinguishing feature of \textit{scikit-learn} estimators
+% is that they can be composed into \texttt{Pipeline} objects.
+% Such objects combine typical machine learning workflows
+% (extracting features, centering/scaling/normalization,
+% feature selection, making predictions)
+% in a single object that is itself an estimator,
+% and whose methods cause data to flow through the pipeline.
+% More importantly, though, they can be used for
+% systematic, automated model selection.
+% This is best explained by example.
 
-\section{Pipelines and model selection}
+% By composing, say, a \texttt{CountVectorizer} object
+% (which extracts term frequency features from text documents
+% according to a bag-words model),
+% a \textsf{tf--idf} transformer, a $\chi^2$ feature selector and a linear SVM,
+% one obtains a pipeline object with various hyperparameters:
+% whether to do stopword filtering,
+% linear vs.\ logarithmic \textsf{tf}, number of features to keep,
+% SVM regularization ($L_1$ or $L_2$ norm, strength $C$) a.o.
+% Such a composite \texttt{Pipeline} object
+% exposes all of these parameters using a special syntax;
+% each estimators must be given a name,
+% and if the SVM's name is, e.g., \texttt{linearsvm},
+% then its $C$ parameter is exposed as \texttt{linearsvm\_\_C}.
+% The pipeline's \texttt{set\_params} splits the parameter names
+% on double underscores, uses the first part of the result
+% to look up the estimator,
+% and passes the second part to the estimator's own \texttt{set\_params}
+% as a keyword argument; due to Python's dynamic parameter passing,
+% the result is the same as if the user had called \texttt{set\_params}
+% on the SVM themselves.
+% (The double underscore syntax is not special to pipelines;
+% it is also employed in ensemble estimators such as random forests
+% % Is the following clear? Suggestions to replace "direct attributes" with"?
+% It is chosen as a convention to avoid ambiguity, as direct
+% attributes and methods of scikit-learn objects never contain
+% double underscores.)
 
-A distinguishing feature of scikit-learn estimators
-is that they can be composed into \texttt{Pipeline} objects.
-Such objects combine typical machine learning workflows
-(extracting features, centering/scaling/normalization,
-feature selection, making predictions)
-in a single object that is itself an estimator,
-and whose methods cause data to flow through the pipeline.
-More importantly, though, they can be used for
-systematic, automated model selection.
-This is best explained by example.
+\subsection{Model selection}
 
-By composing, say, a \texttt{CountVectorizer} object
-(which extracts term frequency features from text documents
-according to a bag-words model),
-a \textsf{tf--idf} transformer, a $\chi^2$ feature selector and a linear SVM,
-one obtains a pipeline object with various hyperparameters:
-whether to do stopword filtering,
-linear vs.\ logarithmic \textsf{tf}, number of features to keep,
-SVM regularization ($L_1$ or $L_2$ norm, strength $C$) a.o.
-Such a composite \texttt{Pipeline} object
-exposes all of these parameters using a special syntax;
-each estimators must be given a name,
-and if the SVM's name is, e.g., \texttt{linearsvm},
-then its $C$ parameter is exposed as \texttt{linearsvm\_\_C}.
-The pipeline's \texttt{set\_params} splits the parameter names
-on double underscores, uses the first part of the result
-to look up the estimator,
-and passes the second part to the estimator's own \texttt{set\_params}
-as a keyword argument; due to Python's dynamic parameter passing,
-the result is the same as if the user had called \texttt{set\_params}
-on the SVM themselves.
-(The double underscore syntax is not special to pipelines;
-it is also employed in ensemble estimators such as random forests
-% Is the following clear? Suggestions to replace "direct attributes" with"?
-It is chosen as a convention to avoid ambiguity, as direct
-attributes and methods of scikit-learn objects never contain
-double underscores.)
+\textcolor{red}{TODO: rewrite and briefly describe the API (see user guide)}\\
+\textcolor{red}{TODO: describe Scorer API?}\\
+\textcolor{red}{TODO: mention that GridSearchCV objects are themselves estimators}
 
 The aforementioned \texttt{Pipeline} object
 can be passed as an argument to a model selection algorithm.
 Available algorithms at the time of writing include random search
 \citep{bergstra2012} and ``grid search''.
 The latter, which we shall use in this example,
-performs an exhaustive search through a grid formed by the Cartesian product
+performs an exhaustive search through a grid formed by the cartesian product
 of a set of possible values for each parameter, specified by the user.
 In our example, this grid might be given as:
 
@@ -285,6 +525,9 @@ and the best performing set of hyperparameters is stored
 on the \texttt{GridSearchCV} object, again, as a public attribute.
 
 \section{Implementation}
+
+\noindent \textcolor{red}{TODO: Mention small set of dependencies.}\\
+\textcolor{red}{TODO: elaborate on use of mixins and duck typing}
 
 scikit-learn is primarily implemented in Python and Cython
 \citep{behnel2011cython},
@@ -327,6 +570,8 @@ should be usable in pipelines and other composite objects
 without them actually inheriting from scikit-learn base classes.
 
 \section{Weaknesses of the NumPy/SciPy environment}
+
+\textcolor{red}{TODO: move this into the Implementation section? These are mostly implementation considerations.}
 
 % This needs an introductory paragraph, but the best I could come up with was:
 As can be expected, the NumPy/SciPy environment is not completely flawless.
@@ -442,7 +687,9 @@ the \textsf{LIBSVM}-based SVM learner, where they are implemented in C{}\verb!++
 
 \section{Comparison with other packages}
 
-ToDo.
+\textcolor{red}{TODO: compare with weka, R, vowpal rabbit, ... ?}\\
+\textcolor{red}{TODO: emphasize scikit-learn's place in the overall scipy ecosystem, and its role in spurring the development of more basic tools.}\\
+\textcolor{red}{TODO: some packages start to adopt our own API.}
 
 \section{Future work}
 
