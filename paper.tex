@@ -249,19 +249,19 @@ coefficients learned from the data).} on the trained object.
 % since authors of client code are allowed to rely
 % on the names and formats of model parameters.
 
-As an example, let us consider a supervised learning task using linear regression.
+As an example, let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:
 \begin{center}
-\texttt{clf = LinearRegression(penalty="l1").fit(X, y)}
+\texttt{clf = LogisticRegression(penalty="l1").fit(X\_train, y\_train)}
 \end{center}
-In this snippet, a \texttt{LinearRegression} estimator is first initialized by
+In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
 setting the \texttt{penalty} hyper-parameter to \texttt{l1}, hence enabling $L1$
 regularization, and using default values for all other hyper-parameters. Upon
-\texttt{fit}, the model is then learned from the arrays \texttt{X} and
-\texttt{y}. Also, since all estimators share the same interface, using a
+\texttt{fit}, the model is then learned from the training arrays \texttt{X\_train} and
+\texttt{y\_train}. Also, since all estimators share the same interface, using a
 different learning algorithm is as simple as replacing the constructor. For
 example, to build a Random Forest on the same training data, one would simply
-have to replace \texttt{LinearRegression(penalty="l1")} in the snippet above by
+have to replace \texttt{LogisticRegression(penalty="l1")} in the snippet above by
 \texttt{RandomForestClassifier()}. Let us also note that the snippet relies on the
 fact that the \texttt{fit} method always returns the object it was called
 on\footnote{I.e., the \texttt{self} argument it was called on.}, hence making
@@ -322,7 +322,7 @@ a single method. In that case, transformers may expose an additional
 and feature selection routines are offered as transformers within the library.
 
 In our example, if one wanted to transform the inputs \texttt{X} before
-fitting the linear regression estimator, e.g., by standardizing the feature values,
+fitting the logistic regression estimator, e.g., by standardizing the feature values,
 one could thus simply write:
 \begin{center}
 \texttt{X = StandardScaler().fit(X).transform(X)}
