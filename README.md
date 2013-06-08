@@ -6,3 +6,5 @@ for Data Mining and Machine Learning".
 
 Website: http://dtai.cs.kuleuven.be/lml/
 Submission deadline: Fri. 28 June
+
+Maximum number of pages: 15
