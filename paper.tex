@@ -84,8 +84,13 @@ project on github, 300 mails per months on the user mailing list, 385
 questions tagged \emph{scikit-learn} on {\tt stackoverflow}} derived from
 our repositories and mailing lists.
 
-\textcolor{red}{TODO: The rest of this text is organized as follows: in Section 2, ...}
-
+In this paper, we describe and motivate the design choices used in
+building the library. First, in section \ref{sec:api}, we give the
+central application programming interface (API). Then, in section
+\ref{sec:implementation}, we describe the implementation trade-offs.
+In section \ref{sec:weaknesses}, we analyze the limitations of the
+technologies we rely on; and finally, in section \ref{sec:comparison}, we
+position \emph{scikit-learn} with respect to other major projects.
 
 % % XXX the following is more of a general introduction than a project vision
 % scikit-learn \citep{pedregosa2011} is an open source machine learning library
@@ -119,6 +124,8 @@ our repositories and mailing lists.
 % with a consistent API.
 
 \section{API}
+
+\label{sec:api}
 
 In this section, we discuss the general principles of the application
 programming interface (API) of \textit{scikit-learn}. We first specify the
@@ -538,6 +545,8 @@ on the \texttt{GridSearchCV} object, again, as a public attribute.
 
 \section{Implementation}
 
+\label{sec:implementation}
+
 \noindent \textcolor{red}{TODO: Mention small set of dependencies.}\\
 \textcolor{red}{TODO: elaborate on use of mixins and duck typing}
 
@@ -582,6 +591,8 @@ should be usable in pipelines and other composite objects
 without them actually inheriting from scikit-learn base classes.
 
 \section{Weaknesses of the NumPy/SciPy environment}
+
+\label{sec:weaknesses}
 
 \textcolor{red}{TODO: move this into the Implementation section? These are mostly implementation considerations.}
 
@@ -698,6 +709,8 @@ The linear, polynomial and RBF kernels are treated as special cases in
 the \textsf{LIBSVM}-based SVM learner, where they are implemented in C{}\verb!++!.)
 
 \section{Comparison with other packages}
+
+\label{sec:comparison}
 
 \textcolor{red}{TODO: compare with weka, R, vowpal rabbit, ... ?}\\
 \textcolor{red}{TODO: emphasize scikit-learn's place in the overall scipy ecosystem, and its role in spurring the development of more basic tools.}\\
