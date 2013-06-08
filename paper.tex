@@ -58,6 +58,9 @@ SciPy~\citep{vanderwalt2011, varoquaux2013scipy} libraries. As such, \textit
 {scikit-learn} is intended to be used within Python scripts and requires some
 Python programming knowledge. At the time, it offers no command line or
 graphical user interface.
+% XXX Gael: maybe we should say that it augments a general purpose
+% language with machine learning concepts, like numpy augments it with
+% array-computing concepts.
 
 Started in 2009, \textit{scikit-learn} counts a large team of volunteer
 international developers mainly consisting of scientists and researchers from
@@ -135,10 +138,10 @@ variables of the problem.
 In \textit{scikit-learn}, we chose a representation of data that is as close as
 possible to the matrix representation: datasets are encoded as NumPy
 multidimensional arrays for dense data and as SciPy sparse matrices for sparse
-data. While those may seem like bare and minimalistic data representations
+data. While those may seem rather unsophisticated data representations
 when compared to more object-oriented
-representations\footnote{Weka~\citep{hall2009weka} is an example of a toolkit-specific
-object-oriented data representation.}, they bring the prime advantage
+constructs, such as those used by Weka~\citep{hall2009weka}. However,
+they bring the prime advantage
 of allowing us to rely on all NumPy and SciPy vector operations -- often orders
 of magnitude faster that the corresponding Python loops -- while allowing us at
 the same time to keep the code short and readable. From a practical point of
@@ -251,6 +254,9 @@ coefficients learned from the data).} on the trained object.
 
 As an example, let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:
+% XXX: Gael: I think that we should break the following lines in 2: the
+% 'return self' hidden in the call to fit can be confusing to the casual
+% reader
 \begin{center}
 \texttt{clf = LogisticRegression(penalty="l1").fit(X\_train, y\_train)}
 \end{center}
