@@ -229,18 +229,18 @@ however, any identifier prefixed with an underscore is considered a non-public
 part of the API~\citep{pythontut}.} and serve to determine the estimator
 behavior (e.g., the $C$ constant in SVMs). Parameters set as public attributes
 are also used for introspection purposes, e.g., in model selection routines. To
-ease their use, appropriate default hyper-parameter values are provided for all
+ease their use, default hyper-parameter values are provided for all
 built-in estimators. These default values are set to be relevant in most common
 situations in order to make estimators as efficient as possible \textit{out-of-box}
 for non-experts. Finally, the constructor of an estimator never performs
 any actual learning, nor does it even see any training dataset. Its only goal is
 to set the parameter values and freeze the behavior of the estimator.
 
-The estimator interface also defines a \texttt{fit} method. Invoking this method
-causes the estimator to learn from a training set (e.g., supplied as two arrays
-\texttt{X} and \texttt{y} in supervised learning estimators). Its task, from an
-API point of view, is to run a learning algorithm and to determine model-
-specific  parameters from the training data and set these as attributes on the
+The estimator interface defines a \texttt{fit} method. This method is
+called with training data (e.g., supplied as two arrays
+\texttt{X} and \texttt{y} in supervised learning estimators). Its task
+is to run a learning algorithm and to determine model-
+specific parameters from the training data and set these as attributes on the
 estimator object. As a convention, the parameters learned by an estimator are
 exposed as public attributes\footnote{Note that the learned parameters are
 different from the hyper-parameters given to the constructor. To distinguish
