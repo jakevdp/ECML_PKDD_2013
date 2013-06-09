@@ -269,9 +269,10 @@ Given the API defined above, solving this problem is as simple as:
 % XXX: Gael: I think that we should break the following lines in 2: the
 % 'return self' hidden in the call to fit can be confusing to the casual
 % reader
-\begin{center}
-\texttt{clf = LogisticRegression(penalty="l1").fit(X\_train, y\_train)}
-\end{center}
+\begin{verbatim}
+clf = LogisticRegression(penalty="l1")
+clf.fit(X_train, y_train)
+\end{verbatim}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
 setting the \texttt{penalty} hyper-parameter to \texttt{l1}, hence
 enabling $\ell_1$
@@ -281,10 +282,7 @@ regularization, and using default values for all other hyper-parameters. Upon
 different learning algorithm is as simple as replacing the constructor. For
 example, to build a Random Forest on the same training data, one would simply
 have to replace \texttt{LogisticRegression(penalty="l1")} in the snippet above by
-\texttt{RandomForestClassifier()}. Let us also note that the snippet relies on the
-fact that the \texttt{fit} method always returns the object it was called
-on\footnote{I.e., the \texttt{self} argument it was called on.}, hence making
-method chaining  possible.
+\texttt{RandomForestClassifier()}. 
 
 In \textit{scikit-learn}, classical learning algorithms are not the only objects
 to be implemented as estimators. For example, preprocessing routines (e.g.,
@@ -325,10 +323,10 @@ given data.
 Continuing with the previous example, predictions on unseen data
 \texttt{X\_test}, \texttt{y\_test} can therefore be obtained and evaluated using
 the following snippet:
-\begin{center}
-\texttt{y\_hat = clf.predict(X\_test)}\\
-\texttt{score = clf.score(X\_test, y\_test)}
-\end{center}
+\begin{verbatim}
+y_pred = clf.predict(X_test)
+score = clf.score(X_test, y_test)
+\end{verbatim}
 
 \textbf{Transformers.} Since it is common to modify or filter data before
 feeding it to a learning algorithm, some estimators in the library implement a
@@ -343,9 +341,12 @@ and feature selection routines are offered as transformers within the library.
 In our example, if one wanted to transform the inputs \texttt{X\_train} before
 fitting the logistic regression estimator, e.g., by standardizing the feature values,
 one could thus simply write:
-\begin{center}
-\texttt{X\_train = StandardScaler().fit(X\_train).transform(X\_train)}
-\end{center}
+\begin{verbatim}
+X_train = StandardScaler().fit(X_train).transform(X_train)
+\end{verbatim}
+
+Note that the snippet relies on the fact that the \texttt{fit} method always
+returns the object it was called on , hence making method chaining  possible.
 
 % The bulk of the scikit-learn application programming interface
 % consists of so-called \textit{estimator} objects.
