@@ -351,6 +351,10 @@ test data \texttt{X\_test}. This can easily be done as follows:
 \begin{verbatim}
 X_test = scaler.transform(X_test)
 \end{verbatim}
+Transformers also include a variety of learning algorithms, such as
+dimension reduction (PCA, manifold learning techniques), Kernel
+approximation techniques, and any other approach that can be used to
+derive a modified representation of the data.
 
 \subsection{Method chaining}
 
@@ -360,7 +364,7 @@ we can thus rewrite the \texttt{StandardScaler} example above in a single line:
 \begin{verbatim} 
 X_train = StandardScaler().fit(X_train).transform(X_train)
 \end{verbatim} 
-In \textit{scikit-learn}, \texttt{fit(X\_train).transform(X\_train)} can further
+In addition, \texttt{fit(X\_train).transform(X\_train)} can further
 be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
 and \texttt{transform} methods into a single method \texttt{fit\_transform}
 allows to share computations, which often makes a huge difference in practice.
@@ -634,7 +638,7 @@ by the scikit-learn developers themselves.
 
 SciPy's handling of sparse matrices is one source of confusion
 for scikit-learn developers and users alike.
-The \texttt{scipy.sparse} package offers quite full-featured support
+The \texttt{scipy.sparse} package offers support
 for this kind of data structure,
 which is crucial to achieving performance and scalability
 in the face of high-dimensional inputs
