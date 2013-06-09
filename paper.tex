@@ -288,11 +288,14 @@ importance for consistency, composition and parameter validation reasons.
 
 \textbf{Predictors.} The \textit{predictor} interface defines a \texttt{predict}
 method taking as input some new data \texttt{X\_test} and producing as output
-predictions for \texttt{X\_test} based on the learned parameters of the
-estimator. In the case of supervised learning estimators, this method typically
-returns the predicted labels or values computed by the model.  Continuing with
-the previous example, predicted labels for \texttt{X\_test} can be obtained
-using the following snippet:
+predictions for \texttt{X\_test}, based on the learned parameters of the
+estimator (we call the input to \texttt{predict} ``\texttt{X\_test}'' in order
+to emphasize that \texttt{predict} generalizes to new data; however,
+\texttt{predict} can also be called on \texttt{X\_train}). In the case of
+supervised learning estimators, this method typically returns the predicted
+labels or values computed by the model.  Continuing with the previous example,
+predicted labels for \texttt{X\_test} can be obtained using the following
+snippet:
 \begin{verbatim}
 y_pred = clf.predict(X_test)
 \end{verbatim}
@@ -315,38 +318,55 @@ for quantifying the certainty of a prediction. In the case of estimators
 implementing linear models, the \texttt{decision\_function} method can be used
 to measure the distance of the samples from the discriminating hyperplane. Some
 predictors also provide a \texttt{predict\_proba} method which returns
-class probabilities for the input samples \texttt{X}.
+class probabilities for the input samples \texttt{X\_test}.
 
 Finally, predictors should also provide a \texttt{score} function to assess the
-goodness of fit on some input data. In supervised learning estimators, this
-method takes as inputs a dataset \texttt{X} and \texttt{y} and typically
-computes the coefficient of determination between \texttt{y} and
-\texttt{predict(X)} in the case of classification or the mean squared error in
-the case of regression. Not however that, from an API point of view, the only
-guideline is that the \texttt{score} method returns a numerical value such that
-the higher the better. As such, some unsupervised learning estimators also
-exposes a \texttt{score} function, computing for instance the likelihood of the
-given data.
+performance on some input data. In supervised learning estimators, this method
+takes as inputs a dataset \texttt{X\_test} and \texttt{y\_test} and typically
+computes the coefficient of determination between \texttt{y\_test} and
+\texttt{predict(X\_test)} in the case of classification or the mean squared
+error in the case of regression. Not however that, from an API point of view,
+the only guideline is that the \texttt{score} method returns a numerical value
+such that the higher the better. As such, some unsupervised learning estimators
+also exposes a \texttt{score} function, computing for instance the likelihood of
+the given data.
 
 \textbf{Transformers.} Since it is common to modify or filter data before
 feeding it to a learning algorithm, some estimators in the library implement a
 \textit{transformer} interface which defines a \texttt{transform} method. It
-takes as input some dataset \texttt{X} and yields as output a transformed
-version of \texttt{X}\footnote{From an implementation point of view, it may
-sometimes be more efficient to implement \texttt{fit} and \texttt{transform} in
-a single method. In that case, transformers may expose an additional
-\texttt{fit\_transform} method.}. In particular, all preprocessing algorithms
-and feature selection routines are offered as transformers within the library.
-
-In our example, if one wanted to transform the inputs \texttt{X\_train} before
-fitting the logistic regression estimator, e.g., by standardizing the feature values,
-one could thus simply write:
+takes as input some new data \texttt{X\_test} and yields as output a transformed
+version of \texttt{X\_test} Preprocessing, feature selection and dimensionality
+reduction algorithms are all provided as transformers within the library.  In
+our example, if one wanted to preprocess the inputs \texttt{X\_train} before
+fitting the logistic regression estimator, e.g., by standardizing the feature
+values, one could thus simply write:
 \begin{verbatim}
-X_train = StandardScaler().fit(X_train).transform(X_train)
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+\end{verbatim}
+Of course, in practice, it is important to apply the same preprocessing to the
+test data \texttt{X\_test}. This can easily be done as follows:
+\begin{verbatim}
+X_test = scaler.transform(X_test)
 \end{verbatim}
 
-Note that the snippet relies on the fact that the \texttt{fit} method always
-returns the object it was called on , hence making method chaining  possible.
+\subsection{Method chaining}
+
+In \textit{scikit-learn}, the \texttt{fit} method always returns the estimator
+it was called on, hence making method chaining possible.  Using this technique,
+we can thus rewrite the \texttt{StandardScaler} example above in a single line:
+\begin{verbatim} 
+X_train = StandardScaler().fit(X_train).transform(X_train)
+\end{verbatim} 
+In \textit{scikit-learn}, \texttt{fit(X\_train).transform(X\_train)} can further
+be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
+and \texttt{transform} methods into a single method \texttt{fit\_transform}
+allows to share computations, which often makes a huge difference in practice.
+In the same spirit, \textit{scikit-learn} sometimes provides the
+\texttt{fit\_predict} method for combining the \texttt{fit} and \texttt{predict}
+methods. This is especially useful for retrieving cluster predictions with
+respect to the training data \texttt{X\_train} in clustering algorithms.
 
 % The bulk of the scikit-learn application programming interface
 % consists of so-called \textit{estimator} objects.
@@ -422,7 +442,7 @@ returns the object it was called on , hence making method chaining  possible.
 % \citep{weinberger2009}.
 
 
-\subsection{Composition}
+\subsection{Estimator composition}
 
 A distinguishing feature of the \textit{scikit-learn} API is its ability to
 compose new estimators from several base estimators. Composition mechanisms can
