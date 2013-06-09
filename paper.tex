@@ -138,12 +138,10 @@ advantages of that interface.
 In most machine learning tasks, data is modeled as a set of variables.  For
 example, in a classification or regression task, the goal is to find a mapping
 between input variables $X_1, ..., X_p$ -- called attributes or features -- and
-some output variable $Y$. A sample is then defined as a tuple of values $(x_1,
-..., x_p, y)$ of these variables and a dataset as a collection of such samples.
-As such, matrices of numerical values\footnote{In the case of categorical
-variables, numerical values can be obtained using various encoding schemes, such
-as one-hot encoding.} constitute a natural representation used almost
-unanimously within all areas of machine learning. In particular, each row in the
+some output variable $Y$. A sample is then defined as a tuple of values $([x_1,
+..., x_p]^\mathrm{T}, y)$ of these variables and a dataset as a collection of
+such samples.  As such, matrices of numerical values constitute a natural and
+widely used representation in machine learning. In this view, each row in the
 matrix then corresponds to a sample of the dataset and each column to one of the
 variables of the problem.
 
