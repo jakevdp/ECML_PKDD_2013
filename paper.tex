@@ -239,8 +239,6 @@ parameters learned by an estimator are exposed as public attributes whose name
 is suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
 learned coefficients of a linear model).
 
-on the trained object.
-
 % Importantly, the parameters learned by an estimator
 % are exposed as \textit{public} attributes on the trained object.
 % This facilitates model inspection
@@ -263,18 +261,20 @@ Given the API defined above, solving this problem is as simple as:
 % 'return self' hidden in the call to fit can be confusing to the casual
 % reader
 \begin{verbatim}
+from sklearn.linear_model import LogisticRegression
 clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
 \end{verbatim}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
-setting the \texttt{penalty} hyper-parameter to \texttt{l1}, hence
-enabling $\ell_1$
-regularization, and using default values for all other hyper-parameters. Upon
-\texttt{fit}, the model is then learned from the training arrays \texttt{X\_train} and
-\texttt{y\_train}. Also, since all estimators share the same interface, using a
-different learning algorithm is as simple as replacing the constructor. For
-example, to build a Random Forest on the same training data, one would simply
-have to replace \texttt{LogisticRegression(penalty="l1")} in the snippet above by
+setting the \texttt{penalty} hyper-parameter to \texttt{"l1"}, hence enabling
+$\ell_1$ regularization. Other hyper-parameters (such as \texttt{C}, which
+defines the strength of the regularization) are not explicitly defined and are
+thus set to the default values. Upon calling \texttt{fit}, the model is then
+learned from the training arrays \texttt{X\_train} and \texttt{y\_train}. Since
+all estimators share the same interface, using a different learning algorithm is
+as simple as replacing the constructor. For example, to build a Random Forest on
+the same training data, one would simply have to replace
+\texttt{LogisticRegression(penalty="l1")} in the snippet above by \\
 \texttt{RandomForestClassifier()}. 
 
 In \textit{scikit-learn}, classical learning algorithms are not the only objects
