@@ -457,7 +457,7 @@ into a single one that joins their outputs. From an API point of view, a
 \texttt{FeatureUnion} takes as input a list of transformers. Calling
 \texttt{fit} on the union is the same as calling \texttt{fit} independently on
 each of the transformers. For transforming data, the base transformers are
-applied in parallel are their outputs are concatenated end-to-end into a larger
+applied in parallel and their outputs are concatenated end-to-end into a larger
 output.
 
 As an example, the following snippet illustrates how to create a complex worflow
