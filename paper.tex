@@ -341,6 +341,7 @@ our example, if one wanted to preprocess the inputs \texttt{X\_train} before
 fitting the logistic regression estimator, e.g., by standardizing the feature
 values, one could thus simply write:
 \begin{verbatim}
+from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
