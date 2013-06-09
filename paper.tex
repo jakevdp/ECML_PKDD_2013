@@ -148,22 +148,20 @@ variables of the problem.
 In \textit{scikit-learn}, we chose a representation of data that is as close as
 possible to the matrix representation: datasets are encoded as NumPy
 multidimensional arrays for dense data and as SciPy sparse matrices for sparse
-data. While those may seem rather unsophisticated data representations
-when compared to more object-oriented
-constructs, such as those used by Weka~\citep{hall2009weka},
-they bring the prime advantage
-of allowing us to rely on all NumPy and SciPy vector operations -- often orders
-of magnitude faster that the corresponding Python loops -- while allowing us at
-the same time to keep the code short and readable. From a practical point of
-view, these formats also provide a bunch of data loading and conversion tools
-which make them very easy to use in many contexts\footnote{For tasks where the
-inputs are text files or semi-structured objects, we provide \textit{vectorizer}
-objects that efficiently convert such data to the NumPy or SciPy formats.}.
-Finally, this design choice has also been motivated by the fact that, given
-their pervasiveness in many other scientific Python packages, many scientific
-users of Python are likely to be already familiar with those formats, hence helping
-them to familiarize with the project.
-
+data. While those may seem rather unsophisticated data representations when
+compared to more object-oriented constructs, such as those used by
+Weka~\citep{hall2009weka}, they bring the prime advantage of allowing us to rely
+on all NumPy and SciPy vector operations -- often orders of magnitude faster
+that the corresponding Python loops -- while allowing us at the same time to
+keep the code short and readable.  This design choice has also been motivated by
+the fact that, given their pervasiveness in many other scientific Python
+packages, many scientific users of Python are already familiar with NumPy dense
+arrays and SciPy sparse matrices, hence helping them to familiarize with the
+project.  From a practical point of view, these formats also provide a bunch of
+data loading and conversion tools which make them very easy to use in many
+contexts. Moreover, for tasks where the inputs are text files or semi-structured
+objects, we provide \textit{vectorizer} objects that efficiently convert such
+data to the NumPy or SciPy formats.
 
 % For a machine learning library, one of the most important decisions we had to
 % make is how to represent data.  Rather than reinventing the wheel, we opted for
