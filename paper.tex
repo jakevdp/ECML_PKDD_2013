@@ -230,16 +230,16 @@ never performs any actual learning, nor does it even see any training dataset.
 Its only goal is to set the parameter values and freeze the behavior of the
 estimator.
 
-The estimator interface defines a \texttt{fit} method. This method is
-called with training data (e.g., supplied as two arrays
-\texttt{X} and \texttt{y} in supervised learning estimators). Its task
-is to run a learning algorithm and to determine model-
-specific parameters from the training data and set these as attributes on the
-estimator object. As a convention, the parameters learned by an estimator are
-exposed as public attributes\footnote{Note that the learned parameters are
-different from the hyper-parameters given to the constructor. To distinguish
-between the two, learned parameters are all suffixed with a trailing underscore
-(e.g., \texttt{clf.coef\_} in the case of linear models is the vector of
+The estimator interface defines a \texttt{fit} method. This method is called
+with training data (e.g., supplied as two arrays \texttt{X\_train} and
+\texttt{y\_train} in supervised learning estimators). Its task is to run a
+learning algorithm and to determine model- specific parameters from the training
+data and set these as attributes on the estimator object. As a convention, the
+parameters learned by an estimator are exposed as public
+attributes\footnote{Note that the learned parameters are different from the
+hyper-parameters given to the constructor. To distinguish between the two,
+learned parameters are all suffixed with a trailing underscore (e.g.,
+\texttt{clf.coef\_} in the case of linear models is the vector of
 coefficients learned from the data).} on the trained object.
 
 % Importantly, the parameters learned by an estimator
