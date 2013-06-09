@@ -287,13 +287,28 @@ illustrate in the next sections, this design pattern is indeed of prime
 importance for consistency, composition and parameter validation reasons.
 
 \textbf{Predictors.} The \textit{predictor} interface defines a \texttt{predict}
-method taking as input some dataset \texttt{X} and producing as output
-predictions for \texttt{X} based on the learned parameters of the estimator. In
-the case of supervised learning estimators, this method typically returns the
-predicted labels or values computed by the model. Some unsupervised learning
-estimators may however also implement that interface: for example, in clustering
-estimators, \texttt{predict} returns the identifiers of the closest clusters for
-the samples in \texttt{X}.
+method taking as input some new data \texttt{X\_test} and producing as output
+predictions for \texttt{X\_test} based on the learned parameters of the
+estimator. In the case of supervised learning estimators, this method typically
+returns the predicted labels or values computed by the model.  Continuing with
+the previous example, predicted labels for \texttt{X\_test} can be obtained
+using the following snippet:
+\begin{verbatim}
+y_pred = clf.predict(X_test)
+\end{verbatim}
+Some unsupervised learning
+estimators may however also implement that interface, as illustrated below:
+\begin{verbatim}
+from sklearn.cluster import KMeans
+km = KMeans(n_clusters=10)
+km.fit(X_train)
+clust_pred = km.predict(X_test)
+\end{verbatim}
+In the above example, a \texttt{KMeans} estimator is first fit on the training
+data \texttt{X\_train}. Then the \texttt{predict} method is called on the test
+data \texttt{X\_test} in order to retrieve predicted cluster labels.
+The \texttt{predict} method in \textit{scikit-learn} thus offers a unified way
+to compute predictions with respect to unseen data.
 
 Along with the \texttt{predict} method, predictors may also implement methods
 for quantifying the certainty of a prediction. In the case of estimators
@@ -312,14 +327,6 @@ guideline is that the \texttt{score} method returns a numerical value such that
 the higher the better. As such, some unsupervised learning estimators also
 exposes a \texttt{score} function, computing for instance the likelihood of the
 given data.
-
-Continuing with the previous example, predictions on unseen data
-\texttt{X\_test}, \texttt{y\_test} can therefore be obtained and evaluated using
-the following snippet:
-\begin{verbatim}
-y_pred = clf.predict(X_test)
-score = clf.score(X_test, y_test)
-\end{verbatim}
 
 \textbf{Transformers.} Since it is common to modify or filter data before
 feeding it to a learning algorithm, some estimators in the library implement a
