@@ -66,17 +66,19 @@ At present, it offers no command line or graphical user interface.
 % language with machine learning concepts, like numpy augments it with
 % array-computing concepts.
 
-Started in 2009, \sklearn is developed by a large and
-international team of volunteers, mostly researchers from
-various fields (e.g., machine learning, natural language processing, or
-neuroscience). The project also greatly benefits from many occasional
+Started in 2009, \sklearn is developed by an international team
+of several dozen volunteers, mostly researchers from various fields
+(e.g., machine learning, natural language processing, or neuroscience).
+The project also greatly benefits from many occasional
 contributors proposing small code or documentation fixes or improvements.
 Because of this large base of developers, emphasis is put on keeping
 the project maintainable. In particular, code must follow specific
 quality guidelines, such as style consistency and unit-test coverage. In
 addition, complete documentation and examples are required for all
-features. Finally, any addition to the code base goes through rigorous
-code review.
+features.
+Finally, additions to the code base must pass code review
+by at least two developers not involved in the implementation
+of the proposed addition.
 
 Within the past few years, the project has proved valuable to an ever increasing
 user base. Its popularity can be gaged from various indicators such as hundreds
@@ -84,8 +86,12 @@ of citations in scientific publications of a previous paper
 \citep{pedregosa2011}, successes in various machine learning challenges
 (\emph{e.g.} kaggle), or significant statistics derived from our repositories
 and mailing lists.  At the time of writing, the project is watched by 1309
-people and forked 667 time on github, and the mailing-list receives 300 mails
+people and forked 667 time on GitHub, and the mailing-list receives 300 mails
 per month.
+The version control logs for the development version of scikit-learn
+% ddaa494c116e3c16bf032003c5cccbed851733d2
+show 183 contributors to the project's source code and documentation
+(after manual deduplication).
 
 In this paper, we describe and motivate the design choices used in
 building the library. First, in section \ref{sec:api}, we give the
@@ -116,10 +122,6 @@ position \emph{scikit-learn} with respect to other major projects.
 %   \url{http://stackoverflow.com/questions/tagged/scikit-learn}}
 % % update the following figure when paper is finalized
 % lists 322 scikit-learn-related questions.
-% The version control logs for the development version of scikit-learn
-% % ddaa494c116e3c16bf032003c5cccbed851733d2
-% show 183 contributors to the project's source code and documentation
-% (after manual deduplication).
 
 % The main goal of the scikit-learn project
 % is to provide high-quality implementations
