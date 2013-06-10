@@ -314,8 +314,7 @@ importance for consistency, composition and parameter validation reasons.
 method taking as input some new data \texttt{X\_test} and producing as output
 predictions for \texttt{X\_test}, based on the learned parameters of the
 estimator (we call the input to \texttt{predict} ``\texttt{X\_test}'' in order
-to emphasize that \texttt{predict} generalizes to new data; however,
-\texttt{predict} can also be called on \texttt{X\_train}). In the case of
+to emphasize that \texttt{predict} generalizes to new data). In the case of
 supervised learning estimators, this method typically returns the predicted
 labels or values computed by the model.  Continuing with the previous example,
 predicted labels for \texttt{X\_test} can be obtained using the following
@@ -486,18 +485,22 @@ fashion through \texttt{FeatureUnion} objects.
 \texttt{Pipeline} objects are used for chaining multiple estimators into a
 single one. This is useful since a machine learning workflow typically involves
 a fixed sequence of steps in processing data (e.g., feature extraction,
-centering / scaling / normalization, feature selection, learning and making
-predictions). For convenience reasons, those steps can be combined into a
-pipeline such that \texttt{fit} and \texttt{predict} need to be called only once
-to fit the whole sequence. A pipeline also allows for the hyper-parameters of
-all the base estimators to be grid-searched all at once. From an API point of
-view, a \texttt{Pipeline} object takes as input a sequence of $N$ estimators,
-where all $N-1$ first are transformers and the last is either a predictor or a
-transformer. Calling \texttt{fit} on the pipeline is the same as calling
-\texttt{fit} on each estimator in turn, \texttt{transform} the input and then
-pass it on to the next step. The pipeline exposes all the methods the last
+normalization, feature selection, learning and making predictions).
+A sequence of $N$ such steps can be combined into a composite object
+called a \texttt{Pipeline}.
+The first $N-1$ steps must be transformers
+and the last can be either a predictor or a transformer.
+Fitting a pipeline to a training set amounts, conceptually,
+to the following recursive procedure:
+\begin{enumerate}
+  \item When only one step remains, call its \texttt{fit} method.
+  \item Otherwise, fit the first step,
+        use it to \texttt{transform} the training set
+        and fit the rest of the pipeline with the transformed data.
+\end{enumerate}
+The pipeline exposes all the methods the last
 estimator in the pipe exposes. That is, if the last estimator is a predictor,
-the pipeline can be used itself as a predictor. If the last estimator is a
+the pipeline can itself be used as a predictor. If the last estimator is a
 transformer, then the pipeline is itself a transformer. \textcolor{red}{TODO:
 Talk about nested attribute syntax.}
 
