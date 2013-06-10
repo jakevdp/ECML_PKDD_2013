@@ -161,7 +161,7 @@ advantages of that interface.
 
 In most machine learning tasks, data is modeled as a set of variables.  For
 example, in a classification or regression task, the goal is to find a mapping
-between input variables $X_1, ..., X_p$ -- called attributes or features -- and
+between input variables $X_1, ..., X_p$, called features, and
 some output variable $Y$. A sample is then defined as a tuple of values $([x_1,
 ..., x_p]^\mathrm{T}, y)$ of these variables and a dataset as a collection of
 such samples.  As such, matrices of numerical values constitute a natural and
@@ -303,7 +303,7 @@ the same training data, one would simply have to replace
 
 In \sklearn, classical learning algorithms are not the only objects
 to be implemented as estimators. For example, preprocessing routines (e.g.,
-vectorization of text documents, scaling of attributes, etc) or feature
+vectorization of text documents, scaling of features, etc) or feature
 extraction techniques also implement the same interface. Even those estimators
 that are entirely stateless and therefore do not require the \texttt{fit} method
 to perform any useful work implement the estimator interface. As we will
