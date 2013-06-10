@@ -57,16 +57,31 @@ experts and reusable in various scientific areas. In itself the project isn't
 a novel domain-specific language, but a library that provides machine
 learning idioms to a general-purpose high-level language. Among other things,
 it includes classical learning algorithms, model selection tools and
-preprocessing
-procedures. From its core, the library has been designed to tie in with the set
-of numeric and scientific packages centered around the Numpy and
+preprocessing procedures.
+
+\sklearn is explicitly a library,
+i.e. a collection of classes (in the object-oriented sense)
+that users ``import'' into Python scripts/programs.
+Use of the package requires basic Python programming knowledge,
+and no command-line interface, let alone a GUI,
+is offered for non-programmer users.
+Instead, interactive use is made possible
+by the Python interactive interpreter,
+and its enhanced replacement IPython \citep{perez2007ipython},
+which offers a \textsc{matlab}-like working environment
+specifically designed for scientific use.
+
+From its core, the library has been designed to tie in with the set
+of numeric and scientific packages centered around the NumPy and
 SciPy \citep{vanderwalt2011, varoquaux2013scipy} libraries.
-As such, \sklearn is intended to be used within Python scripts
-and requires some Python programming knowledge.
-At present, it offers no command line or graphical user interface.
-% XXX Gael: maybe we should say that it augments a general purpose
-% language with machine learning concepts, like numpy augments it with
-% array-computing concepts.
+Of these, NumPy augments Python with a numeric array datatype
+and associated array computing primitives \citep{vanderwalt2011},
+while SciPy extends it further
+by making common numeric operations available,
+either by implementing those in Python/NumPy,
+or by wrapping existing C/C{}\verb!++!/Fortran implementations.
+In a similar vein, \sklearn extends the general-purpose language Python
+with a set of composable machine learning operations.
 
 Started in 2009, \sklearn is developed by an international team
 of several dozen volunteers, mostly researchers from various fields
