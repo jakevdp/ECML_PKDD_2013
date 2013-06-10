@@ -509,7 +509,7 @@ output.
 
 As an example, the following snippet illustrates how to create a complex worflow
 computing both linear PCA and kernel PCA components on \texttt{X\_train} (through a
-\texttt{FeatureUninon}), selecting the best of those features and then feeding
+\texttt{FeatureUnion}), selecting the best of those features and then feeding
 them to a logistic regression model:
 \begin{verbatim}
 Pipeline([("pca", FeatureUnion([('linear_pca', PCA()),
@@ -519,7 +519,7 @@ Pipeline([("pca", FeatureUnion([('linear_pca', PCA()),
 ]).fit(X_train, y_train).predict(X_test)
 \end{verbatim}
 
-As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUninon} can be
+As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUnion} can be
 combined to create complex objects. In particular, since both are themselves
 estimators, they can be used to form nested workflows. \textcolor{red}{TODO:
 elaborate a bit more on nested constructions.}
