@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{hyperref}
-\usepackage[authoryear]{natbib}
+\usepackage[authoryear,round]{natbib}
 \usepackage{xcolor}
 \usepackage{xspace}
 
@@ -47,7 +47,7 @@ and developers of the library.
 
 \section{The \sklearn project}
 
-The \sklearn project~\citep{pedregosa2011} is an open source
+The \sklearn project \citep{pedregosa2011} is an open source
 machine learning library for the Python programming language. The ambition of
 the project is to provide efficient and well-established machine learning tools
 within a programming environment that is accessible to non-machine learning
@@ -58,10 +58,10 @@ it includes classical learning algorithms, model selection tools and
 preprocessing
 procedures. From its core, the library has been designed to tie in with the set
 of numeric and scientific packages centered around the Numpy and
-SciPy~\citep{vanderwalt2011, varoquaux2013scipy} libraries.
+SciPy \citep{vanderwalt2011, varoquaux2013scipy} libraries.
 As such, \sklearn is intended to be used within Python scripts
 and requires some Python programming knowledge.
-At the time, it offers no command line or graphical user interface.
+At present, it offers no command line or graphical user interface.
 % XXX Gael: maybe we should say that it augments a general purpose
 % language with machine learning concepts, like numpy augments it with
 % array-computing concepts.
@@ -153,7 +153,7 @@ possible to the matrix representation: datasets are encoded as NumPy
 multidimensional arrays for dense data and as SciPy sparse matrices for sparse
 data. While those may seem rather unsophisticated data representations when
 compared to more object-oriented constructs, such as those used by
-Weka~\citep{hall2009weka}, they bring the prime advantage of allowing us to rely
+Weka \citep{hall2009weka}, they bring the prime advantage of allowing us to rely
 on all NumPy and SciPy vector operations -- often orders of magnitude faster
 that the corresponding Python loops -- while allowing us at the same time to
 keep the code short and readable.  This design choice has also been motivated by
