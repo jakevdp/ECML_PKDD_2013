@@ -5,10 +5,13 @@
 \usepackage{hyperref}
 \usepackage[authoryear]{natbib}
 \usepackage{xcolor}
+\usepackage{xspace}
+
+\newcommand{\sklearn}{\textit{scikit-learn}\xspace}
 
 % working title, please change
 \title{Python as a machine learning language:
-       experiences from the \textit{scikit-learn} project}
+       experiences from the \sklearn project}
 
 \author{Mathieu Blondel\inst{1} \and
         Lars Buitinck\inst{2} \and
@@ -28,7 +31,7 @@
 \maketitle
 
 \begin{abstract}
-The \textit{scikit-learn} project is an increasingly popular open source machine
+The \sklearn project is an increasingly popular open source machine
 learning library designed to be simple and efficient, accessible to non-experts,
 and reusable in various contexts. In this paper, we present and discuss our
 design choices for the application programming interface (API) of the project.
@@ -42,9 +45,9 @@ and developers of the library.
 \noindent \textcolor{red}{TODO: Focus on the experience we accumulated (general remark)}\\
 \textcolor{red}{TODO: Motivate our design choices.}
 
-\section{The \textit{scikit-learn} project}
+\section{The \sklearn project}
 
-The \textit{scikit-learn} project~\citep{pedregosa2011} is an open source
+The \sklearn project~\citep{pedregosa2011} is an open source
 machine learning library for the Python programming language. The ambition of
 the project is to provide efficient and well-established machine learning tools
 within a programming environment that is accessible to non-machine learning
@@ -55,15 +58,15 @@ it includes classical learning algorithms, model selection tools and
 preprocessing
 procedures. From its core, the library has been designed to tie in with the set
 of numeric and scientific packages centered around the Numpy and
-SciPy~\citep{vanderwalt2011, varoquaux2013scipy} libraries. As such, \textit
-{scikit-learn} is intended to be used within Python scripts and requires some
-Python programming knowledge. At the time, it offers no command line or
-graphical user interface.
+SciPy~\citep{vanderwalt2011, varoquaux2013scipy} libraries.
+As such, \sklearn is intended to be used within Python scripts
+and requires some Python programming knowledge.
+At the time, it offers no command line or graphical user interface.
 % XXX Gael: maybe we should say that it augments a general purpose
 % language with machine learning concepts, like numpy augments it with
 % array-computing concepts.
 
-Started in 2009, \textit{scikit-learn} is developed by a large and
+Started in 2009, \sklearn is developed by a large and
 international team of volunteers, mostly researchers from
 various fields (e.g., machine learning, natural language processing, or
 neuroscience). The project also greatly benefits from many occasional
@@ -128,7 +131,7 @@ position \emph{scikit-learn} with respect to other major projects.
 \label{sec:api}
 
 In this section, we discuss the general principles of the application
-programming interface (API) of \textit{scikit-learn}. We first specify the
+programming interface (API) of \sklearn. We first specify the
 representation of data and then proceed by describing the interface shared by
 all objects of the library. We then discuss the composition and reusability
 advantages of that interface.
@@ -145,7 +148,7 @@ widely used representation in machine learning. In this view, each row in the
 matrix then corresponds to a sample of the dataset and each column to one of the
 variables of the problem.
 
-In \textit{scikit-learn}, we chose a representation of data that is as close as
+In \sklearn, we chose a representation of data that is as close as
 possible to the matrix representation: datasets are encoded as NumPy
 multidimensional arrays for dense data and as SciPy sparse matrices for sparse
 data. While those may seem rather unsophisticated data representations when
@@ -201,7 +204,7 @@ data to the NumPy or SciPy formats.
 
 \subsection{Estimators, predictors and transformers}
 
-All objects within \textit{scikit-learn} share a uniform common basic API
+All objects within \sklearn share a uniform common basic API
 consisting of three complementary interfaces: an \textit{estimator} interface
 for building and fitting objects, a \textit{predictor} interface for making
 predictions and a \textit{transformer} interface for converting data.
@@ -277,7 +280,7 @@ the same training data, one would simply have to replace
 \texttt{LogisticRegression(penalty="l1")} in the snippet above by \\
 \texttt{RandomForestClassifier()}. 
 
-In \textit{scikit-learn}, classical learning algorithms are not the only objects
+In \sklearn, classical learning algorithms are not the only objects
 to be implemented as estimators. For example, preprocessing routines (e.g.,
 vectorization of text documents, scaling of attributes, etc) or feature
 extraction techniques also implement the same interface. Even those estimators
@@ -310,7 +313,7 @@ clust_pred = km.predict(X_test)
 In the above example, a \texttt{KMeans} estimator is first fit on the training
 data \texttt{X\_train}. Then the \texttt{predict} method is called on the test
 data \texttt{X\_test} in order to retrieve predicted cluster labels.
-The \texttt{predict} method in \textit{scikit-learn} thus offers a unified way
+The \texttt{predict} method in \sklearn thus offers a unified way
 to compute predictions with respect to unseen data.
 
 Along with the \texttt{predict} method, predictors may also implement methods
@@ -358,7 +361,7 @@ derive a modified representation of the data.
 
 \subsection{Method chaining}
 
-In \textit{scikit-learn}, the \texttt{fit} method always returns the estimator
+In \sklearn, the \texttt{fit} method always returns the estimator
 it was called on, hence making method chaining possible.  Using this technique,
 we can thus rewrite the \texttt{StandardScaler} example above in a single line:
 \begin{verbatim} 
@@ -368,7 +371,7 @@ In addition, \texttt{fit(X\_train).transform(X\_train)} can further
 be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
 and \texttt{transform} methods into a single method \texttt{fit\_transform}
 allows to share computations, which often makes a huge difference in practice.
-In the same spirit, \textit{scikit-learn} sometimes provides the
+In the same spirit, \sklearn sometimes provides the
 \texttt{fit\_predict} method for combining the \texttt{fit} and \texttt{predict}
 methods. This is especially useful for retrieving cluster predictions with
 respect to the training data \texttt{X\_train} in clustering algorithms.
@@ -449,7 +452,7 @@ respect to the training data \texttt{X\_train} in clustering algorithms.
 
 \subsection{Estimator composition}
 
-A distinguishing feature of the \textit{scikit-learn} API is its ability to
+A distinguishing feature of the \sklearn API is its ability to
 compose new estimators from several base estimators. Composition mechanisms can
 be used to combine typical machine learning workflows into a single object which
 is itself an estimator. Through duck typing, composed
@@ -502,7 +505,7 @@ combined to create complex objects. In particular, since both are themselves
 estimators, they can be used to form nested workflows. \textcolor{red}{TODO:
 elaborate a bit more on nested constructions.}
 
-% A distinguishing feature of \textit{scikit-learn} estimators
+% A distinguishing feature of \sklearn estimators
 % is that they can be composed into \texttt{Pipeline} objects.
 % Such objects combine typical machine learning workflows
 % (extracting features, centering/scaling/normalization,
