@@ -737,19 +737,6 @@ with the sparse/array distinction to factor out common patterns
 for supporting both sparse and dense input data structures in many estimators.
 In other cases, though, sparse matrix support has to implemented
 on a per-estimator basis.
-This situation is aggravated by the lack of a C API for sparse matrices,
-so that Cython modules have to implement their own version
-of operations like sparse dot products
-that ideally would have been handled by a library.
-
-However, users of scikit-learn cannot always be expected
-to have similar familiarity, and in some cases
-(e.g., when users want to leverage feature extraction code
-outside the context of a \texttt{Pipeline})
-they will have to face the \texttt{scipy.sparse} interface.
-This is, of course, as much an artifact of the design choice
-to not implement separate classes and interfaces for samples/instances
-as it a consequence of SciPy's implementation of sparse matrices.
 
 \subsection{Parallelism}
 
@@ -765,31 +752,14 @@ The workaround is to use Python's multiprocessing module,
 which emulates threads using multiple operating system-level processes,
 but this in turn leads to high memory use and overhead
 because of the copying of training and test sets
-into the various processes' address spaces.\footnote{
-  The fact that copying occurs at all is an artifact of NumPy's implementation;
-  no attempt at implementing a multiprocessing module
-  that shares NumPy arrays using copy-on-write semantics or memory mapping
-  has so far been completed.}
+into the various processes' address spaces.
 
-\subsection{Python/Cython mismatch}
-
-The Python/Cython divide is another source of potential difficulties
-both for users and developers/contributors.
 While Cython makes writing performance-critical code possible
 in a language that is very much like Python,
 doing so properly still requires some knowledge of C.
 One source of trouble has been the various fixed-size integer types
 that are used by the Python and NumPy C runtimes,
 whose sizes are practically all platform-dependent.
-Choosing the appropriate integer type from among
-\texttt{int}, \texttt{size\_t}, \texttt{Py\_ssize\_t} and \texttt{npy\_intp}
-can require knowledge of the Python extension API,
-the NumPy C API and the C standard.
-Neither Cython nor C compilers provide much in the way of static checking
-for the right type,
-while picking the wrong type may cause segmentation faults
-when users try to use arrays that are too large for the type used
-and using a dynamic type often leads to unacceptable slowdowns.
 
 Another problem concerns the mismatch between on the one hand Python functions,
 which are first-class runtime objects endowed with methods and metadata
