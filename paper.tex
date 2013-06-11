@@ -515,14 +515,18 @@ applied in parallel and their outputs are concatenated end-to-end into a larger
 output.
 
 As an example, the following snippet illustrates how to create a complex worflow
-computing both linear PCA and kernel PCA components on \texttt{X\_train} (through a
-\texttt{FeatureUnion}), selecting the best of those features and then feeding
-them to a logistic regression model:
+computing both linear PCA and kernel PCA components on \texttt{X\_train}
+(through a \texttt{FeatureUnion}), selecting the 100 best of those features and
+then feeding them to an $\ell_2$-regularized logistic regression model:
 \begin{verbatim}
-Pipeline([("pca", FeatureUnion([('linear_pca', PCA()),
-                                ('kernel_pca', KernelPCA())])),
-          ("feature_selection", SelectKBest()),
-          ("logistic_model", LogisticRegression())
+from sklearn.pipeline import Pipeline
+from sklearn.decomposition import PCA, KernelPCA
+from sklearn.feature_selection import SelectKBest
+
+Pipeline([("pca", FeatureUnion([('pca', PCA()),
+                                ('kpca', KernelPCA(kernel="rbf"))])),
+          ("feature_selection", SelectKBest(k=100)),
+          ("logistic_model", LogisticRegression(penalty="l2"))
 ]).fit(X_train, y_train).predict(X_test)
 \end{verbatim}
 
