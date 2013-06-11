@@ -435,23 +435,6 @@ dimension reduction (PCA, manifold learning techniques), kernel
 approximation techniques, and any other approach that can be used to
 derive a modified representation of the data.
 
-\subsection{Method chaining}
-
-In \sklearn, the \texttt{fit} method always returns the estimator
-it was called on, hence making method chaining possible.  Using this technique,
-we can thus rewrite the \texttt{StandardScaler} example above in a single line:
-\begin{verbatim} 
-X_train = StandardScaler().fit(X_train).transform(X_train)
-\end{verbatim} 
-In addition, \texttt{fit(X\_train).transform(X\_train)} can further
-be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
-and \texttt{transform} methods into a single method \texttt{fit\_transform}
-allows to share computations, which often makes a huge difference in practice.
-In the same spirit, \sklearn sometimes provides the
-\texttt{fit\_predict} method for combining the \texttt{fit} and \texttt{predict}
-methods. This is especially useful for retrieving cluster predictions with
-respect to the training data \texttt{X\_train} in clustering algorithms.
-
 % The bulk of the scikit-learn application programming interface
 % consists of so-called \textit{estimator} objects.
 % All learning algorithms for classification, regression and clustering
