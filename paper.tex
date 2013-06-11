@@ -170,7 +170,7 @@ The API is designed to adhere to the following broad principles:
        but by convention, any identifier
        prefixed with an underscore (\texttt{\_})
        is considered ``a non-public part of the API''; \citealp{pythontut}.)
-  \item[No proliferation of classes.]
+  \item[Non-proliferation of classes.]
        Learning algorithms are objects of custom classes,
        but datasets and hyperparameter names and values,
        are represented as standard Python, NumPy and SciPy classes
@@ -185,13 +185,13 @@ The API is designed to adhere to the following broad principles:
   \item[Composability.]
        Many machine learning tasks are expressible
        as \textit{pipelines} of transformations to data.
-       Other tasks are naturally viewed
-       as modifications to other tasks;
-       e.g., multi-label classification
-       can be reduced to multiple binary classification tasks.
-       Accordingly, multi-label classification
-       is implemented by a class that takes an existing classifier object
-       as input and modifies its function.
+       Also, some learning algorithms are naturally viewed
+       as meta-algorithms parameterized on other algorithms.
+       To be able to implement and use these algorithms in a simple way,
+       all learners are usable with a consistent set of methods
+       and a simple syntax is implemented
+       for setting/retrieving parameters of ``sub-estimators''.
+       % XXX need to describe this!
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
        a default value for that parameter must be defined by the library
