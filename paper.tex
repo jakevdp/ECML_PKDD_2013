@@ -157,6 +157,47 @@ representation of data and then proceed by describing the interface shared by
 all objects of the library. We then discuss the composition and reusability
 advantages of that interface.
 
+The API is designed to adhere to the following broad principles:
+\begin{description}
+  \item[Inspectability.]
+       \sklearn objects store their constructor parameters
+       as well as parameter values determined by learning algorithms
+       as public attributes in a documented format.
+       (The Python language does not actually distinguish
+       between public and private attributes of objects,
+       but by convention, any identifier
+       prefixed with an underscore (\texttt{\_})
+       is considered ``a non-public part of the API''; \citealp{pythontut}.)
+  \item[No proliferation of classes.]
+       Learning algorithms are objects of custom classes,
+       but datasets and hyperparameter names and values,
+       are represented as standard Python, NumPy and SciPy classes
+       rather than custom ones whenever feasible.
+       Custom classes adhere to Python conventions and protocols
+       for constructs such as iteration over the ``folds''
+       in a $k$-fold cross validation.
+       This should keep \sklearn easy to use
+       and easy to combine with other libraries.
+       % XXX do we need to elaborate more on this, or do we expect everyone
+       % to be an experienced Java/adapter pattern hater?
+  \item[Composability.]
+       Many machine learning tasks are expressible
+       as \textit{pipelines} of transformations to data.
+       Other tasks are naturally viewed
+       as modifications to other tasks;
+       e.g., multi-label classification
+       can be reduced to multiple binary classification tasks.
+       Accordingly, multi-label classification
+       is implemented by a class that takes an existing classifier object
+       as input and modifies its function.
+  \item[Sensible defaults.]
+       Whenever an operation requires a user-defined parameter,
+       a default value for that parameter must be defined by the library
+       if at all possible,
+       and the default should cause the operation to be performed
+       in a sensible way (giving a baseline solution for the task at hand).
+\end{description}
+
 \subsection{Data representation}
 
 In most machine learning tasks, data is modeled as a set of variables.  For
@@ -412,14 +453,7 @@ respect to the training data \texttt{X\_train} in clustering algorithms.
 %   while \texttt{\_\_new\_\_} is the constructor.
 %   The distinction is not relevant to the present description of scikit-learn.}
 % takes a set of named (hyper-)parameters
-% and attaches these to the estimator as public attributes.\footnote{
-%   The Python language does not actually distinguish between public and private
-%   attributes and methods,
-%   but by convention, any identifier prefixed with an underscore (\texttt{\_})
-%   is considered ``a non-public part of the API\ldots
-%   an implementation detail and subject to change without notice.''
-%   \Citep{pythontut}
-%   }
+% and attaches these to the estimator as public attributes.
 % It never performs actual learning, nor does it even see a training set.
 
 % The algorithmic workhorse of most estimators, and one of the few methods
