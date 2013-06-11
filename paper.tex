@@ -219,8 +219,7 @@ data. While those may seem rather unsophisticated data representations when
 compared to more object-oriented constructs, such as those used by
 Weka \citep{hall2009weka}, they bring the prime advantage of allowing us to rely
 % Lars: "orders of magnitude faster" is an implementation detail
-on all NumPy and SciPy vector operations -- often orders of magnitude faster
-that the corresponding Python loops -- while allowing us at the same time to
+on all NumPy and SciPy vector operations while allowing us at the same time to
 keep the code short and readable.  This design choice has also been motivated by
 the fact that, given their pervasiveness in many other scientific Python
 packages, many scientific users of Python are already familiar with NumPy dense
@@ -230,6 +229,18 @@ data loading and conversion tools which make them very easy to use in many
 contexts. Moreover, for tasks where the inputs are text files or semi-structured
 objects, we provide \textit{vectorizer} objects that efficiently convert such
 data to the NumPy or SciPy formats.
+
+The public API is oriented toward batch processing
+to enable efficient implementation.
+While classification and regression algorithms
+can make predictions for single samples,
+and some algorithms in \sklearn can perform online learning
+(e.g. stochastic gradient descent for linear SVMs and logistic regression,
+an online variant of $k$-means based on \citealt{sculley2010web}),
+these algorithm are really intended to be used on small batches of samples.
+Doing so makes optimal use of NumPy and SciPy
+because they prevent the overhead inherent in Python function calls
+and the language's per-element dynamic type checking.
 
 % For a machine learning library, one of the most important decisions we had to
 % make is how to represent data.  Rather than reinventing the wheel, we opted for
