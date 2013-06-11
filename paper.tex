@@ -792,6 +792,27 @@ the \textsf{LIBSVM}-based SVM learner, where they are implemented in C{}\verb!++
 \textcolor{red}{TODO: emphasize scikit-learn's place in the overall scipy ecosystem, and its role in spurring the development of more basic tools.}\\
 \textcolor{red}{TODO: some packages start to adopt our own API.}
 
+Recent years have witnessed a rising interest in machine learning and data mining
+with applications in many fields.
+With this rise comes a host of machine learning packages
+(both open source and proprietary) with which \sklearn competes.
+
+% XXX Is the Julia comparison fair?
+% The goal of that language seems to be a bit different:
+% to provide a compiler to implement numeric algorithms without vectorized idioms,
+% maybe more like Cython than Python...
+In comparison to specialized languages for numeric and statistical programming
+such as \textsc{matlab}, R \citep{trancon2012r} and Julia \citep{bezanson2012julia},
+the use of Python as a host language has the distinct advantage
+that it is a mature, \textit{general purpose} language:
+it has strong language and standard library support for such tasks as
+string handling/text processing, interprocess communication, networking
+and many of the other tasks that many machine learning programs
+(whether academic or commercial)
+will have to perform ``on the side''.
+In addition, third-party libraries are available for virtually any task
+that modern computer programs routinely perform.
+
 \section{Future work}
 
 ToDo.
