@@ -59,14 +59,14 @@ learning idioms to a general-purpose high-level language. Among other things,
 it includes classical learning algorithms, model selection tools and
 preprocessing procedures.
 
-The project is a programming library, i.e. a collection of classes (in the
-object-oriented sense) that users import into Python programs. Its use
+The project is a programming library, i.e. a collection of classes -- in the
+object-oriented sense -- that users import into Python programs. Using \sklearn
 therefore requires basic Python programming knowledge. No command-line
-interface, let alone a GUI, is offered for non-programmer users. Instead,
-interactive use is made possible by the Python interactive interpreter, and its
-enhanced replacement IPython \citep{perez2007ipython}, which offers a
-\textsc{matlab}-like working environment specifically designed for scientific
-use.
+interface, let alone a graphical user interface, is offered for non-programmer
+users. Instead, interactive use is made possible by the Python interactive
+interpreter, and its enhanced replacement IPython \citep{perez2007ipython},
+which offer a \textsc{matlab}-like working environment specifically designed for
+scientific use.
 
 From its core, the library has been designed to tie in with the set of numeric
 and scientific packages centered around the NumPy and SciPy libraries. NumPy
@@ -92,15 +92,14 @@ developers not involved in the implementation of the proposed addition.
 
 Within the past few years, the project has proved valuable to an ever increasing
 user base. Its popularity can be gaged from various indicators such as hundreds
-of citations in scientific publications, successes in various machine learning challenges
-(e.g., Kaggle), or significant statistics derived from our repositories
-and mailing lists.  At the time of writing, the project is watched by 1309
-people and forked 667 time on GitHub, and the mailing-list receives 300 mails
-per month.
-The version control logs for the development version of scikit-learn
+of citations in scientific publications, successes in various machine learning
+challenges (e.g., Kaggle), or significant statistics derived from our
+repositories and mailing lists.  At the time of writing, the project is watched
+by 1309 people and forked 667 times on GitHub, and the mailing-list receives
+more than 300 mails per month. The version control logs for the development
+version
 % ddaa494c116e3c16bf032003c5cccbed851733d2
-show 183 contributors to the project's source code and documentation
-(after manual deduplication).
+also count 183 contributors to the project (after manual deduplication).
 
 In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
 benchmarked against several competitors. In this paper, we instead focus on an
@@ -124,7 +123,7 @@ advantages of that interface.
 
 The API is designed to adhere to the following broad principles:
 \begin{description}
-  \item[Inspectability.]
+  \item[Inspection.]
        Constructor parameters
        and parameter values determined by learning algorithms
        are stored as public attributes. All of them are documented in a consistent manner.
@@ -149,7 +148,7 @@ The API is designed to adhere to the following broad principles:
        % to be an experienced Java/adapter pattern hater?
   \item[Composition.]
        Many machine learning tasks are expressible
-       as \textit{pipelines} of transformations to data.
+       as sequences or combinations of transformations to data.
        Some learning algorithms are also naturally viewed
        as meta-algorithms parameterized on other algorithms.
        To be able to implement and use these algorithms in a simple way,
