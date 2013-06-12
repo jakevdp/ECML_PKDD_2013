@@ -508,6 +508,7 @@ without them actually inheriting from scikit-learn base classes.
 \textcolor{red}{TODO: The following corresponds to the old weaknesses section. It should be properly rewritten.}
 
 \subsection{Parallelism}
+\label{sec:parallel}
 
 At this point in time, support for multi-core programming in Python,
 at least in the CPython reference implementation targeted by scikit-learn,
@@ -611,6 +612,29 @@ to \sklearn algorithms.
 \label{sec:conclusions}
 
 ToDo.
+
+\subsection{Future work}
+
+The \sklearn toolkit is by no means finished,
+although it is coming close to a 1.0 release.
+
+\sklearn does not support all tasks in the broad field of machine learning,
+and does not intend to either;
+in particular, structured prediction and bandit-style online learning algorithms
+are considered ``off-topic'' for the library,
+and submissions of implementations of these for inclusion
+will (at least at present) be rejected.
+Collaborative filtering algorithms are not implemented
+and it is remains to be seen
+whether an API for them can be designed that matches the \sklearn API.
+
+At a lower-level, a potential point of improvement
+is parallel processing, which, as described in Section~\ref{sec:parallel},
+is only implemented at a rather coarse-grained level.
+Cython's built-in support for OpenMP \citep{dagum1998openmp}
+remains a viable candidate technology
+for more fine-grained multicore support in \sklearn.
+
 
 \bibliographystyle{plainnat}
 \DeclareRobustCommand{\VAN}[3]{#3}
