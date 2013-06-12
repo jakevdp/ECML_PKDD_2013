@@ -255,9 +255,6 @@ learned coefficients of a linear model).
 
 As an example, let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:
-% XXX: Gael: I think that we should break the following lines in 2: the
-% 'return self' hidden in the call to fit can be confusing to the casual
-% reader
 \begin{verbatim}
     from sklearn.linear_model import LogisticRegression
     clf = LogisticRegression(penalty="l1")
