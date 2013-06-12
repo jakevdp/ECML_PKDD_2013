@@ -473,22 +473,16 @@ and logistic regression models \citep{chang2011libsvm, fan2008}.
 These libraries are both written in C{}\verb!++!
 and wrapped using Cython modules.
 
-As much as possible is implemented in ``pure'' Python,
+As much as possible is implemented in ``pure'' Python
+with NumPy for numerical work,
 to avoid the compile-edit-debug cycle needed for Cython
 and to keep the codebase readable for as large an audience as possible.
-However, since the speed of the current Python implementation
-is not sufficient for numeric programming
-and NumPy's vector operations are not appropriate for all use cases
-(among other factors, because they often have linear space requirements),
-some of the core algorithms have to be implemented in Cython.\footnote{
-  The only Python implementation currently supported by scikit-learn
-  is the reference implementation, CPython.
-  The alternative Python implementation PyPy \citep{bolz2009tracing}
-  promises to alleviate this problem by JIT compilation,
-  but does not yet interoperate with NumPy and SciPy.
-}
-Examples include the aforementioned $k$-means implementation,
-stochastic gradient descent for linear models
+However, not all algorithms are easily and efficiently expressed
+as NumPy vector operations
+(among other factors, because they often have linear space requirements).
+Algorithms that fall into this category have to be implemented in Cython
+to obtain decent performance and scalability.
+Examples include $k$-means, stochastic gradient descent for linear models
 and some graph-based clustering algorithms.
 
 While object-oriented techniques and design patterns
