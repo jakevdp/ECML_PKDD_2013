@@ -165,6 +165,7 @@ The API is designed to adhere to the following broad principles:
 \end{description}
 
 \subsection{Data representation}
+\label{sec:arrays}
 
 In most machine learning tasks, data is modeled as a set of variables.  For
 example, in a classification or regression task, the goal is to find a mapping
@@ -210,7 +211,7 @@ we argue that APIs should be designed
 so as to not tie a library to a suboptimal implementation strategy,
 and batch processing can enable fast implementations
 in lower-level languages as well
-(where locality of reference effects
+(where memory hierarchy effects
 and the possibility of internal parallelization come into play).
 % Gilles: I don't think it is worth elaborating too much (if at all) on online learning. They are exceptions in scikit-learn.
 
@@ -620,6 +621,30 @@ and many of the other tasks that many machine learning programs
 will have to perform ``on the side''.
 In addition, third-party libraries are available for virtually any task
 that modern computer programs routinely perform.
+
+Another package that deserves mention is the Gensim topic modeling toolkit
+\citep{rehurek2010gensim}.
+Although its stated goal is not machine learning,
+it does exemplify a style of API design for scalable processing of ``big data''
+that takes a different approach than the comparable models in \sklearn.
+Gensim's way of dealing with large datasets is to use algorithms
+that have $O(1)$ space complexity and can be updated online,
+called \textit{document streaming} by \citeauthor{rehurek2010gensim}.
+The API is designed around the Python concept of an \textit{iterable}
+(supported in the language by a restricted form of co-routines called
+\textit{generators}).
+While the text vectorization part of \sklearn
+also uses irerables to some extent,
+the emphasis is still largely on (mini-)batch processing,
+even in the truly stateless, O(1) memory vectorizers
+that implement the hashing trick of \citet{weinberger2009}.
+This way of processing, as argued earlier in Section~\ref{sec:arrays},
+reduces various forms of overhead
+and allows users to make use of the abundance of memory in modern machines.
+No attempt is made to hide this batch-oriented processing from the user,
+allowing control over the amount of memory actually dedicated
+to \sklearn algorithms.
+
 
 \section{Future work}
 
