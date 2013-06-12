@@ -416,9 +416,11 @@ then feeding them to an $\ell_2$-regularized logistic regression model:
     from sklearn.pipeline import Pipeline
     from sklearn.decomposition import PCA, KernelPCA
     from sklearn.feature_selection import SelectKBest
+    
+    feat_union = FeatureUnion([('pca', PCA()),
+                               ('kpca', KernelPCA(kernel="rbf"))])
 
-    Pipeline([("pca", FeatureUnion([('pca', PCA()),
-                                    ('kpca', KernelPCA(kernel="rbf"))])),
+    Pipeline([("pca", feat_union,
               ("feature_selection", SelectKBest(k=100)),
               ("logistic_model", LogisticRegression(penalty="l2"))
     ]).fit(X_train, y_train).predict(X_test)
