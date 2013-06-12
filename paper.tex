@@ -150,12 +150,12 @@ The API is designed to adhere to the following broad principles:
   \item[Composition.]
        Many machine learning tasks are expressible
        as \textit{pipelines} of transformations to data.
-       Also, some learning algorithms are naturally viewed
+       Some learning algorithms are also naturally viewed
        as meta-algorithms parameterized on other algorithms.
        To be able to implement and use these algorithms in a simple way,
        all learners are usable with a consistent set of methods
        and a simple syntax is implemented
-       for setting/retrieving parameters of sub-estimators.
+       for setting and retrieving parameters of sub-estimators.
        % XXX need to describe this!
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
@@ -195,10 +195,10 @@ objects, we provide \textit{vectorizer} objects that efficiently convert such
 data to the NumPy or SciPy formats.
 
 The public API is oriented towards batch processing. While classification and
-regression algorithms can make predictions for single samples, most \sklearn
-algorithms are intended to be used on batches of data. For efficiency reasons,
+regression algorithms can indeed make predictions for single samples, most \sklearn
+objects are however intended to be used on batches of data. For efficiency reasons,
 this indeed makes the use of NumPy and SciPy optimal by preventing the overhead
-inherent to Python function calls and to per-element dynamic type checking.
+inherent to Python function calls and per-element dynamic type checking.
 % Gilles: I don't think it is worth elaborating too much (if at all) on online learning. They are exceptions in scikit-learn.
 
 % The public API is oriented toward batch processing
@@ -395,7 +395,6 @@ training set amounts to the following recursive procedure: i) when only one step
 remains, call its \texttt{fit} method; ii) otherwise, fit the first step, use it
 to \texttt{transform} the training set and fit the rest of the pipeline with the
 transformed data.
-
 The pipeline exposes all the methods the last
 estimator in the pipe exposes. That is, if the last estimator is a predictor,
 the pipeline can itself be used as a predictor. If the last estimator is a
