@@ -107,8 +107,8 @@ in-depth discussion and analysis of the design choices used in building the
 library. First, in section \ref{sec:core-api}, we present the central application
 programming interface (API) and then describe, in section \ref{sec:advanced-api},
 advanced API mechanisms built on this core API. Section
-\ref{sec:implementation} describes the implementation trade-offs and analyzes
-the limitations of the technologies we rely on while section
+\ref{sec:implementation} describes implementation trade-offs and analyzes
+limitations of the technologies we rely on, while section
 \ref{sec:comparison} then compares \emph{scikit-learn} to other major projects in
 terms of API. Finally, conclusions and directions of future works are included
 in section \ref{sec:conclusions}.
@@ -131,10 +131,13 @@ methods an object must implement. The API is designed to adhere to the following
 broad principles:
 
 \begin{description}
+  \item[Consistency.]
+       All objects (basic or composed) share a consistent interface composed of
+       a limited set of methods.
   \item[Inspection.]
-       Constructor parameters
-       and parameter values determined by learning algorithms
-       are stored as public attributes. All of them are documented in a consistent manner.
+       Constructor parameters and parameter values determined by learning
+       algorithms are stored as public attributes. All of them are documented in
+       a consistent manner.
        % Gilles: Do we really need to bother the reader with such details?
        % (The Python language does not actually distinguish
        % between public and private attributes of objects,
@@ -142,8 +145,8 @@ broad principles:
        % prefixed with an underscore (\texttt{\_})
        % is considered ``a non-public part of the API''; \citealp{pythontut}.)
   \item[Non-proliferation of classes.]
-       Learning algorithms are objects of custom classes,
-       but datasets and hyperparameter names and values
+       Only learning algorithms are objects of custom classes,
+       Datasets and hyperparameter names and values
        are represented as standard Python, NumPy or SciPy classes
        rather than new ones whenever feasible.
        % Gilles: I don't understand the phrase below
@@ -154,17 +157,17 @@ broad principles:
        and easy to combine with other libraries.
        % XXX do we need to elaborate more on this, or do we expect everyone
        % to be an experienced Java/adapter pattern hater?
-  \item[Composition.]
-       Many machine learning tasks are expressible
-       as sequences or combinations of transformations to data.
-       Some learning algorithms are also naturally viewed
-       as meta-algorithms parameterized on other algorithms.
-       To be able to implement and use these algorithms in a simple way,
-       all learners (basic or composed) are usable with a consistent set of methods.
-       % Gilles: let elaborate later on the syntax
-       % and a simple syntax is implemented
-       % for setting and retrieving parameters of sub-estimators.
-       % XXX need to describe this!
+  % Gilles: this is actually not a design principle
+  % \item[Composition.]
+  %      Many machine learning tasks are expressible
+  %      as sequences or combinations of transformations to data.
+  %      Some learning algorithms are also naturally viewed
+  %      as meta-algorithms parameterized on other algorithms.
+  %      To be able to implement and use these algorithms in a simple way,
+  %      % Gilles: let elaborate later on the syntax
+  %      % and a simple syntax is implemented
+  %      % for setting and retrieving parameters of sub-estimators.
+  %      % XXX need to describe this!
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
        a default and appropriate value is defined by the library.
