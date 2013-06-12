@@ -507,51 +507,16 @@ without them actually inheriting from scikit-learn base classes.
 
 \textcolor{red}{TODO: The following corresponds to the old weaknesses section. It should be properly rewritten.}
 
-% This needs an introductory paragraph, but the best I could come up with was:
-As can be expected, the NumPy/SciPy environment is not completely flawless.
-
-% The following hedge needs to be in here; we don't want to diss our peers
-It should be noted that this section is meant
-as a summary of challenges faced by scikit-learn development
-and an attempt at constructive criticism.
-There is considerable overlap between the communities
-that develop or contribute to NumPy, SciPy, scikit-learn, and Cython,
-so the issues raised here may eventually be resolved
-by the scikit-learn developers themselves.
-
-\subsection{Sparse matrix support}
-
-SciPy's handling of sparse matrices is one source of confusion
-for scikit-learn developers and users alike.
-The \texttt{scipy.sparse} package offers support
-for this kind of data structure,
-which is crucial to achieving performance and scalability
-in the face of high-dimensional inputs
-(including, but not limited to, NLP applications).
-However, the interface exposed by its classes
-deviates from the NumPy array interface, sometimes subtly so,
-sometimes entirely.  % XXX is this grammatically correct?
-For example, while NumPy arrays have a variable number of dimensions,
-so that vectors can be considered 1-d arrays
-(without a distinction between row and column vectors),
-matrices are 2-d, etc., \texttt{scipy.sparse} matrices are always 2-dimensional,
-meaning that special care has to be taken when handling sparse vectors.
-
-The development team has built up sufficient familiarity
-with the sparse/array distinction to factor out common patterns
-for supporting both sparse and dense input data structures in many estimators.
-In other cases, though, sparse matrix support has to implemented
-on a per-estimator basis.
-
 \subsection{Parallelism}
 
 At this point in time, support for multi-core programming in Python,
 at least in the CPython reference implementation targeted by scikit-learn,
-is downright weak.
-The interpreter supports multithreading, but due to the ``Global Interpreter Lock'' (GIL),
+is suboptimal.
+The interpreter supports multithreading,
+but due to the ``Global Interpreter Lock'' (GIL),
 no two threads in a process may at the same time execute Python code.
 It follows that multithreading is not a viable solution
-even two embarrassingly parallel problems,
+even for embarrassingly parallel problems,
 such as fitting and evaluation multiple models in a grid search procedure.
 The workaround is to use Python's multiprocessing module,
 which emulates threads using multiple operating system-level processes,
@@ -559,18 +524,14 @@ but this in turn leads to high memory use and overhead
 because of the copying of training and test sets
 into the various processes' address spaces.
 
-While Cython makes writing performance-critical code possible
-in a language that is very much like Python,
-doing so properly still requires some knowledge of C.
-One source of trouble has been the various fixed-size integer types
-that are used by the Python and NumPy C runtimes,
-whose sizes are practically all platform-dependent.
+\subsection{Cython for inner loops}
 
-Another problem concerns the mismatch between on the one hand Python functions,
+A problem arising from the use of Cython
+concerns the mismatch between on the one hand Python functions,
 which are first-class runtime objects endowed with methods and metadata
 that identify them as ``callable'',
 that dynamically check their number and types of arguments,
-and that can return any Python type of object,
+and that can return any Python type of object;
 and compiled C or Cython functions on the other hand,
 which exhibit static typing.
 Where it may sometimes be convenient for estimators
@@ -578,16 +539,20 @@ to take functions as arguments
 (e.g., in the case of kernel machine learning,
 where one might like to use a custom kernel),
 but such usage is not at present possible and may never be.
-Passing C or Cython-compiled functions would require an API for the kernel method
+Passing C or Cython-compiled functions
+would require an API for the kernel method
 to be implemented at the C or Cython level,
 only to be used from compiled code.
 Passing arbitrary Python functions would be possible,
 but performance can be expected to degrade significantly
 because of the runtime checks needed for each invocation of the kernel function.
-(The current solution in scikit-learn is to let the user pass not a kernel function,
+(The current solution in scikit-learn is to let the user pass
+not a kernel function,
 but a precomputed Gram matrix for an entire set of objects.
 The linear, polynomial and RBF kernels are treated as special cases in
-the \textsf{LIBSVM}-based SVM learner, where they are implemented in C{}\verb!++!.)
+the \textsf{LIBSVM}-based SVM learner,
+where they are implemented in C{}\verb!++!.)
+
 
 \section{Comparison with other packages}
 
