@@ -221,17 +221,24 @@ contexts. Moreover, for tasks where the inputs are text files or semi-structured
 objects, we provide \textit{vectorizer} objects that efficiently convert such
 data to the NumPy or SciPy formats.
 
-The public API is oriented toward batch processing
-to enable efficient implementation.
-While classification and regression algorithms
-can make predictions for single samples,
-and some algorithms in \sklearn can perform online learning
-(e.g. stochastic gradient descent for linear SVMs and logistic regression,
-an online variant of $k$-means based on \citealt{sculley2010web}),
-these algorithm are really intended to be used on small batches of samples.
-Doing so makes optimal use of NumPy and SciPy
-because they prevent the overhead inherent in Python function calls
-and the language's per-element dynamic type checking.
+The public API is oriented towards batch processing. While classification and
+regression algorithms can make predictions for single samples, most \sklearn
+algorithms are intended to be used on batches of data. For efficiency reasons,
+this indeed makes the use of NumPy and SciPy optimal by preventing the overhead
+inherent to Python function calls and to per-element dynamic type checking.
+% Gilles: I don't think it is worth mentionning online learning. They are exceptions in scikit-learn.
+
+% The public API is oriented toward batch processing
+% to enable efficient implementation.
+% While classification and regression algorithms
+% can make predictions for single samples,
+% and some algorithms in \sklearn can perform online learning
+% (e.g. stochastic gradient descent for linear SVMs and logistic regression,
+% an online variant of $k$-means based on \citealt{sculley2010web}),
+% these algorithm are really intended to be used on small batches of samples.
+% Doing so makes optimal use of NumPy and SciPy
+% because they prevent the overhead inherent in Python function calls
+% and the language's per-element dynamic type checking.
 
 % For a machine learning library, one of the most important decisions we had to
 % make is how to represent data.  Rather than reinventing the wheel, we opted for
