@@ -127,7 +127,7 @@ The API is designed to adhere to the following broad principles:
   \item[Inspectability.]
        Constructor parameters
        and parameter values determined by learning algorithms
-       are stored as public attributes. All of them are consistently documented.
+       are stored as public attributes. All of them are documented in a consistent manner.
        % Gilles: Do we really need to bother the reader with such details?
        % (The Python language does not actually distinguish
        % between public and private attributes of objects,
@@ -137,12 +137,12 @@ The API is designed to adhere to the following broad principles:
   \item[Non-proliferation of classes.]
        Learning algorithms are objects of custom classes,
        but datasets and hyperparameter names and values
-       are represented as standard Python, NumPy and SciPy classes
+       are represented as standard Python, NumPy or SciPy classes
        rather than new ones whenever feasible.
        % Gilles: I don't understand the phrase below
-       Custom classes adhere to Python conventions and protocols
-       for constructs such as iteration over the folds
-       in a $k$-fold cross validation.
+       % Custom classes adhere to Python conventions and protocols
+       % for constructs such as iteration over the folds
+       % in a $k$-fold cross validation.
        This should keep \sklearn easy to use
        and easy to combine with other libraries.
        % XXX do we need to elaborate more on this, or do we expect everyone
