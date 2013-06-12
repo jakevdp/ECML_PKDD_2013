@@ -194,25 +194,25 @@ contexts. Moreover, for tasks where the inputs are text files or semi-structured
 objects, we provide \textit{vectorizer} objects that efficiently convert such
 data to the NumPy or SciPy formats.
 
-The public API is oriented towards batch processing rather than online
-processing. While classification and regression algorithms can indeed make
-predictions for single samples, most \sklearn objects are however intended to be
-used on batches of data. For efficiency reasons, this makes the use of NumPy and
-SciPy optimal by preventing the overhead inherent to Python function calls or
-due to per-element dynamic type checking.
+The public API is oriented towards batch processing
+rather than processing single samples per API call.
+While classification and regression algorithms can indeed make predictions
+for single samples,
+\sklearn objects are not optimized for this use case.
+(The few online learning algorithms implemented
+are intended to take minibatches.)
+Batch processing makes optimal use of NumPy and SciPy
+by preventing the overhead inherent to Python function calls
+and per-element dynamic type checking.
+Although this might seem to be an artifact of the Python language,
+and therefore an implementation detail that leaks into the API,
+we argue that APIs should be designed
+so as to not tie a library to a suboptimal implementation strategy,
+and batch processing can enable fast implementations
+in lower-level languages as well
+(where locality of reference effects
+and the possibility of internal parallelization come into play).
 % Gilles: I don't think it is worth elaborating too much (if at all) on online learning. They are exceptions in scikit-learn.
-
-% The public API is oriented toward batch processing
-% to enable efficient implementation.
-% While classification and regression algorithms
-% can make predictions for single samples,
-% and some algorithms in \sklearn can perform online learning
-% (e.g. stochastic gradient descent for linear SVMs and logistic regression,
-% an online variant of $k$-means based on \citealt{sculley2010web}),
-% these algorithm are really intended to be used on small batches of samples.
-% Doing so makes optimal use of NumPy and SciPy
-% because they prevent the overhead inherent in Python function calls
-% and the language's per-element dynamic type checking.
 
 
 \subsection{Estimators, predictors and transformers}
