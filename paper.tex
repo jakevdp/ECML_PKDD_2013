@@ -193,11 +193,12 @@ contexts. Moreover, for tasks where the inputs are text files or semi-structured
 objects, we provide \textit{vectorizer} objects that efficiently convert such
 data to the NumPy or SciPy formats.
 
-The public API is oriented towards batch processing. While classification and
-regression algorithms can indeed make predictions for single samples, most \sklearn
-objects are however intended to be used on batches of data. For efficiency reasons,
-this indeed makes the use of NumPy and SciPy optimal by preventing the overhead
-inherent to Python function calls and per-element dynamic type checking.
+The public API is oriented towards batch processing rather than online
+processing. While classification and regression algorithms can indeed make
+predictions for single samples, most \sklearn objects are however intended to be
+used on batches of data. For efficiency reasons, this makes the use of NumPy and
+SciPy optimal by preventing the overhead inherent to Python function calls or
+due to per-element dynamic type checking.
 % Gilles: I don't think it is worth elaborating too much (if at all) on online learning. They are exceptions in scikit-learn.
 
 % The public API is oriented toward batch processing
