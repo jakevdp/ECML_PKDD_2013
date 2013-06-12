@@ -106,7 +106,7 @@ benchmarked against several competitors. In this paper, we instead focus on an
 in-depth discussion and analysis of the design choices used in building the
 library. First, in section \ref{sec:core-api}, we present the central application
 programming interface (API) and then describe, in section \ref{sec:advanced-api},
-advanced API mechanisms built on this core API. Section
+advanced API mechanisms built from the core interface. Section
 \ref{sec:implementation} describes implementation trade-offs and analyzes
 limitations of the technologies we rely on, while section
 \ref{sec:comparison} then compares \emph{scikit-learn} to other major projects in
@@ -150,7 +150,7 @@ broad principles:
        as sequences or combinations of transformations to data.
        Some learning algorithms are also naturally viewed
        as meta-algorithms parameterized on other algorithms.
-       Whenever possible, those algorithms are composed from
+       Whenever possible, those algorithms are implemented and composed from
        existing building blocks.
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
