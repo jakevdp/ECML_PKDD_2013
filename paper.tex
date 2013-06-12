@@ -103,25 +103,33 @@ also count 183 contributors to the project (after manual deduplication).
 
 In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
 benchmarked against several competitors. In this paper, we instead focus on an
-in-depth discussion and analysis of the design choices used in
-building the library. First, in section \ref{sec:api}, we present the
-central application programming interface (API). Then, in section
-\ref{sec:implementation}, we describe the implementation trade-offs.
-In section \ref{sec:weaknesses}, we analyze the limitations of the
-technologies we rely on; and finally, in section \ref{sec:comparison}, we
-compare \emph{scikit-learn} to other major projects in terms of API.
+in-depth discussion and analysis of the design choices used in building the
+library. First, in section \ref{sec:core-api}, we present the central application
+programming interface (API) and then describe, in section \ref{sec:advanced-api},
+advanced API mechanisms built on this core API. Section
+\ref{sec:implementation} describes the implementation trade-offs and analyzes
+the limitations of the technologies we rely on while section
+\ref{sec:comparison} then compares \emph{scikit-learn} to other major projects in
+terms of API. Finally, conclusions and directions of future works are included
+in section \ref{sec:conclusions}.
 
-\section{API}
+\section{Core API}
 
-\label{sec:api}
+\label{sec:core-api}
 
 In this section, we discuss the general principles of the application
-programming interface (API) of \sklearn. We first specify the
-representation of data and then proceed by describing the interface shared by
-all objects of the library. We then discuss the composition and reusability
-advantages of that interface.
+programming interface (API) of \sklearn. We first specify the representation of
+data and then proceed by describing the core interface of the library.
 
-The API is designed to adhere to the following broad principles:
+All objects within \sklearn share a uniform common basic API consisting of three
+complementary interfaces: an \textit{estimator} interface for building and
+fitting objects, a \textit{predictor} interface for making predictions and a
+\textit{transformer} interface for converting data. As much as possible, our
+design choices have been guided so as to avoid the proliferation of framework
+code. We try to adopt simple conventions and to limit to a minimum the number of
+methods an object must implement. The API is designed to adhere to the following
+broad principles:
+
 \begin{description}
   \item[Inspection.]
        Constructor parameters
@@ -195,38 +203,23 @@ contexts. Moreover, for tasks where the inputs are text files or semi-structured
 objects, we provide \textit{vectorizer} objects that efficiently convert such
 data to the NumPy or SciPy formats.
 
-The public API is oriented towards batch processing
-rather than processing single samples per API call.
-While classification and regression algorithms can indeed make predictions
-for single samples,
-\sklearn objects are not optimized for this use case.
-(The few online learning algorithms implemented
-are intended to take minibatches.)
-Batch processing makes optimal use of NumPy and SciPy
-by preventing the overhead inherent to Python function calls
-and per-element dynamic type checking.
-Although this might seem to be an artifact of the Python language,
-and therefore an implementation detail that leaks into the API,
-we argue that APIs should be designed
-so as to not tie a library to a suboptimal implementation strategy,
-and batch processing can enable fast implementations
-in lower-level languages as well
-(where memory hierarchy effects
-and the possibility of internal parallelization come into play).
-% Gilles: I don't think it is worth elaborating too much (if at all) on online learning. They are exceptions in scikit-learn.
+The public API is oriented towards batch processing rather than processing
+single samples per API call. While classification and regression algorithms can
+indeed make predictions for single samples, \sklearn objects are not optimized
+for this use case. (The few online learning algorithms implemented are intended
+to take minibatches.) Batch processing makes optimal use of NumPy and SciPy by
+preventing the overhead inherent to Python function calls or due to per-element
+dynamic type checking. Although this might seem to be an artifact of the Python
+language, and therefore an implementation detail that leaks into the API, we
+argue that APIs should be designed so as not to tie a library to a suboptimal
+implementation strategy. As such, batch processing enable fast implementations
+in lower-level languages (where memory hierarchy effects and the possibility of
+internal parallelization come into play).
 
 
-\subsection{Estimators, predictors and transformers}
+\subsection{Estimators}
 
-All objects within \sklearn share a uniform common basic API
-consisting of three complementary interfaces: an \textit{estimator} interface
-for building and fitting objects, a \textit{predictor} interface for making
-predictions and a \textit{transformer} interface for converting data.
-As much as possible, our design choices have been guided so as to avoid
-the proliferation of framework code. We try to adopt simple conventions and
-to limit to a minimum the number of methods an object must implement.
-
-\textbf{Estimators.} The \textit{estimator} interface is at the core of the
+The \textit{estimator} interface is at the core of the
 library. It defines instantiation mechanisms of objects and exposes a
 \texttt{fit} method for learning a model from training data.  All supervised and
 unsupervised learning algorithms (e.g., for classification, regression or
@@ -284,7 +277,9 @@ to perform any useful work implement the estimator interface. As we will
 illustrate in the next sections, this design pattern is indeed of prime
 importance for consistency, composition and parameter validation reasons.
 
-\textbf{Predictors.} The \textit{predictor} interface defines a \texttt{predict}
+\subsection{Predictors}
+
+The \textit{predictor} interface defines a \texttt{predict}
 method taking as input some new data \texttt{X\_test} and producing as output
 predictions for \texttt{X\_test}, based on the learned parameters of the
 estimator (we call the input to \texttt{predict} ``\texttt{X\_test}'' in order
@@ -328,16 +323,17 @@ such that the higher the better. As such, some unsupervised learning estimators
 also exposes a \texttt{score} function, computing for instance the likelihood of
 the given data.
 
-\textbf{Transformers.} Since it is common to modify or filter data before
-feeding it to a learning algorithm, some estimators in the library implement a
-\textit{transformer} interface which defines a \texttt{transform} method. It
-takes as input some new data \texttt{X\_test} and yields as output a transformed
-version of \texttt{X\_test}.
-Preprocessing, feature selection and dimensionality
-reduction algorithms are all provided as transformers within the library.  In
-our example, if one wanted to preprocess the inputs \texttt{X\_train} before
-fitting the logistic regression estimator, e.g., by standardizing the feature
-values, one could thus simply write:
+\subsection{Transformers}
+
+Since it is common to modify or filter data before feeding it to a learning
+algorithm, some estimators in the library implement a \textit{transformer}
+interface which defines a \texttt{transform} method. It takes as input some new
+data \texttt{X\_test} and yields as output a transformed version of
+\texttt{X\_test}. Preprocessing, feature selection and dimensionality reduction
+algorithms are all provided as transformers within the library.  In our example,
+if one wanted to preprocess the inputs \texttt{X\_train} before fitting the
+logistic regression estimator, e.g., by standardizing the feature values, one
+could thus simply write:
 \begin{verbatim}
     from sklearn.preprocessing import StandardScaler
     scaler = StandardScaler()
@@ -354,9 +350,7 @@ dimension reduction (PCA, manifold learning techniques), kernel
 approximation techniques, and any other approach that can be used to
 derive a modified representation of the data.
 
-\subsection{Method chaining}
-
-In \sklearn, the \texttt{fit} method always returns the estimator
+Finally, let us also note that, the \texttt{fit} method always returns the estimator
 it was called on, hence making method chaining possible.  Using this technique,
 we can thus rewrite the \texttt{StandardScaler} example above in a single line:
 \begin{verbatim}
@@ -371,7 +365,20 @@ In the same spirit, \sklearn sometimes provides the
 methods. This is especially useful for retrieving cluster predictions with
 respect to the training data \texttt{X\_train} in clustering algorithms.
 
-\subsection{Estimator composition}
+
+\section{Advanced API}
+
+\label{sec:advanced-api}
+
+Building on the core interface introduced in the previous section, we now
+present in this section advanced API mechanisms for i) building meta-estimators,
+ii) composing complex estimators and iii) selecting models.
+
+\subsection{Meta-estimators}
+
+\textcolor{red}{TODO}
+
+\subsection{Pipelines and feature unions}
 
 A distinguishing feature of the \sklearn API is its ability to
 compose new estimators from several base estimators. Composition mechanisms can
@@ -416,7 +423,7 @@ then feeding them to an $\ell_2$-regularized logistic regression model:
     from sklearn.pipeline import Pipeline
     from sklearn.decomposition import PCA, KernelPCA
     from sklearn.feature_selection import SelectKBest
-    
+
     feat_union = FeatureUnion([('pca', PCA()),
                                ('kpca', KernelPCA(kernel="rbf"))])
 
@@ -507,11 +514,11 @@ user-defined estimators that follow scikit-learn conventions
 should be usable in pipelines and other composite objects
 without them actually inheriting from scikit-learn base classes.
 
-\section{Weaknesses of the NumPy/SciPy environment}
+%\section{Weaknesses of the NumPy/SciPy environment}
 
-\label{sec:weaknesses}
 
-\textcolor{red}{TODO: move this into the Implementation section? These are mostly implementation considerations.}
+
+\textcolor{red}{TODO: The following corresponds to the old weaknesses section. It should be properly rewritten.}
 
 % This needs an introductory paragraph, but the best I could come up with was:
 As can be expected, the NumPy/SciPy environment is not completely flawless.
@@ -648,7 +655,8 @@ allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
 
 
-\section{Future work}
+\section{Conclusions and future works}
+\label{sec:conclusions}
 
 ToDo.
 
