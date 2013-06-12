@@ -387,19 +387,15 @@ fashion through \texttt{FeatureUnion} objects.
 \texttt{Pipeline} objects are used for chaining multiple estimators into a
 single one. This is useful since a machine learning workflow typically involves
 a fixed sequence of steps in processing data (e.g., feature extraction,
-normalization, feature selection, learning and making predictions).
-A sequence of $N$ such steps can be combined into a composite object
-called a \texttt{Pipeline}.
-The first $N-1$ steps must be transformers
-and the last can be either a predictor or a transformer.
-Fitting a pipeline to a training set amounts, conceptually,
-to the following recursive procedure:
-\begin{enumerate}
-  \item When only one step remains, call its \texttt{fit} method.
-  \item Otherwise, fit the first step,
-        use it to \texttt{transform} the training set
-        and fit the rest of the pipeline with the transformed data.
-\end{enumerate}
+normalization, feature selection, learning and making predictions). A sequence
+of $N$ such steps can be combined into a composite object called a
+\texttt{Pipeline}. The first $N-1$ steps must be transformers and the last can
+be either a predictor or a transformer. Conceptually, fitting a pipeline to a
+training set amounts to the following recursive procedure: i) when only one step
+remains, call its \texttt{fit} method; ii) otherwise, fit the first step, use it
+to \texttt{transform} the training set and fit the rest of the pipeline with the
+transformed data.
+
 The pipeline exposes all the methods the last
 estimator in the pipe exposes. That is, if the last estimator is a predictor,
 the pipeline can itself be used as a predictor. If the last estimator is a
