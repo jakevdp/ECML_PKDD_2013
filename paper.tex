@@ -260,9 +260,9 @@ Given the API defined above, solving this problem is as simple as:
 % 'return self' hidden in the call to fit can be confusing to the casual
 % reader
 \begin{verbatim}
-from sklearn.linear_model import LogisticRegression
-clf = LogisticRegression(penalty="l1")
-clf.fit(X_train, y_train)
+    from sklearn.linear_model import LogisticRegression
+    clf = LogisticRegression(penalty="l1")
+    clf.fit(X_train, y_train)
 \end{verbatim}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
 setting the \texttt{penalty} hyper-parameter to \texttt{"l1"}, hence enabling
@@ -295,15 +295,15 @@ labels or values computed by the model.  Continuing with the previous example,
 predicted labels for \texttt{X\_test} can be obtained using the following
 snippet:
 \begin{verbatim}
-y_pred = clf.predict(X_test)
+    y_pred = clf.predict(X_test)
 \end{verbatim}
 Some unsupervised learning
 estimators may however also implement that interface, as illustrated below:
 \begin{verbatim}
-from sklearn.cluster import KMeans
-km = KMeans(n_clusters=10)
-km.fit(X_train)
-clust_pred = km.predict(X_test)
+    from sklearn.cluster import KMeans
+    km = KMeans(n_clusters=10)
+    km.fit(X_train)
+    clust_pred = km.predict(X_test)
 \end{verbatim}
 In the above example, a \texttt{KMeans} estimator is first fit on the training
 data \texttt{X\_train}. Then the \texttt{predict} method is called on the test
@@ -340,15 +340,15 @@ our example, if one wanted to preprocess the inputs \texttt{X\_train} before
 fitting the logistic regression estimator, e.g., by standardizing the feature
 values, one could thus simply write:
 \begin{verbatim}
-from sklearn.preprocessing import StandardScaler
-scaler = StandardScaler()
-scaler.fit(X_train)
-X_train = scaler.transform(X_train)
+    from sklearn.preprocessing import StandardScaler
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+    X_train = scaler.transform(X_train)
 \end{verbatim}
 Of course, in practice, it is important to apply the same preprocessing to the
 test data \texttt{X\_test}. This can easily be done as follows:
 \begin{verbatim}
-X_test = scaler.transform(X_test)
+    X_test = scaler.transform(X_test)
 \end{verbatim}
 Transformers also include a variety of learning algorithms, such as
 dimension reduction (PCA, manifold learning techniques), kernel
@@ -361,7 +361,7 @@ In \sklearn, the \texttt{fit} method always returns the estimator
 it was called on, hence making method chaining possible.  Using this technique,
 we can thus rewrite the \texttt{StandardScaler} example above in a single line:
 \begin{verbatim}
-X_train = StandardScaler().fit(X_train).transform(X_train)
+    X_train = StandardScaler().fit(X_train).transform(X_train)
 \end{verbatim}
 In addition, \texttt{fit(X\_train).transform(X\_train)} can further
 be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
@@ -419,15 +419,15 @@ computing both linear PCA and kernel PCA components on \texttt{X\_train}
 (through a \texttt{FeatureUnion}), selecting the 100 best of those features and
 then feeding them to an $\ell_2$-regularized logistic regression model:
 \begin{verbatim}
-from sklearn.pipeline import Pipeline
-from sklearn.decomposition import PCA, KernelPCA
-from sklearn.feature_selection import SelectKBest
+    from sklearn.pipeline import Pipeline
+    from sklearn.decomposition import PCA, KernelPCA
+    from sklearn.feature_selection import SelectKBest
 
-Pipeline([("pca", FeatureUnion([('pca', PCA()),
-                                ('kpca', KernelPCA(kernel="rbf"))])),
-          ("feature_selection", SelectKBest(k=100)),
-          ("logistic_model", LogisticRegression(penalty="l2"))
-]).fit(X_train, y_train).predict(X_test)
+    Pipeline([("pca", FeatureUnion([('pca', PCA()),
+                                    ('kpca', KernelPCA(kernel="rbf"))])),
+              ("feature_selection", SelectKBest(k=100)),
+              ("logistic_model", LogisticRegression(penalty="l2"))
+    ]).fit(X_train, y_train).predict(X_test)
 \end{verbatim}
 
 As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUnion} can be
