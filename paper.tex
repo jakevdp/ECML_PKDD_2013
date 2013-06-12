@@ -152,9 +152,9 @@ advantages of that interface.
 The API is designed to adhere to the following broad principles:
 \begin{description}
   \item[Inspectability.]
-       \sklearn objects store their constructor parameters
-       as well as parameter values determined by learning algorithms
-       as public attributes in a documented format.
+       Constructor parameters
+       and parameter values determined by learning algorithms
+       are stored as public attributes. All of them are consistently documented.
        % Gilles: Do we really need to bother the reader with such details?
        % (The Python language does not actually distinguish
        % between public and private attributes of objects,
@@ -163,17 +163,18 @@ The API is designed to adhere to the following broad principles:
        % is considered ``a non-public part of the API''; \citealp{pythontut}.)
   \item[Non-proliferation of classes.]
        Learning algorithms are objects of custom classes,
-       but datasets and hyperparameter names and values,
+       but datasets and hyperparameter names and values
        are represented as standard Python, NumPy and SciPy classes
-       rather than custom ones whenever feasible.
+       rather than new ones whenever feasible.
+       % Gilles: I don't understand the phrase below
        Custom classes adhere to Python conventions and protocols
-       for constructs such as iteration over the ``folds''
+       for constructs such as iteration over the folds
        in a $k$-fold cross validation.
        This should keep \sklearn easy to use
        and easy to combine with other libraries.
        % XXX do we need to elaborate more on this, or do we expect everyone
        % to be an experienced Java/adapter pattern hater?
-  \item[Composability.]
+  \item[Composition.]
        Many machine learning tasks are expressible
        as \textit{pipelines} of transformations to data.
        Also, some learning algorithms are naturally viewed
@@ -181,13 +182,12 @@ The API is designed to adhere to the following broad principles:
        To be able to implement and use these algorithms in a simple way,
        all learners are usable with a consistent set of methods
        and a simple syntax is implemented
-       for setting/retrieving parameters of ``sub-estimators''.
+       for setting/retrieving parameters of sub-estimators.
        % XXX need to describe this!
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
-       a default value for that parameter must be defined by the library
-       if at all possible,
-       and the default should cause the operation to be performed
+       a default and appropriate value is defined by the library.
+       The default value should cause the operation to be performed
        in a sensible way (giving a baseline solution for the task at hand).
 \end{description}
 
