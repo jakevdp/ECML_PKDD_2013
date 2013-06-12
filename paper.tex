@@ -145,7 +145,6 @@ broad principles:
        This keeps \sklearn easy to use and easy to combine with other libraries.
        % XXX do we need to elaborate more on this, or do we expect everyone
        % to be an experienced Java/adapter pattern hater?
-  % Gilles: this is actually not a design principle
   \item[Composition.]
        Many machine learning tasks are expressible
        as sequences or combinations of transformations to data.
@@ -153,10 +152,6 @@ broad principles:
        as meta-algorithms parameterized on other algorithms.
        Whenever possible, those algorithms are composed from
        existing building blocks.
-       % Gilles: let elaborate later on the syntax
-       % and a simple syntax is implemented
-       % for setting and retrieving parameters of sub-estimators.
-       % XXX need to describe this!
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
        a default and appropriate value is defined by the library.
