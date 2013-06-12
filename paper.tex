@@ -155,11 +155,12 @@ The API is designed to adhere to the following broad principles:
        \sklearn objects store their constructor parameters
        as well as parameter values determined by learning algorithms
        as public attributes in a documented format.
-       (The Python language does not actually distinguish
-       between public and private attributes of objects,
-       but by convention, any identifier
-       prefixed with an underscore (\texttt{\_})
-       is considered ``a non-public part of the API''; \citealp{pythontut}.)
+       % Gilles: Do we really need to bother the reader with such details?
+       % (The Python language does not actually distinguish
+       % between public and private attributes of objects,
+       % but by convention, any identifier
+       % prefixed with an underscore (\texttt{\_})
+       % is considered ``a non-public part of the API''; \citealp{pythontut}.)
   \item[Non-proliferation of classes.]
        Learning algorithms are objects of custom classes,
        but datasets and hyperparameter names and values,
