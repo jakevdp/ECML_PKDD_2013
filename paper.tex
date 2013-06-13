@@ -384,14 +384,12 @@ of $N$ such steps can be combined into a composite object called a
 \texttt{Pipeline}. The first $N-1$ steps must be transformers and the last can
 be either a predictor or a transformer. Conceptually, fitting a pipeline to a
 training set amounts to the following recursive procedure: i) when only one step
-remains, call its \texttt{fit} method; ii) otherwise, fit the first step, use it
-to \texttt{transform} the training set and fit the rest of the pipeline with the
-transformed data.
-The pipeline exposes all the methods the last
-estimator in the pipe exposes. That is, if the last estimator is a predictor,
-the pipeline can itself be used as a predictor. If the last estimator is a
-transformer, then the pipeline is itself a transformer. \textcolor{red}{TODO:
-Talk about nested attribute syntax.}
+remains, call its \texttt{fit} method; ii) otherwise, \texttt{fit} the first
+step, use it to \texttt{transform} the training set and \texttt{fit} the rest of
+the pipeline with the transformed data. The pipeline exposes all the methods the
+last estimator in the pipe exposes. That is, if the last estimator is a
+predictor, the pipeline can itself be used as a predictor. If the last estimator
+is a transformer, then the pipeline is itself a transformer.
 
 A \texttt{FeatureUnion} object is a transformer combining multiple transformers
 into a single one that joins their outputs. From an API point of view, a
@@ -421,14 +419,15 @@ then feeding them to an $\ell_2$-regularized logistic regression model:
 
 As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUnion} can be
 combined to create complex objects. In particular, since both are themselves
-estimators, they can be used to form nested workflows. \textcolor{red}{TODO:
-elaborate a bit more on nested constructions.}
+estimators, they can be used to form nested workflows.
 
 \subsection{Model selection}
 
 \textcolor{red}{TODO: rewrite and briefly describe the API (see user guide)}\\
 \textcolor{red}{TODO: describe Scorer API?}\\
 \textcolor{red}{TODO: mention that GridSearchCV objects are themselves estimators}
+\textcolor{red}{TODO: Talk about nested attribute syntax.}
+
 
 The aforementioned \texttt{Pipeline} object
 can be passed as an argument to a model selection algorithm.
