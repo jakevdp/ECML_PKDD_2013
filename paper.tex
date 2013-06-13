@@ -44,38 +44,34 @@ details specific to the Python ecosystem and analyzes obstacles faced by users
 and developers of the library.
 \end{abstract}
 
-\noindent \textcolor{red}{TODO: Focus on the experience we accumulated (general remark)}\\
-\textcolor{red}{TODO: Motivate our design choices.}
-
 \section{The scikit-learn project}
 
-The \sklearn project \citep{pedregosa2011} is an open source
-machine learning library for the Python programming language. The ambition of
-the project is to provide efficient and well-established machine learning tools
-within a programming environment that is accessible to non-machine learning
-experts and reusable in various scientific areas. In itself the project isn't
-a novel domain-specific language, but a library that provides machine
-learning idioms to a general-purpose high-level language. Among other things,
-it includes classical learning algorithms, model selection tools and
-preprocessing procedures.
+The \sklearn project \citep{pedregosa2011} is an open source machine learning
+library for the Python programming language. The ambition of the project is to
+provide efficient and well-established machine learning tools within a
+programming environment that is accessible to non-machine learning experts and
+reusable in various scientific areas. The project is not a novel domain-specific
+language, but a library that provides machine learning idioms to a general-
+purpose high-level language. Among other things, it includes classical learning
+algorithms, model selection tools and preprocessing procedures.
 
-The project is a programming library, i.e. a collection of classes -- in the
-object-oriented sense -- that users import into Python programs. Using \sklearn
-therefore requires basic Python programming knowledge. No command-line
-interface, let alone a graphical user interface, is offered for non-programmer
-users. Instead, interactive use is made possible by the Python interactive
-interpreter, and its enhanced replacement IPython \citep{perez2007ipython},
-which offer a \textsc{matlab}-like working environment specifically designed for
-scientific use.
+In itself, the project is a programming library, i.e. a collection of classes
+and functions that users import into Python programs. Using \sklearn therefore
+requires basic Python programming knowledge. No command-line interface, let
+alone a graphical user interface, is offered for non-programmer users. Instead,
+interactive use is made possible by the Python interactive interpreter, and its
+enhanced replacement IPython \citep{perez2007ipython}, which offer a
+\textsc{matlab}-like working environment specifically designed for scientific
+use.
 
 From its core, the library has been designed to tie in with the set of numeric
 and scientific packages centered around the NumPy and SciPy libraries. NumPy
-\citep{vanderwalt2011} augments Python with a numeric array datatype and
-associated array computing primitives while SciPy \citep{varoquaux2013scipy}
-extends it further by making common numeric operations available, either by
-implementing those in Python/NumPy or by wrapping existing
-C/C{}\verb!++!/Fortran implementations. In a similar vein, \sklearn extends
-Python with a set of composable machine learning operations.
+\citep{vanderwalt2011} augments Python with a numeric array datatype and proper
+array computing primitives while SciPy \citep{varoquaux2013scipy} extends it
+further by making common numerical operations available, either by implementing
+those in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
+implementations. In a similar vein, \sklearn extends Python with a set of
+composable machine learning operations.
 
 Started in 2007, \sklearn is developed by an international team of a dozen of
 core developers, mostly researchers from various fields (e.g., machine learning,
@@ -104,14 +100,14 @@ also count 183 contributors to the project (after manual deduplication).
 In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
 benchmarked against several competitors. In this paper, we instead focus on an
 in-depth discussion and analysis of the design choices used in building the
-library. First, in section \ref{sec:core-api}, we present the central application
+library. We first present in section \ref{sec:core-api} the central application
 programming interface (API) and then describe, in section \ref{sec:advanced-api},
 advanced API mechanisms built from the core interface. Section
-\ref{sec:implementation} describes implementation trade-offs and analyzes
-limitations of the technologies we rely on, while section
-\ref{sec:comparison} then compares \emph{scikit-learn} to other major projects in
-terms of API. Finally, conclusions and directions of future works are included
-in section \ref{sec:conclusions}.
+\ref{sec:implementation} describes implementation trade-offs and discusses
+limitations of the technologies we rely on. Section \ref{sec:comparison}
+then compares \emph{scikit-learn} to other major projects in terms of API.
+Finally, conclusions and directions of future works are included in section
+\ref{sec:conclusions}.
 
 \section{Core API}
 
