@@ -630,29 +630,23 @@ to \sklearn algorithms.
 \section{Conclusions and future works}
 \label{sec:conclusions}
 
-ToDo.
+\textcolor{red}{TODO: include some overall conclusions (e.g., reasons of the success sklearn)}
 
-\subsection{Future work}
+Although it is coming close to a 1.0 release, the \sklearn toolkit is by no
+means finished. At the time, it does not support all tasks in the broad field of
+machine learning, but does not intend to either. Among others, missing features
+include neural networks, ensemble meta-estimators for bagging or subsampling
+strategies, or missing value completion algorithms provided as transformers.
+However, topics like structured prediction or reinforcement learning are
+considered off-topic for the project. The library also does not provide any
+collaborative filtering algorithms -- it remains to be seen whether a compatible
+and matching API can be written for them.
 
-The \sklearn toolkit is by no means finished,
-although it is coming close to a 1.0 release.
-
-\sklearn does not support all tasks in the broad field of machine learning,
-and does not intend to either;
-in particular, structured prediction and bandit-style online learning algorithms
-are considered ``off-topic'' for the library,
-and submissions of implementations of these for inclusion
-will (at least at present) be rejected.
-Collaborative filtering algorithms are not implemented
-and it is remains to be seen
-whether an API for them can be designed that matches the \sklearn API.
-
-At a lower-level, a potential point of improvement
-is parallel processing, which, as described in Section~\ref{sec:parallel},
-is only implemented at a rather coarse-grained level.
-Cython's built-in support for OpenMP \citep{dagum1998openmp}
-remains a viable candidate technology
-for more fine-grained multicore support in \sklearn.
+At a lower-level, a potential point of improvement is parallel processing,
+which, as described in Section~\ref{sec:parallel}, is only implemented at a
+rather coarse-grained level. Cython built-in support for OpenMP
+\citep{dagum1998openmp} remains a viable candidate technology for more fine-
+grained multicore support in \sklearn.
 
 
 \bibliographystyle{plainnat}
