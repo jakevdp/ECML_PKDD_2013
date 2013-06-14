@@ -442,7 +442,7 @@ complex), a grid of hyper-parameter values, a cross-validation scheme and a
 score function. At \texttt{fit}, a \texttt{GridSearchCV} object generates
 exhaustively all hyper-parameter combinations from the grid, while a
 \texttt{RandomizedSearchCV} instance generates a limited number of combinations
-randomly sampled from the grid. Then, for each combination, the meta-estimator
+randomly sampled from the grid \citep{bergstra2012}. Then, for each combination, the meta-estimator
 fits the given estimator with the corresponding hyper-parameter values and
 evaluates its performance through the given cross-validation scheme. Finally,
 the best performing model is retained and exposed as a public attribute.
