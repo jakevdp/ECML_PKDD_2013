@@ -204,6 +204,7 @@ play).
 
 
 \subsection{Estimators}
+\label{sec:estimators}
 
 The \textit{estimator} interface is at the core of the
 library. It defines instantiation mechanisms of objects and exposes a
@@ -423,34 +424,60 @@ estimators, they can be used to form nested workflows.
 
 \subsection{Model selection}
 
-\textcolor{red}{TODO: rewrite and briefly describe the API (see user guide)}\\
-\textcolor{red}{TODO: describe Scorer API?}\\
-\textcolor{red}{TODO: mention that GridSearchCV objects are themselves estimators}
-\textcolor{red}{TODO: Talk about nested attribute syntax.}
+As introduced in Section~\ref{sec:estimators}, hyper-parameter values set in the
+constructor of an estimator determine its behavior. In particular, depending on
+the problem, some values produce estimators that are better than others. In this
+setting, the problem of \textit{model selection} consists in finding, within
+some hyper-parameter space, the combination of hyper-parameter values yielding
+an estimator whose performance optimizes some score function on unseen data. For
+example, in the case of a decision tree, too small values for the
+\texttt{max\_depth} parameter will make the tree to underfit while too large
+values will make the tree to overfit the training data. The problem is therefore
+to find the best trade-off value in order to maximize the performance of the
+tree on unseen data.
 
+In \sklearn, both \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} meta-estimators
+implement model selection. They take as inputs an estimator (basic or
+complex), a grid of hyper-parameter values, a cross-validation scheme and a
+score function. At \texttt{fit}, a \texttt{GridSearchCV} object generates
+exhaustively all hyper-parameter combinations from the grid, while a
+\texttt{RandomizedSearchCV} instance generates a limited number of combinations
+randomly sampled from the grid. Then, for each combination, the meta-estimator
+fits the given estimator with the corresponding hyper-parameter values and
+evaluates its performance through the given cross-validation scheme. Finally,
+the best performing model is retained and exposed as a public attribute.
 
-The aforementioned \texttt{Pipeline} object
-can be passed as an argument to a model selection algorithm.
-Available algorithms at the time of writing include random search
-\citep{bergstra2012} and ``grid search''.
-The latter, which we shall use in this example,
-performs an exhaustive search through a grid formed by the cartesian product
-of a set of possible values for each parameter, specified by the user.
-In our example, this grid might be given as:
+From an API point of view, cross-validation schemes are given as iterator
+objects over train and test folds on the training data. The library provides
+various such iterators, including K-Fold, Leave-One-Out or shuffled
+cross-validation schemes. The score function used by default is the function
+provided by the estimator itself. However, the library provides a variety of
+score functions that can be used instead, including -- among many others --
+accuracy, AUC or $F_\beta$-score for classifiers; $R^2$ score or mean squared
+error for regressors; or the Rand Index for clustering estimators. Also, let us
+note that \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} instances are
+themselves estimators. In particular, they provide \texttt{predict},
+\texttt{predict\_proba}, \texttt{transform} and \texttt{score} methods that are
+all transparently delegated to the best estimator found during \texttt{fit}.
 
-\begin{align*}
-         & \textsf{stopwords} \in \{0, 1\}                      \\
-  \times & \; \textsf{tf} \in \{\textsf{linear}, \textsf{log}\} \\
-  \times & \; n_\textsf{features} \in \{1000, 2000, 5000\}      \\
-  \times & \; \textsf{norm} \in \{\ell_1, \ell_2\}              \\
-  \times & \; C \in \{10, 100, 1000\}
-\end{align*}
+As an example, the snippet below illustrates how to optimize the hyper-parameter
+values of an SVM classifier. It considers an exhaustive exploration of all
+hyper-parameter combinations from two distinct grids of parameter values and
+maximizes the AUC of the classifier through a 10-fold cross-validation:
+\begin{verbatim}
+    from sklearn.svm import SVC
+    from sklearn.grid_search import GridSearchCV
 
-At each point in this grid, $k$-fold cross validation is run
-to estimate the performance of the estimator according to some measure
-(e.g., accuracy, $F_\beta$-score or a host of clustering quality metrics)
-and the best performing set of hyperparameters is stored
-on the \texttt{GridSearchCV} object, again, as a public attribute.
+    param_grid = [
+      {'C': [1, 10, 100, 1000], 'kernel': ['linear']},
+      {'C': [1, 10, 100, 1000], 'gamma': [0.001, 0.0001], 'kernel': ['rbf']},
+    ]
+
+    clf = GridSearchCV(SVC(), param_grid, scoring="roc_auc", cv=10)
+    clf.fit(X_train, y_train)
+\end{verbatim}
+
+\textcolor{red}{TODO: Mention that pipelines can also be grid-searched.}
 
 \section{Implementation}
 
