@@ -454,11 +454,7 @@ cross-validation schemes. The score function used by default is the function
 provided by the estimator itself. However, the library provides a variety of
 score functions that can be used instead, including -- among many others --
 accuracy, AUC or $F_\beta$-score for classifiers; $R^2$ score or mean squared
-error for regressors; or the Rand Index for clustering estimators. Also, let us
-note that \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} instances are
-themselves estimators. In particular, they provide \texttt{predict},
-\texttt{predict\_proba}, \texttt{transform} and \texttt{score} methods that are
-all transparently delegated to the best estimator found during \texttt{fit}.
+error for regressors; or the Rand Index for clustering estimators.
 
 As an example, the snippet below illustrates how to optimize the hyper-parameter
 values of an SVM classifier. It considers an exhaustive exploration of all
@@ -475,7 +471,14 @@ maximizes the AUC of the classifier through a 10-fold cross-validation:
 
     clf = GridSearchCV(SVC(), param_grid, scoring="roc_auc", cv=10)
     clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
 \end{verbatim}
+Let us finally note \texttt{GridSearchCV} and \texttt{RandomizedSearchCV}
+instances are themselves estimators. In particular, they provide
+\texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and \texttt{score}
+methods that are all transparently delegated to the best estimator found during
+\texttt{fit}, as the example shows.
+
 
 \textcolor{red}{TODO: Mention that pipelines can also be grid-searched.}
 
