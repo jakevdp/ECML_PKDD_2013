@@ -431,7 +431,7 @@ from sklearn.feature_selection import SelectKBest
 fu = FeatureUnion([("pca", PCA()),
                    ("kpca", KernelPCA(kernel="rbf"))])
 
-Pipeline([("pca", fu,
+Pipeline([("feat_union", fu),
           ("feat_sel", SelectKBest(k=100)),
           ("log_reg", LogisticRegression(penalty="l2"))
 ]).fit(X_train, y_train).predict(X_test)
