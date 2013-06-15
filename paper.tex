@@ -6,55 +6,9 @@
 \usepackage[authoryear,round]{natbib}
 \usepackage{xcolor}
 \usepackage{xspace}
-\usepackage{listings}
-\usepackage{color}
+\usepackage{minted}
 
-\definecolor{htmltitlecolor}{rgb}{0.23, 0.04, 0}
-\definecolor{darkred}{rgb}{0.7, 0, 0}
-
-\definecolor{SkoleBrown}{RGB}{150,100,50}
-\definecolor{SkoleYellow}{RGB}{232,183,3}
-\definecolor{SkoleOrange}{RGB}{252,135,36}
-\colorlet{SkoleLightBrown}{SkoleBrown!50!SkoleYellow}
-%\colorlet{titlecolor}{SkoleBrown!85!black}
-\definecolor{darkgreen}{cmyk}{0.7, 0, 1, 0.5}
-\definecolor{darkblue}{cmyk}{1, 0.8, 0, 0}
-\definecolor{lightblue}{cmyk}{0.05,0,0,0.05}
-\definecolor{grey}{cmyk}{0.1,0.1,0.1,1}
-\definecolor{lightgrey}{cmyk}{0,0,0,0.5}
-\definecolor{purple}{cmyk}{0.8,1,0,0}
-
-\definecolor{rulecolor}{RGB}{210,210,210}
-\colorlet{titlecolor}{SkoleOrange!50!black}
-\colorlet{codeblockcolorbase}{SkoleLightBrown!80!black}
-\colorlet{codeblockcolor}{codeblockcolorbase!08}
-
-\lstset{language=Python,
-extendedchars=true,
-backgroundcolor=\color{codeblockcolor},
-frame=single,
-xleftmargin = 0pt,
-numbersep = 0pt,
-framexleftmargin = 0pt,
-resetmargins = true,
-framesep = 0pt,
-rulesep = 0pt,
-basicstyle=\ttfamily\footnotesize,
-fillcolor=\color{codeblockcolor},
-rulecolor=\color{rulecolor},
-aboveskip = 0.5ex,
-belowskip = 0.6ex,
-escapebegin={\color{darkgreen}},
-keywordstyle=\sffamily\color{darkblue},
-identifierstyle=\ttfamily,
-commentstyle=\slshape\color{darkgreen},
-stringstyle=\ttfamily\color{orange},
-showstringspaces=false,
-tabsize=2,
-%breaklines=true,
-morekeywords={{,},=,:},
-classoffset=0,
-}
+\newminted{python}{frame=single}
 
 % tt font with bold support
 %\renewcommand{\ttdefault}{pcr}
@@ -299,12 +253,12 @@ learned coefficients of a linear model).
 
 As an example, let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:
-\begin{lstlisting}
-  from sklearn.linear_model import LogisticRegression
+\begin{pythoncode}
+    from sklearn.linear_model import LogisticRegression
 
-  clf = LogisticRegression(penalty="l1")
-  clf.fit(X_train, y_train)
-\end{lstlisting}
+    clf = LogisticRegression(penalty="l1")
+    clf.fit(X_train, y_train)
+\end{pythoncode}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
 setting the \texttt{penalty} hyper-parameter to \texttt{"l1"}, hence enabling
 $\ell_1$ regularization. Other hyper-parameters (such as \texttt{C}, which
@@ -337,18 +291,18 @@ supervised learning estimators, this method typically returns the predicted
 labels or values computed by the model.  Continuing with the previous example,
 predicted labels for \texttt{X\_test} can be obtained using the following
 snippet:
-\begin{lstlisting}
-  y_pred = clf.predict(X_test)
-\end{lstlisting}
+\begin{pythoncode}
+    y_pred = clf.predict(X_test)
+\end{pythoncode}
 Some unsupervised learning
 estimators may however also implement that interface, as illustrated below:
-\begin{lstlisting}
-  from sklearn.cluster import KMeans
+\begin{pythoncode}
+    from sklearn.cluster import KMeans
 
-  km = KMeans(n_clusters=10)
-  km.fit(X_train)
-  clust_pred = km.predict(X_test)
-\end{lstlisting}
+    km = KMeans(n_clusters=10)
+    km.fit(X_train)
+    clust_pred = km.predict(X_test)
+\end{pythoncode}
 In the above example, a \texttt{KMeans} estimator is first fit on the training
 data \texttt{X\_train}. Then the \texttt{predict} method is called on the test
 data \texttt{X\_test} in order to retrieve predicted cluster labels.
@@ -384,18 +338,18 @@ algorithms are all provided as transformers within the library.  In our example,
 if one wanted to preprocess the inputs \texttt{X\_train} before fitting the
 logistic regression estimator, e.g., by standardizing the feature values, one
 could thus simply write:
-\begin{lstlisting}
-  from sklearn.preprocessing import StandardScaler
+\begin{pythoncode}
+    from sklearn.preprocessing import StandardScaler
 
-  scaler = StandardScaler()
-  scaler.fit(X_train)
-  X_train = scaler.transform(X_train)
-\end{lstlisting}
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+    X_train = scaler.transform(X_train)
+\end{pythoncode}
 Of course, in practice, it is important to apply the same preprocessing to the
 test data \texttt{X\_test}. This can easily be done as follows:
-\begin{lstlisting}
-  X_test = scaler.transform(X_test)
-\end{lstlisting}
+\begin{pythoncode}
+    X_test = scaler.transform(X_test)
+\end{pythoncode}
 Transformers also include a variety of learning algorithms, such as
 dimension reduction (PCA, manifold learning techniques), kernel
 approximation techniques, and any other approach that can be used to
@@ -404,9 +358,9 @@ derive a modified representation of the data.
 Finally, let us also note that the \texttt{fit} method always returns the estimator
 it was called on, hence making method chaining possible.  Using this technique,
 we can thus rewrite the \texttt{StandardScaler} example above in a single line:
-\begin{lstlisting}
-  X_train = StandardScaler().fit(X_train).transform(X_train)
-\end{lstlisting}
+\begin{pythoncode}
+    X_train = StandardScaler().fit(X_train).transform(X_train)
+\end{pythoncode}
 In addition, \texttt{fit(X\_train).transform(X\_train)} can further
 be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
 and \texttt{transform} methods into a single method \texttt{fit\_transform}
@@ -468,19 +422,19 @@ As an example, the following snippet illustrates how to create a complex worflow
 computing both linear PCA and kernel PCA components on \texttt{X\_train}
 (through a \texttt{FeatureUnion}), selecting the 100 best of those features and
 then feeding them to an $\ell_2$-regularized logistic regression model:
-\begin{lstlisting}
-  from sklearn.pipeline import Pipeline
-  from sklearn.decomposition import PCA, KernelPCA
-  from sklearn.feature_selection import SelectKBest
+\begin{pythoncode}
+    from sklearn.pipeline import Pipeline
+    from sklearn.decomposition import PCA, KernelPCA
+    from sklearn.feature_selection import SelectKBest
 
-  fu = FeatureUnion([('pca', PCA()),
-                     ('kpca', KernelPCA(kernel="rbf"))])
+    fu = FeatureUnion([('pca', PCA()),
+                       ('kpca', KernelPCA(kernel="rbf"))])
 
-  Pipeline([("pca", fu,
-            ("feat_sel", SelectKBest(k=100)),
-            ("log_reg", LogisticRegression(penalty="l2"))
-  ]).fit(X_train, y_train).predict(X_test)
-\end{lstlisting}
+    Pipeline([("pca", fu,
+              ("feat_sel", SelectKBest(k=100)),
+              ("log_reg", LogisticRegression(penalty="l2"))
+    ]).fit(X_train, y_train).predict(X_test)
+\end{pythoncode}
 
 As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUnion} can be
 combined to create complex objects. In particular, since both are themselves
@@ -528,20 +482,20 @@ model on average is retained and exposed as the public attribute
 As an example, the snippet below illustrates how to optimize the
 hyper-parameters of an SVM classifier. It maximizes the $F_1$ score of the
 classifier through a 10-fold cross-validation scheme.
-\begin{lstlisting}
-  from sklearn.svm import SVC
-  from sklearn.grid_search import GridSearchCV
+\begin{pythoncode}
+    from sklearn.svm import SVC
+    from sklearn.grid_search import GridSearchCV
 
-  param_grid = [
-    {"C": [1, 10, 100, 1000], "kernel": ["linear"]},
-    {"C": [1, 10, 100, 1000], "gamma": [0.001, 0.0001],
-     "kernel": ["rbf"]},
-  ]
+    param_grid = [
+      {"C": [1, 10, 100, 1000], "kernel": ["linear"]},
+      {"C": [1, 10, 100, 1000], "gamma": [0.001, 0.0001], 
+       "kernel": ["rbf"]},
+    ]
 
-  clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
-  clf.fit(X_train, y_train)
-  y_pred = clf.predict(X_test)
-\end{lstlisting}
+    clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
+\end{pythoncode}
 Note that, in the above example, two distinct hyper-parameter grids are
 considered. This is because it only makes sense to search for \texttt{gamma}
 when \texttt{kernel} is set to \texttt{"rbf"}.  Additionally, we see that
@@ -711,14 +665,13 @@ others, missing features include neural networks, ensemble meta-estimators for
 bagging or subsampling strategies, or missing value completion algorithms
 provided as transformers.  However, topics like structured prediction or
 reinforcement learning are considered off-topic for the project, since they
-would require quite different data representations and API.
+would require quite different data representations and API. 
 
 At a lower-level, a potential point of improvement is parallel processing,
 which, as described in Section~\ref{sec:parallel}, is only implemented at a
 rather coarse-grained level. Cython built-in support for OpenMP
 \citep{dagum1998openmp} remains a viable candidate technology for more fine-
 grained multicore support in \sklearn.
-
 
 \bibliographystyle{plainnat}
 \DeclareRobustCommand{\VAN}[3]{#3}
