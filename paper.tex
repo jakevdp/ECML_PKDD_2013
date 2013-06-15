@@ -254,10 +254,10 @@ learned coefficients of a linear model).
 As an example, let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:
 \begin{pythoncode}
-    from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression
 
-    clf = LogisticRegression(penalty="l1")
-    clf.fit(X_train, y_train)
+clf = LogisticRegression(penalty="l1")
+clf.fit(X_train, y_train)
 \end{pythoncode}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
 setting the \texttt{penalty} hyper-parameter to \texttt{"l1"}, hence enabling
@@ -292,16 +292,16 @@ labels or values computed by the model.  Continuing with the previous example,
 predicted labels for \texttt{X\_test} can be obtained using the following
 snippet:
 \begin{pythoncode}
-    y_pred = clf.predict(X_test)
+y_pred = clf.predict(X_test)
 \end{pythoncode}
 Some unsupervised learning
 estimators may however also implement that interface, as illustrated below:
 \begin{pythoncode}
-    from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans
 
-    km = KMeans(n_clusters=10)
-    km.fit(X_train)
-    clust_pred = km.predict(X_test)
+km = KMeans(n_clusters=10)
+km.fit(X_train)
+clust_pred = km.predict(X_test)
 \end{pythoncode}
 In the above example, a \texttt{KMeans} estimator is first fit on the training
 data \texttt{X\_train}. Then the \texttt{predict} method is called on the test
@@ -339,16 +339,16 @@ if one wanted to preprocess the inputs \texttt{X\_train} before fitting the
 logistic regression estimator, e.g., by standardizing the feature values, one
 could thus simply write:
 \begin{pythoncode}
-    from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler
 
-    scaler = StandardScaler()
-    scaler.fit(X_train)
-    X_train = scaler.transform(X_train)
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
 \end{pythoncode}
 Of course, in practice, it is important to apply the same preprocessing to the
 test data \texttt{X\_test}. This can easily be done as follows:
 \begin{pythoncode}
-    X_test = scaler.transform(X_test)
+X_test = scaler.transform(X_test)
 \end{pythoncode}
 Transformers also include a variety of learning algorithms, such as
 dimension reduction (PCA, manifold learning techniques), kernel
@@ -359,7 +359,7 @@ Finally, let us also note that the \texttt{fit} method always returns the estima
 it was called on, hence making method chaining possible.  Using this technique,
 we can thus rewrite the \texttt{StandardScaler} example above in a single line:
 \begin{pythoncode}
-    X_train = StandardScaler().fit(X_train).transform(X_train)
+X_train = StandardScaler().fit(X_train).transform(X_train)
 \end{pythoncode}
 In addition, \texttt{fit(X\_train).transform(X\_train)} can further
 be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
@@ -423,17 +423,17 @@ computing both linear PCA and kernel PCA components on \texttt{X\_train}
 (through a \texttt{FeatureUnion}), selecting the 100 best of those features and
 then feeding them to an $\ell_2$-regularized logistic regression model:
 \begin{pythoncode}
-    from sklearn.pipeline import Pipeline
-    from sklearn.decomposition import PCA, KernelPCA
-    from sklearn.feature_selection import SelectKBest
+from sklearn.pipeline import Pipeline
+from sklearn.decomposition import PCA, KernelPCA
+from sklearn.feature_selection import SelectKBest
 
-    fu = FeatureUnion([('pca', PCA()),
-                       ('kpca', KernelPCA(kernel="rbf"))])
+fu = FeatureUnion([('pca', PCA()),
+                   ('kpca', KernelPCA(kernel="rbf"))])
 
-    Pipeline([("pca", fu,
-              ("feat_sel", SelectKBest(k=100)),
-              ("log_reg", LogisticRegression(penalty="l2"))
-    ]).fit(X_train, y_train).predict(X_test)
+Pipeline([("pca", fu,
+          ("feat_sel", SelectKBest(k=100)),
+          ("log_reg", LogisticRegression(penalty="l2"))
+]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
 
 As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUnion} can be
@@ -483,18 +483,18 @@ As an example, the snippet below illustrates how to optimize the
 hyper-parameters of an SVM classifier. It maximizes the $F_1$ score of the
 classifier through a 10-fold cross-validation scheme.
 \begin{pythoncode}
-    from sklearn.svm import SVC
-    from sklearn.grid_search import GridSearchCV
+from sklearn.svm import SVC
+from sklearn.grid_search import GridSearchCV
 
-    param_grid = [
-      {"C": [1, 10, 100, 1000], "kernel": ["linear"]},
-      {"C": [1, 10, 100, 1000], "gamma": [0.001, 0.0001], 
-       "kernel": ["rbf"]},
-    ]
+param_grid = [
+  {"C": [1, 10, 100, 1000], "kernel": ["linear"]},
+  {"C": [1, 10, 100, 1000], "gamma": [0.001, 0.0001], 
+   "kernel": ["rbf"]},
+]
 
-    clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
-    clf.fit(X_train, y_train)
-    y_pred = clf.predict(X_test)
+clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
 \end{pythoncode}
 Note that, in the above example, two distinct hyper-parameter grids are
 considered. This is because it only makes sense to search for \texttt{gamma}
