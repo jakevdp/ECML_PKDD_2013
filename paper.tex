@@ -249,6 +249,7 @@ As an example, let us consider a supervised learning task using logistic regress
 Given the API defined above, solving this problem is as simple as:
 \begin{verbatim}
     from sklearn.linear_model import LogisticRegression
+
     clf = LogisticRegression(penalty="l1")
     clf.fit(X_train, y_train)
 \end{verbatim}
@@ -291,6 +292,7 @@ Some unsupervised learning
 estimators may however also implement that interface, as illustrated below:
 \begin{verbatim}
     from sklearn.cluster import KMeans
+
     km = KMeans(n_clusters=10)
     km.fit(X_train)
     clust_pred = km.predict(X_test)
@@ -332,6 +334,7 @@ logistic regression estimator, e.g., by standardizing the feature values, one
 could thus simply write:
 \begin{verbatim}
     from sklearn.preprocessing import StandardScaler
+
     scaler = StandardScaler()
     scaler.fit(X_train)
     X_train = scaler.transform(X_train)
