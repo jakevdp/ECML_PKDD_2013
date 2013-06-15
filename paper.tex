@@ -271,14 +271,14 @@ the same training data, one would simply have to replace
 \texttt{LogisticRegression(penalty="l1")} in the snippet above by \\
 \texttt{RandomForestClassifier()}.
 
-In \sklearn, classical learning algorithms are not the only objects
-to be implemented as estimators. For example, preprocessing routines (e.g.,
-vectorization of text documents, scaling of features, etc) or feature
-extraction techniques also implement the same interface. Even those estimators
-that are entirely stateless and therefore do not require the \texttt{fit} method
-to perform any useful work implement the estimator interface. As we will
-illustrate in the next sections, this design pattern is indeed of prime
-importance for consistency, composition and parameter validation reasons.
+In \sklearn, classical learning algorithms are not the only objects to be
+implemented as estimators. For example, preprocessing routines (e.g., scaling of
+features) or feature extraction techniques (e.g., vectorization of text
+documents) also implement the same interface. Even those estimators that are
+entirely stateless and therefore do not require the \texttt{fit} method to
+perform any useful work implement the estimator interface. As we will illustrate
+in the next sections, this design pattern is indeed of prime importance for
+consistency, composition and model selection reasons.
 
 \subsection{Predictors}
 
@@ -466,7 +466,7 @@ score functions that the user can choose instead, including -- among many others
 error for regression and the Rand Index for clustering.
 
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} differ in the way they
-search the hyper-parameter space.  \texttt{GridSearchCV} exhaustively searches
+search the hyper-parameter grid.  \texttt{GridSearchCV} exhaustively searches
 for all hyper-parameter combinations from the grid. This scheme can be expensive
 when there are many possible hyper-parameter combinations.
 \texttt{RandomizedSearchCV}, on the other hand, only searches for a limited
