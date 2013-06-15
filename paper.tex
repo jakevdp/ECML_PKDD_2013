@@ -427,8 +427,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.decomposition import PCA, KernelPCA
 from sklearn.feature_selection import SelectKBest
 
-fu = FeatureUnion([('pca', PCA()),
-                   ('kpca', KernelPCA(kernel="rbf"))])
+fu = FeatureUnion([("pca", PCA()),
+                   ("kpca", KernelPCA(kernel="rbf"))])
 
 Pipeline([("pca", fu,
           ("feat_sel", SelectKBest(k=100)),
