@@ -508,9 +508,9 @@ delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 Our implementation guidelines emphasize on writing short and readable code,
 easily maintainable by external contributors, while being as efficient as
 possible.  Whenever practicable, algorithms implemented in \sklearn are thus
-directly written in pure Python. For intensive numerical computations, the
-library mostly relies on NumPy vector operations, which allows for the code to
-remain concise and readable while being efficient. For all algorithms that
+directly written in pure Python. For intensive numerical computations though,
+the library mostly relies on NumPy vector operations, which allows for the code
+to remain concise and readable while being efficient. For all algorithms that
 cannot be easily and efficiently expressed as NumPy operations, we rely on
 Cython \citep{behnel2011cython}  for writing the critical parts and achieving
 decent performance and scalability. Cython is a compiled programming language
@@ -518,15 +518,15 @@ that extends Python with static typing. It produces efficient C extension
 modules that are directly importable from the Python runtime system. Examples of
 algorithms written in Cython include stochastic gradient descent for linear
 models, some graph-based clustering algorithms or decision trees. To facilitate
-the adoption of the library, we also limit to a bare minimum the set of external
-dependencies. As such, NumPy and SciPy -- the two most common dependencies in the
-Python scientific ecosystem -- are actually the only two required dependencies
-for the library to fully work. Some modules may rely on other external
-libraries, but then we tend to prefer to directly ship them within the codebase
-rather than adding new dependencies. In particular, the codebase ships modified
-versions of the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
-\citep{chang2011libsvm,fan2008}, both written in C{}\verb!++! and wrapped using
-Cython modules.
+the adoption of the library, we also try to limit to a bare minimum the set of
+external dependencies. As such, NumPy and SciPy -- the two most common
+dependencies in the Python scientific ecosystem -- are actually the only two
+required dependencies for the library to fully work. Some modules may rely on
+other external libraries, but in such cases we tend to prefer to directly ship
+them within the codebase rather than adding new dependencies. In particular, the
+codebase includes modified versions of the \textsf{LIBSVM} and
+\textsf{LIBLINEAR} libraries \citep{chang2011libsvm,fan2008}, both written in
+C{}\verb!++! and wrapped using Cython modules.
 
 % scikit-learn is primarily implemented in Python and Cython
 % ,
@@ -574,20 +574,27 @@ actually inheriting from our base classes.
 \subsection{Parallelism}
 \label{sec:parallel}
 
-At this point in time, support for multi-core programming in Python,
-at least in the CPython reference implementation targeted by scikit-learn,
-is suboptimal.
-The interpreter supports multithreading,
-but due to the ``Global Interpreter Lock'' (GIL),
-no two threads in a process may at the same time execute Python code.
-It follows that multithreading is not a viable solution
-even for embarrassingly parallel problems,
-such as fitting and evaluation multiple models in a grid search procedure.
-The workaround is to use Python's multiprocessing module,
-which emulates threads using multiple operating system-level processes,
-but this in turn leads to high memory use and overhead
-because of the copying of training and test sets
-into the various processes' address spaces.
+In many cases, machine learning algorithms can be decomposed into independent
+smaller tasks that may each be solved in parallel, thereby reducing the overall
+computing times. Some algorithms in \sklearn are implemented as such, and
+exploit multi-core architectures.
+
+At this point in time, support for multi-core programming in Python -- at least
+in the CPython implementation targeted by scikit-learn -- is however suboptimal.
+The interpreter supports multithreading, but due to the \textit{global
+interpreter lock}, no two threads in a process may execute Python code at the
+same time. It follows that multithreading is not a viable solution for
+parallelizing parts of an algorithm, even for embarrassingly parallel problems,
+such as fitting and evaluating multiple models in a grid search procedure. The
+workaround that we use is to rely on the Python multiprocessing module, which
+emulates threads using multiple operating system-level processes. However this
+solution is not perfect as it may in turn lead to a large memory overhead since
+objects (e.g., input datasets) need to be copied within each process own memory
+space. In some cases, it may unfortunately even happen that the overhead becomes
+so significant that fully exploiting a multi-core architecture becomes
+infeasible due memory constraints. As such, a proper implementation of parallel
+machine learning algorithms remain a challenging task for the project.
+
 
 \subsection{Cython for inner loops}
 
