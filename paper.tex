@@ -519,20 +519,14 @@ modules that are directly importable from the Python runtime system. Examples of
 algorithms written in Cython include stochastic gradient descent for linear
 models, some graph-based clustering algorithms or decision trees. To facilitate
 the adoption of the library, we also limit to a bare minimum the set of external
-depencies. As such, NumPy and SciPy are actually the only two required
-dependencies for the library to fully work. Some modules may rely on other
-external libraries, but then we tend to prefer to directly ship them within the
-codebase rather than adding new dependencies. In particular, the codebase ships
-modified versions of the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
+depencies. As such, NumPy and SciPy -- the two most common dependencies in the
+Python scientific ecosystem -- are actually the only two required dependencies
+for the library to fully work. Some modules may rely on other external
+libraries, but then we tend to prefer to directly ship them within the codebase
+rather than adding new dependencies. In particular, the codebase ships modified
+versions of the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
 \citep{chang2011libsvm,fan2008}, both written in C{}\verb!++! and wrapped using
 Cython modules.
-
-
-
-
-
-
-
 
 % scikit-learn is primarily implemented in Python and Cython
 % ,
@@ -557,6 +551,14 @@ Cython modules.
 % to obtain decent performance and scalability.
 % Examples include $k$-means, stochastic gradient descent for linear models
 % and some graph-based clustering algorithms.
+
+To ease code reuse, object-oriented techniques and design patterns are used all
+throughout the codebase. In particular, the \textit{duck typing} design pattern
+is widely exploited to simplify implementation and skip the introduction of
+superfluous classes. This technique indeed allows both for extensibility and
+flexibility: user-defined estimators that follow our API and conventions should
+be reusable (e.g., in a pipeline) as any built-in estimators, without them
+actually inheriting from our base classes.
 
 % While object-oriented techniques and design patterns
 % are used throughout scikit-learn,
