@@ -488,7 +488,7 @@ classifier through a 10-fold cross-validation scheme.
 
     param_grid = [
       {"C": [1, 10, 100, 1000], "kernel": ["linear"]},
-      {"C": [1, 10, 100, 1000], "gamma": [0.001, 0.0001], 
+      {"C": [1, 10, 100, 1000], "gamma": [0.001, 0.0001],
        "kernel": ["rbf"]},
     ]
 
@@ -662,10 +662,10 @@ to \sklearn algorithms.
 Although it is coming close to a 1.0 release, \sklearn is by no means finished.
 At the time, it does not support many classical machine learning tasks. Among
 others, missing features include neural networks, ensemble meta-estimators for
-bagging or subsampling strategies, or missing value completion algorithms
-provided as transformers.  However, topics like structured prediction or
-reinforcement learning are considered off-topic for the project, since they
-would require quite different data representations and API. 
+bagging or subsampling strategies, or missing value completion algorithms.
+Topics like structured prediction or reinforcement learning are however
+considered off-topic for the project, since they would require quite different
+data representations and API.
 
 At a lower-level, a potential point of improvement is parallel processing,
 which, as described in Section~\ref{sec:parallel}, is only implemented at a
