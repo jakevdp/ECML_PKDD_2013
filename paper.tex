@@ -129,13 +129,9 @@ Finally, conclusions and directions of future works are included in section
 
 \label{sec:core-api}
 
-In this section, we discuss the general principles of the application
-programming interface (API) of \sklearn. We first specify the representation of
-data and then proceed by describing the core interface of the library.
-
 All objects within \sklearn share a uniform common basic API consisting of three
 complementary interfaces: an \textit{estimator} interface for building and
-fitting objects, a \textit{predictor} interface for making predictions and a
+fitting models, a \textit{predictor} interface for making predictions and a
 \textit{transformer} interface for converting data. As much as possible, our
 design choices have been guided so as to avoid the proliferation of framework
 code. We try to adopt simple conventions and to limit to a minimum the number of
