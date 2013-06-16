@@ -82,7 +82,7 @@ use.
 
 From its core, the library has been designed to tie in with the set of numeric
 and scientific packages centered around the NumPy and SciPy libraries. NumPy
-\citep{vanderwalt2011} augments Python with a numeric array datatype and proper
+\citep{vanderwalt2011} augments Python with a numeric array data type and proper
 array computing primitives while SciPy \citep{varoquaux2013scipy} extends it
 further by making common numerical operations available, either by implementing
 those in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
@@ -148,7 +148,7 @@ broad principles:
        algorithms are stored and exposed as public attributes.
   \item[Non-proliferation of classes.]
        Learning algorithms are the only objects to be of custom classes.
-       Datasets and hyperparameter names and values are represented as standard
+       Datasets and hyper-parameter names and values are represented as standard
        Python, NumPy or SciPy classes rather than new ones whenever feasible.
        This keeps \sklearn easy to use and easy to combine with other libraries.
        % XXX do we need to elaborate more on this, or do we expect everyone
@@ -157,7 +157,7 @@ broad principles:
        Many machine learning tasks are expressible
        as sequences or combinations of transformations to data.
        Some learning algorithms are also naturally viewed
-       as meta-algorithms parameterized on other algorithms.
+       as meta-algorithms parametrized on other algorithms.
        Whenever possible, those algorithms are implemented and composed from
        existing building blocks.
   \item[Sensible defaults.]
@@ -529,15 +529,15 @@ easily and efficiently expressed as NumPy operations, we rely on Cython
 \citep{behnel2011cython}  for writing the critical parts and achieving decent
 performance and scalability. Cython is a compiled programming language that
 extends Python with static typing. It produces efficient C extension modules
-that are directly importable from the Python runtime system. Examples of
+that are directly importable from the Python run-time system. Examples of
 algorithms written in Cython include stochastic gradient descent for linear
 models, some graph-based clustering algorithms or decision trees.  A problem
 arising from the use of Cython, however, is that passing pure Python functions
 as argument, while possible, degrades performance significantly due to the
-runtime checks needed for each function invocation. This is especially
+run-time checks needed for each function invocation. This is especially
 problematic for example for kernel methods, which would benefit from accepting a
 kernel function as argument. A potential solution to this problem would be for
-\sklearn to provide a Cython-level API, thereby alllowing the user to pass
+\sklearn to provide a Cython-level API, thereby allowing the user to pass
 Cython-implemented kernel functions.
 
 To facilitate the adoption of the library, we also try to limit to a bare
@@ -566,7 +566,7 @@ module, which emulates threads using multiple operating system- level processes.
 However this solution is not perfect as it may in turn lead to a large memory
 overhead since objects (e.g., input datasets) need to be copied within each
 process own memory space. In some cases, it may unfortunately even happen that
-the overhead becomes so significant that fully exploiting a multi- core
+the overhead becomes so significant that fully exploiting a multi-core
 architecture becomes infeasible due memory constraints. As such, a proper
 implementation of parallel machine learning algorithms remain a challenging task
 for the project.
