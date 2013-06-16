@@ -380,6 +380,17 @@ composing complex estimators and then selecting models.
 
 \textcolor{red}{TODO}
 
+\textcolor{red}{Point out that any external estimator can be used as base
+estimator thanks to duck typing}\\
+
+To ease code reuse, object-oriented techniques and design patterns are also used
+all throughout the codebase. In particular, the \textit{duck typing} design
+pattern is widely exploited to simplify implementation and skip the introduction
+of superfluous classes. This technique indeed allows both for extensibility and
+flexibility: user-defined estimators that follow our API and conventions should
+be reusable (e.g., in a pipeline) as any built-in estimators, without them
+actually inheriting from our base classes.
+
 \subsection{Pipelines and feature unions}
 
 A distinguishing feature of the \sklearn API is its ability to
@@ -502,8 +513,9 @@ delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 \texttt{score} methods to the best estimator, thus mimicking its behavior.
 
 \section{Implementation}
-
 \label{sec:implementation}
+
+\subsection{Cython for performance}
 
 Our implementation guidelines emphasize on writing short and readable code,
 easily maintainable by external contributors, while being as efficient as
@@ -528,48 +540,13 @@ codebase includes modified versions of the \textsf{LIBSVM} and
 \textsf{LIBLINEAR} libraries \citep{chang2011libsvm,fan2008}, both written in
 C{}\verb!++! and wrapped using Cython modules.
 
-% scikit-learn is primarily implemented in Python and Cython
-% ,
-% a language that extends Python with static typing
-% and a compiler that produces C extension modules
-% for the Python runtime system.
-% In addition, it includes (modified versions of)
-% the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
-% used for training support vector machines
-% and logistic regression models \citep{chang2011libsvm, fan2008}.
-% These libraries are both written in C{}\verb!++!
-% and wrapped using Cython modules.
-
-% As much as possible is implemented in ``pure'' Python
-% with NumPy for numerical work,
-% to avoid the compile-edit-debug cycle needed for Cython
-% and to keep the codebase readable for as large an audience as possible.
-% However, not all algorithms are easily and efficiently expressed
-% as NumPy vector operations
-% (among other factors, because they often have linear space requirements).
-% Algorithms that fall into this category have to be implemented in Cython
-% to obtain decent performance and scalability.
-% Examples include $k$-means, stochastic gradient descent for linear models
-% and some graph-based clustering algorithms.
-
-To ease code reuse, object-oriented techniques and design patterns are also used
-all throughout the codebase. In particular, the \textit{duck typing} design
-pattern is widely exploited to simplify implementation and skip the introduction
-of superfluous classes. This technique indeed allows both for extensibility and
-flexibility: user-defined estimators that follow our API and conventions should
-be reusable (e.g., in a pipeline) as any built-in estimators, without them
-actually inheriting from our base classes.
-
-% While object-oriented techniques and design patterns
-% are used throughout scikit-learn,
-% they mostly serve to facilitate code reuse and are not considered a project goal.
-% Where possible, the Python principle of ``duck typing'' is exploited
-% to simplify the implementation and skip the introduction of superfluous classes.
-% This allows for extensibility and flexibility at the same time:
-% user-defined estimators that follow scikit-learn conventions
-% should be usable in pipelines and other composite objects
-% without them actually inheriting from scikit-learn base classes.
-
+A problem arising from the use of Cython, however, is that passing pure Python
+functions as argument, while possible, degrades performance significantly, due
+to the runtime checks needed for each function invocation. This especially
+problematic, for example for kernel methods, which would benefit from accepting
+a kernel function as argument. A potential solution to this problem would be for
+\sklearn to provide a Cython-level API, thereby alllowing the user to pass
+Cython-implemented kernel functions.
 
 \subsection{Parallelism}
 \label{sec:parallel}
@@ -594,37 +571,6 @@ space. In some cases, it may unfortunately even happen that the overhead becomes
 so significant that fully exploiting a multi-core architecture becomes
 infeasible due memory constraints. As such, a proper implementation of parallel
 machine learning algorithms remain a challenging task for the project.
-
-
-\subsection{Cython for inner loops}
-
-A problem arising from the use of Cython
-concerns the mismatch between on the one hand Python functions,
-which are first-class runtime objects endowed with methods and metadata
-that identify them as ``callable'',
-that dynamically check their number and types of arguments,
-and that can return any Python type of object;
-and compiled C or Cython functions on the other hand,
-which exhibit static typing.
-Where it may sometimes be convenient for estimators
-to take functions as arguments
-(e.g., in the case of kernel machine learning,
-where one might like to use a custom kernel),
-but such usage is not at present possible and may never be.
-Passing C or Cython-compiled functions
-would require an API for the kernel method
-to be implemented at the C or Cython level,
-only to be used from compiled code.
-Passing arbitrary Python functions would be possible,
-but performance can be expected to degrade significantly
-because of the runtime checks needed for each invocation of the kernel function.
-(The current solution in scikit-learn is to let the user pass
-not a kernel function,
-but a precomputed Gram matrix for an entire set of objects.
-The linear, polynomial and RBF kernels are treated as special cases in
-the \textsf{LIBSVM}-based SVM learner,
-where they are implemented in C{}\verb!++!.)
-
 
 \section{Comparison with other packages}
 
