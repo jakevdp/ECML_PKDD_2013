@@ -383,14 +383,6 @@ composing complex estimators and then selecting models.
 \textcolor{red}{Point out that any external estimator can be used as base
 estimator thanks to duck typing}\\
 
-To ease code reuse, object-oriented techniques and design patterns are also used
-all throughout the codebase. In particular, the \textit{duck typing} design
-pattern is widely exploited to simplify implementation and skip the introduction
-of superfluous classes. This technique indeed allows both for extensibility and
-flexibility: user-defined estimators that follow our API and conventions should
-be reusable (e.g., in a pipeline) as any built-in estimators, without them
-actually inheriting from our base classes.
-
 \subsection{Pipelines and feature unions}
 
 A distinguishing feature of the \sklearn API is its ability to
@@ -513,6 +505,49 @@ when \texttt{kernel} is set to \texttt{"rbf"}.  Additionally, we see that
 This is because \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} in fact
 delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 \texttt{score} methods to the best estimator, thus mimicking its behavior.
+
+\subsection{Extending \sklearn}
+
+Any object that conforms to a small superset of the API
+lined out in Section~\ref{sec:core-api},
+(in particular, that implements methods \texttt{get\_params}
+and \texttt{set\_params} for setting hyperparameters;
+refer to the documentation at \url{http://scikit-learn.org} for details)
+can be used as a \sklearn estimator
+and be ``plugged into'' a pipeline, grid search or other meta-estimator
+To define such objects, a user can either derive a new class
+from \texttt{sklearn.base.BaseEstimator},
+or define the entire class from scratch,
+without even an \texttt{import sklearn}
+in the relevant program module.
+The Python principle of ``duck typing''
+is employed to make sure that even instances of a class
+that does not derive from any \sklearn class can be a first-class estimator.
+
+In other places of the library,
+in particular in the feature extraction and vectorization code
+for text documents,
+the toolkit is designed to be extensible.
+Here, the estimators provide ``hooks'' for user-defined code:
+objects or functions that provide a specific API
+can be given as arguments at vectorizer construction time.
+\sklearn code then calls into this code
+to obtain the desired behavior.
+Again, such user code can be kept agnostic
+of the \sklearn class hierarchy,
+operating on standard Python objects such as strings instead.
+
+The design principle here is that user code
+should not be tied to \sklearn,
+which is a \textit{library}, not a \textit{framework}.
+This principle avoids a variant of the well-known problem
+with object-oriented design,
+which is that users wanting a ``banana'' get
+``a gorilla holding the banana and the entire jungle''
+(Joe~Armstrong, interviewed by \citealp{seibel2009coders}:213):
+a program that is not reusable with another machine learning toolkit
+(or other solution to the problem at hand),
+because it is intimately tied to \sklearn.
 
 \section{Implementation}
 \label{sec:implementation}
