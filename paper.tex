@@ -515,62 +515,60 @@ delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 \section{Implementation}
 \label{sec:implementation}
 
-\subsection{Cython for performance}
+% \subsection{Cython for performance}
 
 Our implementation guidelines emphasize on writing short and readable code,
 easily maintainable by external contributors, while being as efficient as
-possible.  Whenever practicable, algorithms implemented in \sklearn are thus
+possible.
+
+Whenever practicable, algorithms implemented in \sklearn are thus
 directly written in pure Python. For intensive numerical computations though,
 the library mostly relies on NumPy vector operations, which allows for the code
-to remain concise and readable while being efficient. For all algorithms that
-cannot be easily and efficiently expressed as NumPy operations, we rely on
-Cython \citep{behnel2011cython}  for writing the critical parts and achieving
-decent performance and scalability. Cython is a compiled programming language
-that extends Python with static typing. It produces efficient C extension
-modules that are directly importable from the Python runtime system. Examples of
+to remain concise, readable and efficient. For all algorithms that cannot be
+easily and efficiently expressed as NumPy operations, we rely on Cython
+\citep{behnel2011cython}  for writing the critical parts and achieving decent
+performance and scalability. Cython is a compiled programming language that
+extends Python with static typing. It produces efficient C extension modules
+that are directly importable from the Python runtime system. Examples of
 algorithms written in Cython include stochastic gradient descent for linear
-models, some graph-based clustering algorithms or decision trees. To facilitate
-the adoption of the library, we also try to limit to a bare minimum the set of
-external dependencies. As such, NumPy and SciPy -- the two most common
-dependencies in the Python scientific ecosystem -- are actually the only two
-required dependencies for the library to fully work. Some modules may rely on
-other external libraries, but in such cases we tend to prefer to directly ship
-them within the codebase rather than adding new dependencies. In particular, the
-codebase includes modified versions of the \textsf{LIBSVM} and
-\textsf{LIBLINEAR} libraries \citep{chang2011libsvm,fan2008}, both written in
-C{}\verb!++! and wrapped using Cython modules.
-
-A problem arising from the use of Cython, however, is that passing pure Python
-functions as argument, while possible, degrades performance significantly, due
-to the runtime checks needed for each function invocation. This especially
-problematic, for example for kernel methods, which would benefit from accepting
-a kernel function as argument. A potential solution to this problem would be for
+models, some graph-based clustering algorithms or decision trees.  A problem
+arising from the use of Cython, however, is that passing pure Python functions
+as argument, while possible, degrades performance significantly due to the
+runtime checks needed for each function invocation. This is especially
+problematic for example for kernel methods, which would benefit from accepting a
+kernel function as argument. A potential solution to this problem would be for
 \sklearn to provide a Cython-level API, thereby alllowing the user to pass
 Cython-implemented kernel functions.
 
-\subsection{Parallelism}
-\label{sec:parallel}
+To facilitate the adoption of the library, we also try to limit to a bare
+minimum the set of external dependencies. As such, NumPy and SciPy -- the two
+most common dependencies in the Python scientific ecosystem -- are actually the
+only two required dependencies for the library to fully work. Some modules may
+rely on other external libraries, but in such cases we tend to prefer to
+directly ship them within the codebase rather than adding new dependencies. In
+particular, the codebase includes modified versions of the \textsf{LIBSVM} and
+\textsf{LIBLINEAR} libraries \citep{chang2011libsvm,fan2008}, both written in
+C{}\verb!++! and wrapped using Cython modules.
 
-In many cases, machine learning algorithms can be decomposed into independent
+Finally, some algorithms in \sklearn also support multi-core architectures.
+Machine learning algorithms can indeed often be decomposed into independent
 smaller tasks that may each be solved in parallel, thereby reducing the overall
-computing times. Some algorithms in \sklearn are implemented as such, and
-exploit multi-core architectures.
-
-At this point in time, support for multi-core programming in Python -- at least
-in the CPython implementation targeted by scikit-learn -- is however suboptimal.
-The interpreter supports multithreading, but due to the \textit{global
-interpreter lock}, no two threads in a process may execute Python code at the
-same time. It follows that multithreading is not a viable solution for
-parallelizing parts of an algorithm, even for embarrassingly parallel problems,
-such as fitting and evaluating multiple models in a grid search procedure. The
-workaround that we use is to rely on the Python multiprocessing module, which
-emulates threads using multiple operating system-level processes. However this
-solution is not perfect as it may in turn lead to a large memory overhead since
-objects (e.g., input datasets) need to be copied within each process own memory
-space. In some cases, it may unfortunately even happen that the overhead becomes
-so significant that fully exploiting a multi-core architecture becomes
-infeasible due memory constraints. As such, a proper implementation of parallel
-machine learning algorithms remain a challenging task for the project.
+computing times. At this point in time, support for multi-core programming in
+Python -- at least in the CPython implementation targeted by scikit-learn -- is
+however suboptimal. The interpreter supports multithreading, but due to the
+\textit{global interpreter lock}, no two threads in a process may execute Python
+code at the same time. It follows that multithreading is not a viable solution
+for parallelizing parts of an algorithm, even for embarrassingly parallel
+problems, such as fitting and evaluating multiple models in a grid search
+procedure. The workaround that we use is to rely on the Python multiprocessing
+module, which emulates threads using multiple operating system- level processes.
+However this solution is not perfect as it may in turn lead to a large memory
+overhead since objects (e.g., input datasets) need to be copied within each
+process own memory space. In some cases, it may unfortunately even happen that
+the overhead becomes so significant that fully exploiting a multi- core
+architecture becomes infeasible due memory constraints. As such, a proper
+implementation of parallel machine learning algorithms remain a challenging task
+for the project.
 
 \section{Comparison with other packages}
 
@@ -639,10 +637,15 @@ considered off-topic for the project, since they would require quite different
 data representations and API.
 
 At a lower-level, a potential point of improvement is parallel processing,
-which, as described in Section~\ref{sec:parallel}, is only implemented at a
+which, as described in Section~\ref{sec:implementation}, is only implemented at a
 rather coarse-grained level. Cython built-in support for OpenMP
 \citep{dagum1998openmp} remains a viable candidate technology for more fine-
 grained multicore support in \sklearn.
+
+\subsection*{Acknowledgements}
+
+\textcolor{red}{Mention BSD license, INRIA and stuff.}
+
 
 \bibliographystyle{plainnat}
 \DeclareRobustCommand{\VAN}[3]{#3}
