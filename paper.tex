@@ -428,12 +428,14 @@ output.
 
 As an example, the following snippet illustrates how to create a complex worflow
 computing both linear PCA and kernel PCA components on \texttt{X\_train}
-(through a \texttt{FeatureUnion}), selecting the 100 best of those features and
-then feeding them to an $\ell_2$-regularized logistic regression model:
+(through a \texttt{FeatureUnion}),
+selecting the 100 best of those features according to an ANOVA test
+and then feeding them to an $\ell_2$-regularized logistic regression model:
 \begin{pythoncode}
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.decomposition import PCA, KernelPCA
 from sklearn.feature_selection import SelectKBest
+from sklearn.linear_model import LogisticRegression
 
 fu = FeatureUnion([("pca", PCA()),
                    ("kpca", KernelPCA(kernel="rbf"))])
