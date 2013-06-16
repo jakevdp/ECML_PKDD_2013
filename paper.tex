@@ -545,10 +545,11 @@ minimum the set of external dependencies. As such, NumPy and SciPy -- the two
 most common dependencies in the Python scientific ecosystem -- are actually the
 only two required dependencies for the library to fully work. Some modules may
 rely on other external libraries, but in such cases we tend to prefer to
-directly ship them within the codebase rather than adding new dependencies. In
-particular, the codebase includes modified versions of the \textsf{LIBSVM} and
-\textsf{LIBLINEAR} libraries \citep{chang2011libsvm,fan2008}, both written in
-C{}\verb!++! and wrapped using Cython modules.
+directly ship them within the codebase rather than adding new dependencies for
+the user to install. In particular, the codebase includes modified versions of
+the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
+\citep{chang2011libsvm,fan2008}, both written in C{}\verb!++! and wrapped using
+Cython modules.
 
 Finally, some estimators in \sklearn also support multi-core architectures.
 Machine learning algorithms can indeed often be decomposed into independent
