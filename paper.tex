@@ -552,39 +552,36 @@ because it is intimately tied to \sklearn.
 \section{Implementation}
 \label{sec:implementation}
 
-% \subsection{Cython for performance}
+Our implementation guidelines emphasize on writing efficient but readable code.
+In particular, we focus on making the codebase easily maintainable and
+understandable in order to favour external contributions. Whenever practicable,
+algorithms implemented in \sklearn are thus directly written in pure Python. For
+intensive numerical computations though, the library mostly relies on NumPy
+vector operations, which allows for the code to remain concise, readable and
+efficient. For all algorithms that cannot be easily and efficiently expressed as
+NumPy operations, we rely on Cython \citep{behnel2011cython}  for writing the
+critical parts and achieving decent performance and scalability. Cython is a
+compiled programming language that extends Python with static typing. It
+produces efficient C extension modules that are directly importable from the
+Python run-time system. Examples of algorithms written in Cython include
+stochastic gradient descent for linear models, some graph-based clustering
+algorithms or decision trees.  A problem arising from the use of Cython,
+however, is that passing pure Python functions as argument, while possible,
+degrades performance significantly due to the run-time checks needed for each
+function invocation. This is especially problematic for example for kernel
+methods, which would benefit from accepting a kernel function as argument. A
+potential solution to this problem would be for \sklearn to provide a Cython-
+level API, thereby allowing the user to pass Cython-implemented kernel
+functions.
 
-Our implementation guidelines emphasize on writing short and readable code,
-easily maintainable by external contributors, while being as efficient as
-possible.
-
-Whenever practicable, algorithms implemented in \sklearn are thus
-directly written in pure Python. For intensive numerical computations though,
-the library mostly relies on NumPy vector operations, which allows for the code
-to remain concise, readable and efficient. For all algorithms that cannot be
-easily and efficiently expressed as NumPy operations, we rely on Cython
-\citep{behnel2011cython}  for writing the critical parts and achieving decent
-performance and scalability. Cython is a compiled programming language that
-extends Python with static typing. It produces efficient C extension modules
-that are directly importable from the Python run-time system. Examples of
-algorithms written in Cython include stochastic gradient descent for linear
-models, some graph-based clustering algorithms or decision trees.  A problem
-arising from the use of Cython, however, is that passing pure Python functions
-as argument, while possible, degrades performance significantly due to the
-run-time checks needed for each function invocation. This is especially
-problematic for example for kernel methods, which would benefit from accepting a
-kernel function as argument. A potential solution to this problem would be for
-\sklearn to provide a Cython-level API, thereby allowing the user to pass
-Cython-implemented kernel functions.
-
-To facilitate the adoption of the library, we also try to limit to a bare
-minimum the set of external dependencies. As such, NumPy and SciPy -- the two
-most common dependencies in the Python scientific ecosystem -- are actually the
-only two required dependencies for the library to fully work. Some modules may
-rely on other external libraries, but in such cases we tend to prefer to
-directly ship them within the codebase rather than adding new dependencies for
-the user to install. In particular, the codebase includes modified versions of
-the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
+To facilitate the adoption and the distribution of the library, we also try to
+limit to a bare minimum the set of external dependencies. As such, NumPy and
+SciPy -- the two most common dependencies in the Python scientific ecosystem --
+are actually the only two required dependencies for the library to fully work.
+Some modules may rely on other external libraries, but in such cases we tend to
+prefer to directly ship them within the codebase rather than adding new
+dependencies for the user to install. In particular, the codebase includes
+modified versions of the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
 \citep{chang2011libsvm,fan2008}, both written in C{}\verb!++! and wrapped using
 Cython modules.
 
