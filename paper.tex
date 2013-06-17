@@ -600,26 +600,6 @@ modified versions of the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
 \citep{chang2011libsvm,fan2008}, both written in C{}\verb!++! and wrapped using
 Cython modules.
 
-Finally, some estimators in \sklearn also support multi-core architectures.
-Machine learning algorithms can indeed often be decomposed into independent
-smaller tasks that may each be solved in parallel, thereby reducing the overall
-computing times. At this point in time, support for multi-core programming in
-Python -- at least in the CPython implementation targeted by scikit-learn -- is
-however suboptimal. The interpreter supports multithreading, but due to the
-\textit{global interpreter lock}, no two threads in a process may execute Python
-code at the same time. It follows that multithreading is not a viable solution
-for parallelizing parts of an algorithm, even for embarrassingly parallel
-problems, such as fitting and evaluating multiple models in a grid search
-procedure. The workaround that we use is to rely on the Python multiprocessing
-module, which emulates threads using multiple operating system- level processes.
-However this solution is not perfect as it may in turn lead to a large memory
-overhead since objects (e.g., input datasets) need to be copied within each
-process own memory space. In some cases, it may unfortunately even happen that
-the overhead becomes so significant that fully exploiting a multi-core
-architecture becomes infeasible due memory constraints. As such, a proper
-implementation of parallel machine learning algorithms remain a challenging task
-for the project.
-
 \section{Comparison with other packages}
 
 \label{sec:comparison}
@@ -673,7 +653,7 @@ allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
 
 
-\section{Conclusions and future works}
+\section{Conclusions and future work}
 \label{sec:conclusions}
 
 \textcolor{red}{TODO: include some overall conclusions (e.g., reasons of the success sklearn)}
@@ -686,11 +666,23 @@ Topics like structured prediction or reinforcement learning are however
 considered off-topic for the project, since they would require quite different
 data representations and API.
 
-At a lower-level, a potential point of improvement is parallel processing,
-which, as described in Section~\ref{sec:implementation}, is only implemented at a
-rather coarse-grained level. Cython built-in support for OpenMP
-\citep{dagum1998openmp} remains a viable candidate technology for more fine-
-grained multicore support in \sklearn.
+At a lower-level, parallel processing is a potential point of improvement.
+Some estimators in \sklearn are already able to leverage multi-core processors,
+but only in a coarse-grained fashion.
+At present, parallel processing is difficult to accomplish in the Python environment;
+\sklearn targets the main implementation, CPython,
+which cannot execute Python code on multiple CPUs simultaneously.
+It follows that any parallel task decomposition must either be done
+inside Cython modules,
+or at a level high enough to warrant the overhead
+of creating multiple OS-level processes,
+and the ensuing inter-process communication.
+Parallel grid search is an example of the latter approach
+which has already been implemented.
+Recent versions of Cython include support for the OpenMP standard
+\citep{dagum1998openmp},
+which is a viable candidate technology
+for more fine-grained multicore support in \sklearn.
 
 \subsection*{Acknowledgements}
 
