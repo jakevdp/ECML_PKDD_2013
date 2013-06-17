@@ -239,6 +239,13 @@ situations in order to make estimators as efficient as possible
 never performs any actual learning (this is the role of the \texttt{fit} method,
 see below).  Its only goal is to set the parameter values and freeze the
 behavior of the estimator.
+Initializing and fitting an estimator object
+proceeds in a way that is similar to partial function application:
+an estimator can be considered a function
+that maps hyperparameter settings to an actual learning algorithm.
+The advantage of this API
+over one where the object initializer would perform the learning
+will become especially apparent in Section~\ref{sec:advanced-api}.
 
 The estimator interface defines a \texttt{fit} method. This method is called
 with training data (e.g., supplied as two arrays \texttt{X\_train} and
@@ -248,6 +255,9 @@ data and set these as attributes on the estimator object. As a convention, the
 parameters learned by an estimator are exposed as public attributes whose name
 is suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
 learned coefficients of a linear model).
+The return value of \texttt{fit} is always the object it was called on,
+which now serves as a model of its input
+and can be used to perform predictions or transformations of input data.
 
 As an example, let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:
@@ -353,20 +363,21 @@ dimension reduction (PCA, manifold learning techniques), kernel
 approximation techniques, and any other approach that can be used to
 derive a modified representation of the data.
 
-Finally, let us also note that the \texttt{fit} method always returns the estimator
-it was called on, hence making method chaining possible.  Using this technique,
-we can thus rewrite the \texttt{StandardScaler} example above in a single line:
+Additionally, by leveraging that fact that \texttt{fit}
+always returns the estimator it was called on,
+the \texttt{StandardScaler} example above
+can be rewritten in a single line using a ``method chaining'' style:
 \begin{pythoncode}
 X_train = StandardScaler().fit(X_train).transform(X_train)
 \end{pythoncode}
-In addition, \texttt{fit(X\_train).transform(X\_train)} can further
+Finally, \texttt{fit(X\_train).transform(X\_train)} can further
 be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
 and \texttt{transform} methods into a single method \texttt{fit\_transform}
 allows to share computations, which often makes a huge difference in practice.
-In the same spirit, \sklearn sometimes provides the
-\texttt{fit\_predict} method for combining the \texttt{fit} and \texttt{predict}
-methods. This is especially useful for retrieving cluster predictions with
-respect to the training data \texttt{X\_train} in clustering algorithms.
+In the same spirit, clustering algorithms provide a
+\texttt{fit\_predict} method
+that is equivalent to \texttt{fit} followed by \texttt{predict},
+and thus returns the cluster labels assigned to the training data samples.
 
 
 \section{Advanced API}
@@ -379,6 +390,28 @@ composing complex estimators and then selecting models.
 
 \subsection{Meta-estimators}
 
+Some machine learning algorithms are most naturally expressed
+as modification or extensions of other, simpler algorithms.
+Examples include ensemble estimators
+and various multiclass and multilabel classification schemes.
+Such algorithms are implemented as so-called ``meta-estimators'',
+that take an estimator as input and use that to perform learning and prediction.
+
+As an example, a logistic regression classifier
+by default uses a one-vs.-rest (aka one-vs.-all) scheme internally
+for performing multiclass classification.
+If multiclass classification based on error-correcting codes
+\citep{dietterich1995solving} is desired instead,
+this can achieved with an \texttt{OutputCodeClassifier}
+that wraps a \texttt{LogisticRegression}:
+\begin{pythoncode}
+from sklearn.linear_model import LogisticRegression
+from sklearn.multiclass import OutputCodeClassifier
+
+ecoc_lr = OutputCodeClassifier(LogisticRegression(penalty="l1"))
+\end{pythoncode}
+
+% TODO: show a grid search on this estimator
 
 \subsection{Pipelines and feature unions}
 
