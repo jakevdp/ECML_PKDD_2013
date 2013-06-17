@@ -380,10 +380,8 @@ composing complex estimators and then selecting models.
 
 \subsection{Meta-estimators}
 
-\textcolor{red}{TODO}
-
-\textcolor{red}{Point out that any external estimator can be used as base
-estimator thanks to duck typing}\\
+\textcolor{red}{TODO: Point out that any external estimator can be used as base
+estimator thanks to duck typing}
 
 \subsection{Pipelines and feature unions}
 
@@ -510,46 +508,34 @@ delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 
 \subsection{Extending \sklearn}
 
-Any object that conforms to a small superset of the API
-lined out in Section~\ref{sec:core-api},
-(in particular, that implements methods \texttt{get\_params}
-and \texttt{set\_params} for setting hyperparameters;
-refer to the documentation at \url{http://scikit-learn.org} for details)
-can be used as a \sklearn estimator
-and be ``plugged into'' a pipeline, grid search or other meta-estimator
-To define such objects, a user can either derive a new class
-from \texttt{sklearn.base.BaseEstimator},
-or define the entire class from scratch,
-without even an \texttt{import sklearn}
-in the relevant program module.
-The Python principle of ``duck typing''
-is employed to make sure that even instances of a class
-that does not derive from any \sklearn class can be a first-class estimator.
+To ease code reuse, simplify implementation and skip the introduction of
+superfluous classes, the principle of \textit{duck typing} is exploited all
+throughout the codebase. This technique allows both for extensibility and
+flexibility: as long as an estimator follows our API and conventions (as
+outlined in Section~\ref{sec:core-api}), then it should be as reusable as any
+built-in estimator (e.g., it can plugged within pipelines or grid search
+estimators). That is, estimators are specified only by their interface, and not
+by inheritance. In particular, this means that external developers can define
+their own estimators without being forced to inherit from any internal class of
+\sklearn, and rest assured that they can be used as first-class estimators.
 
-In other places of the library,
-in particular in the feature extraction and vectorization code
-for text documents,
-the toolkit is designed to be extensible.
-Here, the estimators provide ``hooks'' for user-defined code:
-objects or functions that provide a specific API
-can be given as arguments at vectorizer construction time.
-\sklearn code then calls into this code
-to obtain the desired behavior.
-Again, such user code can be kept agnostic
-of the \sklearn class hierarchy,
-operating on standard Python objects such as strings instead.
+In other places of the library, in particular in the feature extraction and
+vectorization code for text documents, the toolkit is also designed to be
+extensible. Here, estimators provide hooks for user-defined code: objects or
+functions that provide a specific API can be given as arguments at vectorizer
+construction time. The library then calls into this code to obtain the desired
+behavior. Again, such external user code can be kept agnostic of the \sklearn
+class hierarchy and operates, for example, on standard Python objects such as
+strings instead.
 
-The design principle here is that user code
-should not be tied to \sklearn,
-which is a \textit{library}, not a \textit{framework}.
-This principle avoids a variant of the well-known problem
-with object-oriented design,
-which is that users wanting a ``banana'' get
-``a gorilla holding the banana and the entire jungle''
-(Joe~Armstrong, interviewed by \citealp{seibel2009coders}:213):
-a program that is not reusable with another machine learning toolkit
-(or other solution to the problem at hand),
-because it is intimately tied to \sklearn.
+Our rule of thumb is that user code should not be tied to \sklearn -- which is a
+\textit{library}, and not a \textit{framework}. This principle indeed avoids a
+well-known problem with object-oriented design, which is that users wanting a
+``banana'' should not get ``a gorilla holding the banana and the entire jungle''
+(Joe~Armstrong, interviewed by \citealp{seibel2009coders}). That is, programs
+using \sklearn should be easily reusable with other machine learning toolkits or
+in other contexts, because they don't need to be intimately tied to it.
+
 
 \section{Implementation}
 \label{sec:implementation}
