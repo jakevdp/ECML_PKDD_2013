@@ -239,13 +239,11 @@ situations in order to make estimators as efficient as possible
 never performs any actual learning (this is the role of the \texttt{fit} method,
 see below).  Its only goal is to set the parameter values and freeze the
 behavior of the estimator.
-Initializing and fitting an estimator object
-proceeds in a way that is similar to partial function application:
-an estimator can be considered a function
-that maps hyperparameter settings to an actual learning algorithm.
-The advantage of this API
-over one where the object initializer would perform the learning
-will become especially apparent in Section~\ref{sec:advanced-api}.
+Initializing and fitting an estimator object proceeds in a way that is similar
+to partial function application: an estimator can be considered as a function
+that maps hyper-parameter settings to an actual learning algorithm. The
+advantage of this API over one where the object initializer would perform the
+learning will become especially apparent in Section~\ref{sec:advanced-api}.
 
 The estimator interface defines a \texttt{fit} method. This method is called
 with training data (e.g., supplied as two arrays \texttt{X\_train} and
@@ -363,10 +361,9 @@ dimension reduction (PCA, manifold learning techniques), kernel
 approximation techniques, and any other approach that can be used to
 derive a modified representation of the data.
 
-Additionally, by leveraging that fact that \texttt{fit}
-always returns the estimator it was called on,
-the \texttt{StandardScaler} example above
-can be rewritten in a single line using a ``method chaining'' style:
+Additionally, by leveraging the fact that \texttt{fit} always returns the
+estimator it was called on, the \texttt{StandardScaler} example above can be
+rewritten in a single line using method chaining:
 \begin{pythoncode}
 X_train = StandardScaler().fit(X_train).transform(X_train)
 \end{pythoncode}
