@@ -227,37 +227,36 @@ clustering) are offered as objects implementing that interface. Machine
 learning tasks like feature extraction, feature selection or dimensionality
 reduction are also provided as estimators.
 
-The constructor of an estimator object takes as input a set of named constant
-hyper-parameters. At initialization, all given parameters are attached to the
-estimator instance as public attributes and serve to determine the estimator
-behavior (e.g., the $C$ constant in SVMs). Parameters set as public attributes
-are also used for introspection purposes, e.g., in model selection routines. To
-ease their use, default hyper-parameter values are provided for all built-in
-estimators. These default values are set to be relevant in most common
-situations in order to make estimators as efficient as possible
-\textit{out-of-box} for non-experts. Finally, the constructor of an estimator
-never performs any actual learning (this is the role of the \texttt{fit} method,
-see below).  Its only goal is to set the parameter values and freeze the
-behavior of the estimator.
-Initializing and fitting an estimator object proceeds in a way that is similar
-to partial function application: an estimator can be considered as a function
-that maps hyper-parameter settings to an actual learning algorithm. The
-advantage of this API over one where the object initializer would perform the
-learning will become especially apparent in Section~\ref{sec:advanced-api}.
+Initializing of estimator objects and actual learning are strictly separated,
+in a way that is similar to partial function application:
+an estimator is initialized from a set of hyper-parameter settings
+(e.g., regularization parameters, random seeds)
+and can be considered a function
+that maps these settings to actual learning algorithms.
+The object initializer does not see any actual data.
+All it does is attach the given parameters to the object.
+Hyper-parameter settings are public attributes
+for the sake of convenient model inspection.
 
-The estimator interface defines a \texttt{fit} method. This method is called
+Actual learning is performed by the \texttt{fit} method. This method is called
 with training data (e.g., supplied as two arrays \texttt{X\_train} and
 \texttt{y\_train} in supervised learning estimators). Its task is to run a
-learning algorithm and to determine model- specific parameters from the training
+learning algorithm and to determine model-specific parameters from the training
 data and set these as attributes on the estimator object. As a convention, the
 parameters learned by an estimator are exposed as public attributes whose name
 is suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
-learned coefficients of a linear model).
-The return value of \texttt{fit} is always the object it was called on,
-which now serves as a model of its input
-and can be used to perform predictions or transformations of input data.
+learned coefficients of a linear model),
+again to facilitate model inspection.
+In the partial application view,
+\texttt{fit} is a function from data to a model of that data,
+the return value always being the object it was called on,
+which can be used to perform predictions or transformations of input data.
+The choice to let a single object serve dual purpose as estimator and model
+simplifies the \sklearn class hierarchy
+compared to an approach were estimators and models are separated.
 
-As an example, let us consider a supervised learning task using logistic regression.
+As an example to illustrate the initialize-\texttt{fit} sequence,
+let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:
 \begin{pythoncode}
 from sklearn.linear_model import LogisticRegression
@@ -270,9 +269,11 @@ setting the \texttt{penalty} hyper-parameter to \texttt{"l1"}, hence enabling
 $\ell_1$ regularization. Other hyper-parameters (such as \texttt{C}, which
 defines the strength of the regularization) are not explicitly defined and are
 thus set to the default values. Upon calling \texttt{fit}, the model is then
-learned from the training arrays \texttt{X\_train} and \texttt{y\_train}. Since
-all estimators share the same interface, using a different learning algorithm is
-as simple as replacing the constructor. For example, to build a Random Forest on
+learned from the training arrays \texttt{X\_train} and \texttt{y\_train}.
+(In this example, \texttt{fit} is called solely for its side effects.)
+Since all estimators share the same interface, using a different learning algorithm is
+as simple as replacing the constructor (the class name).
+For example, to build a random forest on
 the same training data, one would simply have to replace
 \texttt{LogisticRegression(penalty="l1")} in the snippet above by \\
 \texttt{RandomForestClassifier()}.
