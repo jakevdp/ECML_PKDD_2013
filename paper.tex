@@ -289,8 +289,9 @@ consistency, composition and model selection reasons.
 
 \subsection{Predictors}
 
-The \textit{predictor} interface defines a \texttt{predict}
-method taking as input some new data \texttt{X\_test} and producing as output
+The \textit{predictor} interface extends the notion of an estimator
+by adding a \texttt{predict}
+method that takes an array \texttt{X\_test} and produces
 predictions for \texttt{X\_test}, based on the learned parameters of the
 estimator (we call the input to \texttt{predict} ``\texttt{X\_test}'' in order
 to emphasize that \texttt{predict} generalizes to new data). In the case of
@@ -329,10 +330,10 @@ takes as inputs arrays \texttt{X\_test} and \texttt{y\_test} and typically
 computes the coefficient of determination between \texttt{y\_test} and
 \texttt{predict(X\_test)} in the case of classification, or the mean squared
 error in the case of regression. Not however that, from an API point of view,
-the only guideline is that the \texttt{score} method returns a numerical value
-such that the higher the better. As such, some unsupervised learning estimators
-also exposes a \texttt{score} function, computing for instance the likelihood of
-the given data.
+the only guideline is that the \texttt{score} method returns a value
+that quantifies the quality of its predictions (the higher, the better).
+Unsupervised learning estimators may also exposes a \texttt{score} function
+to compute, for instance, the likelihood of the given data under its model.
 
 \subsection{Transformers}
 
