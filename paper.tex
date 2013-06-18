@@ -236,7 +236,13 @@ that maps these settings to actual learning algorithms.
 The object initializer does not see any actual data.
 All it does is attach the given parameters to the object.
 Hyper-parameter settings are public attributes
-for the sake of convenient model inspection.
+for the sake of convenient model inspection,
+which is especially important in model selection settings.
+For ease of use, default hyper-parameter values are provided
+for all built-in estimators.
+These default values are set to be relevant in most common
+situations in order to make estimators as effective as possible
+\textit{out-of-box} for non-experts.
 
 Actual learning is performed by the \texttt{fit} method. This method is called
 with training data (e.g., supplied as two arrays \texttt{X\_train} and
