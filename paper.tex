@@ -465,9 +465,8 @@ Pipeline([("feat_union", fu),
 ]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
 
-As the above snippet shows, \texttt{Pipeline} and \texttt{FeatureUnion} can be
-combined to create complex objects. In particular, since both are themselves
-estimators, they can be used to form nested workflows.
+As the above example shows, \texttt{Pipeline} and \texttt{FeatureUnion} can be
+combined to create complex and nested workflows.
 
 \subsection{Model selection}
 
