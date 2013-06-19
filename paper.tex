@@ -597,14 +597,16 @@ Python run-time system. Examples of algorithms written in Cython include
 stochastic gradient descent for linear models, some graph-based clustering
 algorithms and decision trees.
 
-To facilitate the adoption and the distribution of the library, we also try to
-limit to a bare minimum the set of external dependencies. As such, NumPy and
-SciPy -- the two most common dependencies in the Python scientific ecosystem --
-are actually the only two required dependencies for the library to fully work.
-Some modules may rely on other external libraries, but in such cases we tend to
-prefer to directly ship them within the codebase rather than adding new
-dependencies for the user to install. In particular, the codebase includes
-modified versions of the \textsf{LIBSVM} and \textsf{LIBLINEAR} libraries
+To facilitate the adoption and the distribution of \sklearn,
+the set of external dependencies is kept to a bare minimum:
+only Python, NumPy and SciPy are required for a functioning installation.
+Binary distributions of these are available for the major platforms.
+Visualisation functionality depends on Matplotlib \citep{hunter2007matplotlib}
+and/or Graphviz \citep{gansner2000},
+but neither is required to do machine learning.
+When feasible, external libraries are integrated into the codebase.
+In particular, the codebase includes modified versions
+of \textsf{LIBSVM} and \textsf{LIBLINEAR}
 \citep{chang2011libsvm,fan2008}, both written in C{}\verb!++! and wrapped using
 Cython modules.
 
