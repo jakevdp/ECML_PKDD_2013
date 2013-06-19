@@ -383,10 +383,13 @@ rewritten in a single line using method chaining:
 \begin{pythoncode}
 X_train = StandardScaler().fit(X_train).transform(X_train)
 \end{pythoncode}
-In this particular example, \texttt{fit(X\_train).transform(X\_train)} can also further
-be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
-and \texttt{transform} methods into a single \texttt{fit\_transform} method
-indeed allows to share computations, which often makes a huge difference in practice.
+
+Furthermore, every estimator allows \texttt{fit(X\_train).transform(X\_train)}
+to be written as \texttt{fit\_transform(X\_train)}.
+The combined \texttt{fit\_transform} method prevents repeated computations.
+Depending on the transformer,
+this may either skip only an input validation step,
+or in fact use a more efficient algorithm for the transformation.
 In the same spirit, clustering algorithms provide a
 \texttt{fit\_predict} method
 that is equivalent to \texttt{fit} followed by \texttt{predict},
