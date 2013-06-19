@@ -586,6 +586,68 @@ delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 \texttt{score} methods to the best estimator
 (optionally after re-fitting it on the whole training set).
 
+% XXX do we need a subsection header here?
+% "Recursive composition of estimators"?
+Figure~\ref{nested-gridsearch} shows how different meta-estimators interact.
+This snippet builds a composite estimator in several steps.
+First, a linear SVM classifier is combined in a pipeline with
+a feature selector based on $\chi^2$ test statistics.
+This is then fed as input to a \texttt{OneVsRestClassifier}
+to build a $K$-way multiclass estimator
+consisting of $K$ binary classifiers,
+after determining the value of $K$ at \texttt{fit} time
+from the training labels.
+Each of these binary classifiers performs feature selection
+independently of all the others.
+This composite classifier is then combined
+with a \textsf{tf--idf} feature extractor using yet another pipeline.
+Because the result is again an estimator,
+we can perform grid search to find optimal values for the hyper-parameters
+of each step of the recursive pipeline.
+
+The \texttt{param\_grid} in Figure~\ref{nested-gridsearch}
+uses a \sklearn-specific notation
+to address the individual components of the nested structure.
+This notation uses double underscores to separate components,
+so that \texttt{tfidf\_\_sublinear\_tf}
+addresses the \texttt{sublinear\_tf} setting
+of the \textsf{tf--idf} feature extractor
+(when turned on, term frequencies are replaced by their logarithms).
+Note the \texttt{estimator} component,
+which address the base estimator (the first pipeline)
+inside the OvR meta-estimator.
+This is required because the wrapper may itself have settings
+that might conflict with the estimator that it wraps;
+this is not required for pipelines,
+because those have no settings of their own.
+
+\begin{figure}[t]
+\begin{pythoncode}
+from sklearn.grid_search import GridSearchCV
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_selection import SelectKBest, chi2
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.svm import LinearSVC
+
+svm_chi2 = Pipeline([("chi2", SelectKBest(chi2)),
+                     ("svm", LinearSVC())])
+ovr_svm = OneVsRestClassifier(svm_chi2)
+
+doc_clf = Pipeline([("tfidf", TfidfVectorizer()),
+                    ("ovr", ovr_svm)])
+
+param_grid = {
+  "tfidf__sublinear_tf": [True, False],
+  "ovr__estimator__chi2__k": [200, 500, 1000],
+  "ovr__estimator__svm_C": [1, 10, 100]}
+
+clf = GridSearchCV(doc_clf, param_grid, cv=10)
+\end{pythoncode}
+\caption{Parameter search with nested pipelines for text classification.}
+\label{nested-gridsearch}
+\end{figure}
+
 \subsection{Extending scikit-learn}
 
 To ease code reuse, simplify implementation and skip the introduction of
