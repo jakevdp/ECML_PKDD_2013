@@ -551,15 +551,13 @@ delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 \subsection{Extending scikit-learn}
 
 To ease code reuse, simplify implementation and skip the introduction of
-superfluous classes, the principle of \textit{duck typing} is exploited all
+superfluous classes, the principle of \textit{duck typing} is exploited
 throughout the codebase. This technique allows both for extensibility and
-flexibility: as long as an estimator follows our API and conventions (as
-outlined in Section~\ref{sec:core-api}), then it should be as reusable as any
-built-in estimator (e.g., it can plugged within pipelines or grid search
-estimators). That is, estimators are specified only by their interface, and not
-by inheritance. In particular, this means that external developers can define
-their own estimators without being forced to inherit from any internal class of
-\sklearn, and rest assured that they can be used as first-class estimators.
+flexibility: as long as an estimator follows the API and conventions
+outlined in Section~\ref{sec:core-api}, then it can be used in lieu of a
+built-in estimator (e.g., it can plugged into pipelines or grid search).
+That is, estimators are defined only by interface, not by inheritance,
+and external developers are not forced to inherit from any \sklearn class.
 
 In other places of the library, in particular in the feature extraction and
 vectorization code for text documents, the toolkit is also designed to be
@@ -567,8 +565,8 @@ extensible. Here, estimators provide hooks for user-defined code: objects or
 functions that provide a specific API can be given as arguments at vectorizer
 construction time. The library then calls into this code to obtain the desired
 behavior. Again, such external user code can be kept agnostic of the \sklearn
-class hierarchy and operates, for example, on standard Python objects such as
-strings instead.
+class hierarchy.
+Communication proceeds by passing object of standard Python/NumPy types.
 
 Our rule of thumb is that user code should not be tied to \sklearn -- which is a
 \textit{library}, and not a \textit{framework}. This principle indeed avoids a
