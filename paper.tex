@@ -471,11 +471,13 @@ each of the transformers.
 
 \texttt{Pipeline} and \texttt{FeatureUnion} can be
 combined to create complex and nested workflows.
-As an example, the following snippet illustrates how to create a complex worflow
-computing both linear PCA and kernel PCA components on \texttt{X\_train}
+Figure~\ref{union+pipeline} illustrates how to create a complex estimator
+that computes both linear PCA and kernel PCA features on \texttt{X\_train}
 (through a \texttt{FeatureUnion}),
-selecting the 10 best of those features according to an ANOVA test
-and then feeding them to an $\ell_2$-regularized logistic regression model:
+selects the 10 best features in the combination according to an ANOVA test
+and feeds those to an $\ell_2$-regularized logistic regression model.
+
+\begin{figure}[h]
 \begin{pythoncode}
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.decomposition import PCA, KernelPCA
@@ -490,6 +492,9 @@ Pipeline([("feat_union", fu),
           ("log_reg", LogisticRegression(penalty="l2"))
 ]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
+\caption{Combined use of \texttt{Pipeline} and \texttt{FeatureUnion}.}
+\label{union+pipeline}
+\end{figure}
 
 \subsection{Model selection}
 
