@@ -227,18 +227,17 @@ clustering) are offered as objects implementing that interface. Machine
 learning tasks like feature extraction, feature selection or dimensionality
 reduction are also provided as estimators.
 
-Initializing of estimator objects and actual learning are strictly separated,
+Estimator initialization and actual learning are strictly separated,
 in a way that is similar to partial function application:
-an estimator is initialized from a set of hyper-parameter settings
-(e.g., regularization parameters, random seeds)
-and can be considered a function
-that maps these settings to actual learning algorithms.
-The object initializer does not see any actual data.
+an estimator is initialized from a set of named constant hyper-parameter values
+(e.g., the $C$ constant in SVMs)
+and can be considered as a function
+that maps these values to actual learning algorithms.
+The constructor of an estimator does not see any actual data, nor does it perform any actual learning.
 All it does is attach the given parameters to the object.
-Hyper-parameter settings are public attributes
-for the sake of convenient model inspection,
+For the sake of convenient model inspection, hyper-parameters are set as public attributes,
 which is especially important in model selection settings.
-For ease of use, default hyper-parameter values are provided
+For ease of use, default hyper-parameter values are also provided
 for all built-in estimators.
 These default values are set to be relevant in most common
 situations in order to make estimators as effective as possible
@@ -254,9 +253,9 @@ is suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
 learned coefficients of a linear model),
 again to facilitate model inspection.
 In the partial application view,
-\texttt{fit} is a function from data to a model of that data,
-the return value always being the object it was called on,
-which can be used to perform predictions or transformations of input data.
+\texttt{fit} is a function from data to a model of that data.
+As such, it always returns the estimator object it was called on,
+which now serves as a model of its input and can be used to perform predictions or transformations of input data.
 The choice to let a single object serve dual purpose as estimator and model
 simplifies the \sklearn class hierarchy
 compared to an approach were estimators and models are separated.
@@ -375,10 +374,10 @@ rewritten in a single line using method chaining:
 \begin{pythoncode}
 X_train = StandardScaler().fit(X_train).transform(X_train)
 \end{pythoncode}
-Finally, \texttt{fit(X\_train).transform(X\_train)} can further
+In this particular example, \texttt{fit(X\_train).transform(X\_train)} can also further
 be rewritten as \texttt{fit\_transform(X\_train)}.  Combining the \texttt{fit}
-and \texttt{transform} methods into a single method \texttt{fit\_transform}
-allows to share computations, which often makes a huge difference in practice.
+and \texttt{transform} methods into a single \texttt{fit\_transform} method
+indeed allows to share computations, which often makes a huge difference in practice.
 In the same spirit, clustering algorithms provide a
 \texttt{fit\_predict} method
 that is equivalent to \texttt{fit} followed by \texttt{predict},
