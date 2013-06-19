@@ -388,6 +388,13 @@ and thus returns the cluster labels assigned to the training data samples.
 
 \label{sec:advanced-api}
 
+Building on the core interface introduced in the previous section, we now
+present in this section advanced API mechanisms for building meta-estimators,
+composing complex estimators and then selecting models. We also discuss design
+choices allowing for an easy use and extension of \sklearn.
+
+\subsection{Meta-estimators}
+
 Some machine learning algorithms are expressed naturally
 as meta-algorithms parametrized on simpler algorithms.
 Examples include ensemble methods which
