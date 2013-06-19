@@ -388,22 +388,18 @@ and thus returns the cluster labels assigned to the training data samples.
 
 \label{sec:advanced-api}
 
-Building on the core interface introduced in the previous section, we now
-present in this section advanced API mechanisms for building meta-estimators,
-composing complex estimators and then selecting models.
-
-\subsection{Meta-estimators}
-
-In machine learning, some algorithms are expressed as meta-algorithms built
-and parametrized on simpler algorithms. Examples include ensemble methods which
+Some machine learning algorithms are expressed naturally
+as meta-algorithms parametrized on simpler algorithms.
+Examples include ensemble methods which
 build and combine several simpler models (e.g., decision trees), or multiclass
 and multilabel classification schemes which can be used to turn a binary
 classifier into a multiclass or multilabel classifier. In \sklearn, such algorithms are
 implemented as \textit{meta-estimators}. They take as input an existing base
 estimator and use it internally for learning and making predictions.
+All meta-estimators implement the regular estimator interface.
 
 As an example, a logistic regression classifier
- uses by default a one-vs.-rest  scheme
+uses by default a one-vs.-rest scheme
 for performing multiclass classification.
 If multiclass classification based on error-correcting codes
 \citep{dietterich1995solving} is desired instead,
@@ -415,6 +411,16 @@ from sklearn.multiclass import OutputCodeClassifier
 
 ecoc_lr = OutputCodeClassifier(LogisticRegression(penalty="l1"))
 \end{pythoncode}
+
+Since using meta-estimators requires the construction of nested objects,
+the decision to implement a meta-estimator
+rather than fold the behavior it implements
+into existing estimators classes
+is always based on a trade-off between genericity and ease of use.
+Relating to the example just given,
+all \sklearn classifiers are designed to do multiclass classification
+and the use of the \texttt{multiclass} module
+is only necessary in advanced use cases.
 
 % TODO: show a grid search on this estimator
 
