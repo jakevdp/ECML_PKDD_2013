@@ -504,10 +504,11 @@ hyper-parameter grid, which defines the values to search. Optionally, they can
 also take a cross-validation scheme and a score function.  The library provides
 various such cross-validation schemes, including K-Fold (default), Leave-One-Out
 and Bootstrap. The score function used by default is the \texttt{score} method
-provided by the estimator. However, the library provides a variety of
-score functions that the user can choose instead, including -- among many others
--- accuracy, AUC, $F_1$-score for classification; $R^2$ score or mean squared
-error for regression and the Rand Index for clustering.
+provided by the estimator. However, the library provides a large variety of
+score functions that the user can choose instead,
+including accuracy, AUC, $F_1$-score for classification;
+$R^2$ score or mean squared error for regression
+and the Rand index for clustering.
 
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} differ in the way they
 search the hyper-parameter grid.  \texttt{GridSearchCV} exhaustively searches
@@ -568,7 +569,7 @@ behavior. Again, such external user code can be kept agnostic of the \sklearn
 class hierarchy.
 Communication proceeds by passing object of standard Python/NumPy types.
 
-Our rule of thumb is that user code should not be tied to \sklearn -- which is a
+Our rule of thumb is that user code should not be tied to \sklearn---which is a
 \textit{library}, and not a \textit{framework}. This principle indeed avoids a
 well-known problem with object-oriented design, which is that users wanting a
 ``banana'' should not get ``a gorilla holding the banana and the entire jungle''
@@ -694,9 +695,9 @@ for more fine-grained multicore support in \sklearn.
 \subsection*{Acknowledgements}
 
 The authors and contributors acknowledge active support from INRIA. Past and
-present sponsors of the project also include Google -- for funding code
-scholarships (\textit{Google Summer of Code}) --, the Python Software Fundation and
-Tinyclues -- for funding coding sprints.
+present sponsors of the project also include Google for funding code
+scholarships (\textit{Google Summer of Code}),
+the Python Software Fundation and Tinyclues for funding coding sprints.
 
 \bibliographystyle{abbrvnat}
 \DeclareRobustCommand{\VAN}[3]{#3}
