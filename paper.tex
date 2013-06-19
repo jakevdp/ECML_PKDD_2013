@@ -309,11 +309,11 @@ y_pred = clf.predict(X_test)
 \end{pythoncode}
 
 Some unsupervised learning
-estimators may however also implement the \texttt{predict} interface.
+estimators may also implement the \texttt{predict} interface.
 The code in Figure~\ref{kmeans-predict} fits a $k$-means model with $k=10$
 on training data \texttt{X\_train},
 then uses the model's \texttt{predict} method
-to obtain cluster labels for unseen data \texttt{X\_test}.
+to obtain cluster labels (integer indices) for unseen data \texttt{X\_test}.
 
 \begin{figure}[h]
 \begin{pythoncode}
@@ -323,8 +323,7 @@ km = KMeans(n_clusters=10)
 km.fit(X_train)
 clust_pred = km.predict(X_test)
 \end{pythoncode}
-\caption{Finding closest centroids for unseen data after $k$-means clustering.
-         \texttt{clust\_pred} will hold integer indices of centroids.}
+\caption{Finding closest centroids for unseen data after $k$-means clustering.}
 \label{kmeans-predict}
 \end{figure}
 
