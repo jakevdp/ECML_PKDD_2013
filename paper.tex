@@ -536,9 +536,9 @@ also take a cross-validation scheme and a score function.  The library provides
 various such cross-validation schemes, including K-Fold (default), Leave-One-Out
 and Bootstrap. The score function used by default is the \texttt{score} method
 provided by the estimator. However, the library provides a large variety of
-score functions that the user can choose instead,
-including accuracy, AUC, $F_1$-score for classification;
-$R^2$ score or mean squared error for regression
+score functions that the user can choose from,
+including accuracy and $F_1$-score for classification;
+$R^2$ score or mean squared error for regression;
 and the Rand index for clustering.
 
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} differ in the way they
@@ -633,7 +633,7 @@ Python run-time system. Examples of algorithms written in Cython include
 stochastic gradient descent for linear models, some graph-based clustering
 algorithms and decision trees.
 
-To facilitate the adoption and the distribution of \sklearn,
+To facilitate the installation and thus adoption of \sklearn,
 the set of external dependencies is kept to a bare minimum:
 only Python, NumPy and SciPy are required for a functioning installation.
 Binary distributions of these are available for the major platforms.
@@ -667,14 +667,13 @@ string handling/text processing, interprocess communication, networking
 and many of the other tasks that many machine learning programs
 (whether academic or commercial)
 will have to perform ``on the side''.
-In addition, third-party libraries are available for virtually any task
-that modern computer programs routinely perform.
+In addition, third-party libraries are available for many other routine tasks.
 
 Another package that deserves mention is the Gensim topic modeling toolkit
 \citep{rehurek2010gensim}.
 Although its stated goal is not machine learning,
-it does exemplify a style of API design for scalable processing of ``big data''
-that takes a different approach than the comparable models in \sklearn.
+it does exemplify API design for scalable processing of ``big data''
+that takes a different approach than comparable models in \sklearn.
 Gensim's way of dealing with large datasets is to use algorithms
 that have $O(1)$ space complexity and can be updated online,
 called \textit{document streaming} by \citeauthor{rehurek2010gensim}.
@@ -684,12 +683,12 @@ The API is designed around the Python concept of an \textit{iterable}
 While the text vectorization part of \sklearn
 also uses iterables to some extent,
 the emphasis is still on (mini-)batch processing,
-even in the truly stateless, O(1) memory vectorizers
+even in the stateless, O(1) memory vectorizers
 that implement the hashing trick of \citet{weinberger2009}.
 This way of processing, as argued earlier in Section~\ref{sec:arrays},
 reduces various forms of overhead
 and makes effective use of the abundance of memory in modern computers.
-No attempt is made to hide this batch-oriented processing from the user,
+We make no attempt to hide this batch-oriented processing from the user,
 allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
 
