@@ -416,19 +416,19 @@ All meta-estimators implement the regular estimator interface.
 As an example, a logistic regression classifier
 uses by default a one-vs.-rest scheme
 for performing multiclass classification.
-If multiclass classification based on error-correcting codes
-is desired instead,
-then this can achieved  using an \texttt{OutputCodeClassifier} meta-estimator
+If a one-vs.-one scheme is desired instead,
+this can achieved using a \texttt{OneVsOneClassifier} meta-estimator
 wrapping a \texttt{LogisticRegression} estimator:
 \begin{pythoncode}
-ecoc_lr = OutputCodeClassifier(LogisticRegression(penalty="l1"))
+ovo_lr = OneVsOneClassifier(LogisticRegression(penalty="l1"))
 \end{pythoncode}
-The \texttt{OutputCodeClassifier} object
+The \texttt{OneVsOneClassifier} object
 \textit{clones} the LR estimator multiple times for learning,
-resulting in a set of estimator objects with the same settings
-that each perform a binary classification
-(see \citealt{dietterich1995solving} for the algorithm).
-The snippet thus exemplifies the importance
+resulting in a set of $\frac{K(K-1)}{2}$ estimator objects
+for $K$-way classification,
+all with the same settings,
+that each perform a binary classification and vote to make the final decision.
+The snippet exemplifies the importance
 of separating object instantiation and actual learning.
 
 Since using meta-estimators requires the construction of nested objects,
