@@ -555,17 +555,18 @@ evaluate its performance on the validation set.  In the end, the best performing
 model on average is retained and exposed as the public attribute
 \texttt{best\_estimator\_}.
 
-As an example, the snippet below illustrates how to optimize the
-hyper-parameters of an SVM classifier. It maximizes the $F_1$ score of the
-classifier through a 10-fold cross-validation scheme.
+As an example, the snippet below illustrates how to find the
+hyper-parameter settings of an SVM classifier (SVC)
+that maximize its $F_1$ score,
+through 10-fold cross-validation on the training set.
 \begin{pythoncode}
-from sklearn.svm import SVC
 from sklearn.grid_search import GridSearchCV
+from sklearn.svm import SVC
 
 param_grid = [
-  {"C": [1, 10, 100, 1000], "kernel": ["linear"]},
-  {"C": [1, 10, 100, 1000], "gamma": [0.001, 0.0001],
-   "kernel": ["rbf"]},
+  {"kernel": ["linear"], "C": [1, 10, 100, 1000]},
+  {"kernel": ["rbf"], "C": [1, 10, 100, 1000],
+                      "gamma": [0.001, 0.0001]}
 ]
 
 clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
@@ -574,11 +575,16 @@ y_pred = clf.predict(X_test)
 \end{pythoncode}
 Note that, in the above example, two distinct hyper-parameter grids are
 considered. This is because it only makes sense to search for \texttt{gamma}
-when \texttt{kernel} is set to \texttt{"rbf"}.  Additionally, we see that
+when \texttt{kernel} is set to \texttt{"rbf"}.
+An SVM with a linear kernel will accept a $\gamma$ parameter,
+but ignore it, so the grid search would waste time
+trying out effectively equivalent parameter settings.
+Additionally, we see that
 \texttt{GridSearchCV} has a \texttt{predict} method, like any other classifier.
 This is because \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} in fact
 delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
-\texttt{score} methods to the best estimator, thus mimicking its behavior.
+\texttt{score} methods to the best estimator
+(optionally after re-fitting it on the whole training set).
 
 \subsection{Extending scikit-learn}
 
