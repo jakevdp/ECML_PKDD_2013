@@ -421,7 +421,7 @@ As an example, a logistic regression classifier
 uses by default a one-vs.-rest scheme
 for performing multiclass classification.
 If multiclass classification based on error-correcting codes
-\citep{dietterich1995solving} is desired instead,
+is desired instead,
 then this can achieved  using an \texttt{OutputCodeClassifier} meta-estimator
 wrapping a \texttt{LogisticRegression} estimator:
 \begin{pythoncode}
@@ -430,6 +430,13 @@ from sklearn.multiclass import OutputCodeClassifier
 
 ecoc_lr = OutputCodeClassifier(LogisticRegression(penalty="l1"))
 \end{pythoncode}
+The \texttt{OutputCodeClassifier} object
+\textit{clones} the LR estimator multiple times for learning,
+resulting in a set of estimator objects with the same settings
+that each perform a binary classification
+(see \citealt{dietterich1995solving} for the algorithm).
+The snippet thus exemplifies the importance
+of separating object instantiation and actual learning.
 
 Since using meta-estimators requires the construction of nested objects,
 the decision to implement a meta-estimator
