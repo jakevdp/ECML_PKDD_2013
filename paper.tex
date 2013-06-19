@@ -92,27 +92,26 @@ composable machine learning operations.
 
 Started in 2007, \sklearn is developed by an international team of a dozen of
 core developers, mostly researchers from various fields (e.g., machine learning,
-natural language processing, or neuroscience). The project also greatly benefits
+natural language processing, or neuroscience). The project also benefits
 from many occasional contributors proposing small code or documentation fixes or
 improvements. Development proceeds on GitHub\footnote{\url{https://github.com/scikit-learn}},
 a platform which greatly facilitates this kind of
 collaboration. Because of the large number of developers, emphasis is
 put on keeping the project maintainable. In particular, code must follow
 specific quality guidelines, such as style consistency and unit-test coverage.
-In addition, complete documentation and examples are required for all features.
-Finally, additions to the code base must pass code review by at least two
-developers not involved in the implementation of the proposed addition.
+Complete documentation and examples are required for all features,
+and major modifications must pass code review by at least two
+developers not involved in the implementation of the proposed change.
 
-Within the past few years, the project has proved valuable to an ever increasing
+Over the past few years, the project has proved valuable to an ever increasing
 user base. Its popularity can be gaged from various indicators such as hundreds
 of citations in scientific publications, successes in various machine learning
 challenges (e.g., Kaggle), or significant statistics derived from our
-repositories and mailing lists.  At the time of writing, the project is watched
-by 1309 people and forked 667 times on GitHub, and the mailing-list receives
-more than 300 mails per month. The version control logs for the development
-version
+repositories and mailing list.  At the time of writing, the project is watched
+by 1309 people and forked 667 times on GitHub; the mailing list receives
+more than 300 mails per month; and version control logs
 % ddaa494c116e3c16bf032003c5cccbed851733d2
-also count 183 unique contributors to the project.
+show 183 unique contributors to the codebase.
 
 In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
 benchmarked against several competitors. In this paper, we instead focus on an
@@ -120,8 +119,8 @@ in-depth discussion and analysis of the design choices used in building the
 library. We first present in section \ref{sec:core-api} the central application
 programming interface (API) and then describe, in section \ref{sec:advanced-api},
 advanced API mechanisms built from the core interface. Section
-\ref{sec:implementation} describes implementation principles and discusses
-limitations of the technologies we rely on. Section \ref{sec:comparison} then
+\ref{sec:implementation} briefly describes the implementation.
+Section \ref{sec:comparison} then
 compares \emph{scikit-learn} to other major projects in terms of API. Finally,
 conclusions and directions of future works are included in section
 \ref{sec:conclusions}.
@@ -260,7 +259,7 @@ The choice to let a single object serve dual purpose as estimator and model
 simplifies the \sklearn class hierarchy
 compared to an approach were estimators and models are separated.
 
-As an example to illustrate the initialize-\texttt{fit} sequence,
+To illustrate the initialize-\texttt{fit} sequence,
 let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:\footnote{
   \texttt{import} statement are omitted for brevity
@@ -369,9 +368,8 @@ maps that into the appropriate region of feature space:
 X_test = scaler.transform(X_test)
 \end{pythoncode}
 Transformers also include a variety of learning algorithms, such as
-dimension reduction (PCA, manifold learning techniques), kernel
-approximation techniques, and any other approach that can be used to
-derive a modified representation of the data.
+dimension reduction (PCA, manifold learning), kernel approximation,
+and other mappings from one feature space to another.
 
 Additionally, by leveraging the fact that \texttt{fit} always returns the
 estimator it was called on, the \texttt{StandardScaler} example above can be
@@ -380,16 +378,16 @@ rewritten in a single line using method chaining:
 X_train = StandardScaler().fit(X_train).transform(X_train)
 \end{pythoncode}
 
-Furthermore, every estimator allows \texttt{fit(X\_train).transform(X\_train)}
+Furthermore, every transformer allows \texttt{fit(X\_train).transform(X\_train)}
 to be written as \texttt{fit\_transform(X\_train)}.
 The combined \texttt{fit\_transform} method prevents repeated computations.
 Depending on the transformer,
-this may either skip only an input validation step,
+it may skip only an input validation step,
 or in fact use a more efficient algorithm for the transformation.
 In the same spirit, clustering algorithms provide a
 \texttt{fit\_predict} method
 that is equivalent to \texttt{fit} followed by \texttt{predict},
-and thus returns the cluster labels assigned to the training data samples.
+returning cluster labels assigned to the training samples.
 
 
 \section{Advanced API}
@@ -416,9 +414,8 @@ All meta-estimators implement the regular estimator interface.
 As an example, a logistic regression classifier
 uses by default a one-vs.-rest scheme
 for performing multiclass classification.
-If a one-vs.-one scheme is desired instead,
-this can achieved using a \texttt{OneVsOneClassifier} meta-estimator
-wrapping a \texttt{LogisticRegression} estimator:
+A different scheme can be achieved
+by a meta-estimator wrapping a logistic regression estimator:
 \begin{pythoncode}
 ovo_lr = OneVsOneClassifier(LogisticRegression(penalty="l1"))
 \end{pythoncode}
@@ -455,12 +452,12 @@ every step of a complex workflow. Composition of estimators can be done in two
 ways: either sequentially through \texttt{Pipeline} objects or in a parallel
 fashion through \texttt{FeatureUnion} objects.
 
-\texttt{Pipeline} objects are used for chaining multiple estimators into a
+\texttt{Pipeline} objects chain multiple estimators into a
 single one. This is useful since a machine learning workflow typically involves
-a fixed sequence of steps in processing data (e.g., feature extraction,
-normalization, feature selection, learning and making predictions). A sequence
-of $N$ such steps can be combined into a composite object called a
-\texttt{Pipeline}. The first $N-1$ steps must be transformers and the last can
+a fixed sequence of processing steps (e.g., feature extraction,
+dimensionality reduction, learning and making predictions). A sequence
+of $N$ such steps can be combined into a \texttt{Pipeline}
+if the first $N-1$ steps are transformers; the last can
 be either a predictor or a transformer. Conceptually, fitting a pipeline to a
 training set amounts to the following recursive procedure: i) when only one step
 remains, call its \texttt{fit} method; ii) otherwise, \texttt{fit} the first
@@ -470,13 +467,13 @@ last estimator in the pipe exposes. That is, if the last estimator is a
 predictor, the pipeline can itself be used as a predictor. If the last estimator
 is a transformer, then the pipeline is itself a transformer.
 
-A \texttt{FeatureUnion} object is a transformer combining multiple transformers
+\texttt{FeatureUnion} combines multiple transformers
 into a single one that concatenates their outputs.
 I.e., a union of transformers that map inputs having $d$ features
 to $d'$ and $d''$ features, respectively,
 is a transformer that maps its $d$ input features to $d' + d''$ features
 by calling its underlying transformers in parallel.
-From an API point of view, a
+In terms of the API, a
 \texttt{FeatureUnion} takes as input a list of transformers. Calling
 \texttt{fit} on the union is the same as calling \texttt{fit} independently on
 each of the transformers.
@@ -543,9 +540,9 @@ evaluate its performance on the validation set.  In the end, the best performing
 model on average is retained and exposed as the public attribute
 \texttt{best\_estimator\_}.
 
-As an example, the snippet below illustrates how to find the
-hyper-parameter settings of an SVM classifier (SVC)
-that maximize its $F_1$ score,
+The snippet below illustrates how to find
+hyper-parameter settings for an SVM classifier (SVC)
+that maximize $F_1$ score
 through 10-fold cross-validation on the training set.
 \begin{pythoncode}
 param_grid = [
@@ -582,12 +579,12 @@ built-in estimator (e.g., it can plugged into pipelines or grid search).
 That is, estimators are defined only by interface, not by inheritance,
 and external developers are not forced to inherit from any \sklearn class.
 
-In other places of the library, in particular in the feature extraction and
-vectorization code for text documents, the toolkit is also designed to be
+In other places of the library, in particular in the vectorization code
+for unstructured inputs, the toolkit is also designed to be
 extensible. Here, estimators provide hooks for user-defined code: objects or
 functions that provide a specific API can be given as arguments at vectorizer
-construction time. The library then calls into this code to obtain the desired
-behavior. Again, such external user code can be kept agnostic of the \sklearn
+construction time. The library then calls into this code.
+Again, such external user code can be kept agnostic of the \sklearn
 class hierarchy.
 Communication proceeds by passing object of standard Python/NumPy types.
 
