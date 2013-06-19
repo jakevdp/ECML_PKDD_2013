@@ -394,20 +394,21 @@ composing complex estimators and then selecting models.
 
 \subsection{Meta-estimators}
 
-Some machine learning algorithms are most naturally expressed
-as modification or extensions of other, simpler algorithms.
-Examples include ensemble estimators
-and various multiclass and multilabel classification schemes.
-Such algorithms are implemented as so-called ``meta-estimators'',
-that take an estimator as input and use that to perform learning and prediction.
+In machine learning, some algorithms are expressed as meta-algorithms built
+and parametrized on simpler algorithms. Examples include ensemble methods which
+build and combine several simpler models (e.g., decision trees), or multiclass
+and multilabel classification schemes which can be used to turn a binary
+classifier into a multiclass or multilabel classifier. In \sklearn, such algorithms are
+implemented as \textit{meta-estimators}. They take as input an existing base
+estimator and use it internally for learning and making predictions.
 
 As an example, a logistic regression classifier
-by default uses a one-vs.-rest (aka one-vs.-all) scheme internally
+ uses by default a one-vs.-rest  scheme
 for performing multiclass classification.
 If multiclass classification based on error-correcting codes
 \citep{dietterich1995solving} is desired instead,
-this can achieved with an \texttt{OutputCodeClassifier}
-that wraps a \texttt{LogisticRegression}:
+then this can achieved  using an \texttt{OutputCodeClassifier} meta-estimator
+wrapping a \texttt{LogisticRegression} estimator:
 \begin{pythoncode}
 from sklearn.linear_model import LogisticRegression
 from sklearn.multiclass import OutputCodeClassifier
