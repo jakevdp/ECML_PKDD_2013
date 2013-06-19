@@ -365,7 +365,11 @@ scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 \end{pythoncode}
 Of course, in practice, it is important to apply the same preprocessing to the
-test data \texttt{X\_test}. This can easily be done as follows:
+test data \texttt{X\_test}.
+Since a \texttt{StandardScaler} stores the mean and standard deviation
+that it computed for the training set,
+applying it to an unseen test set \texttt{X\_test}
+maps that into the appropriate region of feature space:
 \begin{pythoncode}
 X_test = scaler.transform(X_test)
 \end{pythoncode}
