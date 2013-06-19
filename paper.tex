@@ -581,7 +581,7 @@ in other contexts, because they don't need to be intimately tied to it.
 \section{Implementation}
 \label{sec:implementation}
 
-Our implementation guidelines emphasize on writing efficient but readable code.
+Our implementation guidelines emphasize writing efficient but readable code.
 In particular, we focus on making the codebase easily maintainable and
 understandable in order to favour external contributions. Whenever practicable,
 algorithms implemented in \sklearn are thus directly written in pure Python. For
@@ -649,13 +649,13 @@ The API is designed around the Python concept of an \textit{iterable}
 (supported in the language by a restricted form of co-routines called
 \textit{generators}).
 While the text vectorization part of \sklearn
-also uses irerables to some extent,
-the emphasis is still largely on (mini-)batch processing,
+also uses iterables to some extent,
+the emphasis is still on (mini-)batch processing,
 even in the truly stateless, O(1) memory vectorizers
 that implement the hashing trick of \citet{weinberger2009}.
 This way of processing, as argued earlier in Section~\ref{sec:arrays},
 reduces various forms of overhead
-and allows users to make use of the abundance of memory in modern machines.
+and makes effective use of the abundance of memory in modern computers.
 No attempt is made to hide this batch-oriented processing from the user,
 allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
