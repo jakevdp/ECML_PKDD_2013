@@ -680,13 +680,14 @@ to \sklearn algorithms.
 
 \textcolor{red}{TODO: include some overall conclusions (e.g., reasons of the success sklearn)}
 
-Although it is coming close to a 1.0 release, \sklearn is by no means finished.
-At present, it does not support some classical machine learning tasks. Among
-others, missing features include neural networks, ensemble meta-estimators for
-bagging or subsampling strategies, or missing value completion algorithms.
-Topics like structured prediction or reinforcement learning are however
+A \sklearn~1.0 release is nearing,
+but several problems must still be resolved.
+At present, the library does not support some classical machine learning tasks,
+including neural networks, ensemble meta-estimators for
+bagging or subsampling strategies and missing value completion algorithms.
+Topics like structured prediction or reinforcement learning are
 considered off-topic for the project, since they would require quite different
-data representations and API.
+data representations and APIs.
 
 At a lower-level, parallel processing is a potential point of improvement.
 Some estimators in \sklearn are already able to leverage multi-core processors,
@@ -705,6 +706,14 @@ Recent versions of Cython include support for the OpenMP standard
 \citep{dagum1998openmp},
 which is a viable candidate technology
 for more fine-grained multicore support in \sklearn.
+
+Finally, a long-term solution for model persistence is missing.
+Currently, Python's \texttt{pickle} module is recommended for serialization,
+but this only offers a file format,
+not a way of preserving compatibility between versions.
+Also, it has security problems because its deserializer
+may execute arbitrary Python code,
+so models from untrusted sources cannot be safely ``unpickled''.
 
 \subsection*{Acknowledgements}
 
