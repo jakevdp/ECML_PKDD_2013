@@ -595,14 +595,7 @@ compiled programming language that extends Python with static typing. It
 produces efficient C extension modules that are directly importable from the
 Python run-time system. Examples of algorithms written in Cython include
 stochastic gradient descent for linear models, some graph-based clustering
-algorithms or decision trees.  A problem arising from the use of Cython,
-however, is that passing pure Python functions as argument, while possible,
-degrades performance significantly due to the run-time checks needed for each
-function invocation. This is especially problematic for example for kernel
-methods, which would benefit from accepting a kernel function as argument. A
-potential solution to this problem would be for \sklearn to provide a Cython-level
-API, thereby allowing the user to pass Cython-implemented kernel
-functions.
+algorithms and decision trees.
 
 To facilitate the adoption and the distribution of the library, we also try to
 limit to a bare minimum the set of external dependencies. As such, NumPy and
