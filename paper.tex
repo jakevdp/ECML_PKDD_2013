@@ -262,10 +262,10 @@ compared to an approach were estimators and models are separated.
 
 As an example to illustrate the initialize-\texttt{fit} sequence,
 let us consider a supervised learning task using logistic regression.
-Given the API defined above, solving this problem is as simple as:
+Given the API defined above, solving this problem is as simple as:\footnote{
+  \texttt{import} statement are omitted for brevity
+  throughout this paper.}
 \begin{pythoncode}
-from sklearn.linear_model import LogisticRegression
-
 clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
 \end{pythoncode}
@@ -317,8 +317,6 @@ to obtain cluster labels (integer indices) for unseen data \texttt{X\_test}.
 
 \begin{figure}[h]
 \begin{pythoncode}
-from sklearn.cluster import KMeans
-
 km = KMeans(n_clusters=10)
 km.fit(X_train)
 clust_pred = km.predict(X_test)
@@ -357,8 +355,6 @@ if one wanted to preprocess the inputs \texttt{X\_train} before fitting the
 logistic regression estimator, e.g., by standardizing the feature values, one
 could thus simply write:
 \begin{pythoncode}
-from sklearn.preprocessing import StandardScaler
-
 scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
@@ -425,9 +421,6 @@ is desired instead,
 then this can achieved  using an \texttt{OutputCodeClassifier} meta-estimator
 wrapping a \texttt{LogisticRegression} estimator:
 \begin{pythoncode}
-from sklearn.linear_model import LogisticRegression
-from sklearn.multiclass import OutputCodeClassifier
-
 ecoc_lr = OutputCodeClassifier(LogisticRegression(penalty="l1"))
 \end{pythoncode}
 The \texttt{OutputCodeClassifier} object
@@ -498,11 +491,6 @@ and feeds those to an $\ell_2$-regularized logistic regression model.
 
 \begin{figure}[h]
 \begin{pythoncode}
-from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.decomposition import PCA, KernelPCA
-from sklearn.feature_selection import SelectKBest
-from sklearn.linear_model import LogisticRegression
-
 fu = FeatureUnion([("pca", PCA()),
                    ("kpca", KernelPCA(kernel="rbf"))])
 
@@ -560,9 +548,6 @@ hyper-parameter settings of an SVM classifier (SVC)
 that maximize its $F_1$ score,
 through 10-fold cross-validation on the training set.
 \begin{pythoncode}
-from sklearn.grid_search import GridSearchCV
-from sklearn.svm import SVC
-
 param_grid = [
   {"kernel": ["linear"], "C": [1, 10, 100, 1000]},
   {"kernel": ["rbf"], "C": [1, 10, 100, 1000],
