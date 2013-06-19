@@ -621,12 +621,12 @@ in other contexts, because they don't need to be intimately tied to it.
 Our implementation guidelines emphasize writing efficient but readable code.
 In particular, we focus on making the codebase easily maintainable and
 understandable in order to favour external contributions. Whenever practicable,
-algorithms implemented in \sklearn are thus directly written in pure Python. For
-intensive numerical computations though, the library mostly relies on NumPy
-vector operations, which allows for the code to remain concise, readable and
-efficient. For all algorithms that cannot be easily and efficiently expressed as
-NumPy operations, we rely on Cython \citep{behnel2011cython}  for writing the
-critical parts and achieving decent performance and scalability. Cython is a
+algorithms implemented in \sklearn are written in Python,
+using Numpy vector operations for numerical work.
+This allows for the code to remain concise, readable and
+efficient. For critical algorithms that cannot be easily and efficiently
+expressed as NumPy operations, we rely on Cython \citep{behnel2011cython}
+to achieve decent performance and scalability. Cython is a
 compiled programming language that extends Python with static typing. It
 produces efficient C extension modules that are directly importable from the
 Python run-time system. Examples of algorithms written in Cython include
