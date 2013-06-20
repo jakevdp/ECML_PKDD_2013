@@ -48,8 +48,8 @@
 \maketitle
 
 \begin{abstract}
-The \sklearn project is an increasingly popular open source machine learning
-library written in Python and designed to be simple and efficient, accessible to
+The \sklearn project is an increasingly popular machine learning
+library. Written in Python, it is designed to be simple and efficient, accessible to
 non-experts, and reusable in various contexts. In this paper, we present and
 discuss our design choices for the application programming interface (API) of
 the project. In particular, we describe the simple and elegant interface shared
@@ -84,7 +84,7 @@ use.
 From its core, the library has been designed to tie in with the set of numeric
 and scientific packages centered around the NumPy and SciPy libraries. NumPy
 \citep{vanderwalt2011} augments Python with a numeric array data type and proper
-array computing primitives while SciPy \citep{varoquaux2013scipy} extends it
+array computing primitives, while SciPy \citep{varoquaux2013scipy} extends it
 further by making common numerical operations available, either by implementing
 those in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
 implementations. In a similar vein, \sklearn extends Python with a set of
@@ -115,7 +115,7 @@ show 183 unique contributors to the codebase.
 
 In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
 benchmarked against several competitors. In this paper, we instead focus on an
-in-depth discussion and analysis of the design choices used in building the
+in-depth discussion and analysis of the design choices made for building the
 library. We first present in section \ref{sec:core-api} the central application
 programming interface (API) and then describe, in section \ref{sec:advanced-api},
 advanced API mechanisms built from the core interface. Section
