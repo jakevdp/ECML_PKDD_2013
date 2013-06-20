@@ -140,7 +140,7 @@ broad principles:
 
 \begin{description}
   \item[Consistency.]
-       All objects (basic or composed) share a consistent interface composed of
+       All objects (basic or composite) share a consistent interface composed of
        a limited set of methods. This interface is documented in a consistent
        manner for all objects.
   \item[Inspection.]
@@ -151,8 +151,6 @@ broad principles:
        Datasets and hyper-parameter names and values are represented as standard
        Python, NumPy or SciPy classes rather than new ones whenever feasible.
        This keeps \sklearn easy to use and easy to combine with other libraries.
-       % XXX do we need to elaborate more on this, or do we expect everyone
-       % to be an experienced Java/adapter pattern hater?
   \item[Composition.]
        Many machine learning tasks are expressible
        as sequences or combinations of transformations to data.
@@ -186,14 +184,11 @@ multidimensional arrays for dense data and as SciPy sparse matrices for sparse
 data. While those may seem rather unsophisticated data representations when
 compared to more object-oriented constructs, such as those used by
 Weka \citep{hall2009weka}, they bring the prime advantage of allowing us to rely
-% Lars: "orders of magnitude faster" is an implementation detail
-on all NumPy and SciPy vector operations while allowing us at the same time to
-keep the code short and readable.  This design choice has also been motivated by
+on all NumPy and SciPy vector operations while keeping
+the code short and readable.  This design choice has also been motivated by
 the fact that, given their pervasiveness in many other scientific Python
 packages, many scientific users of Python are already familiar with NumPy dense
 arrays and SciPy sparse matrices.
-% Gilles: the phrase was too long
-% hence helping them to familiarize with the project.
 From a practical point of view, these formats also provide a bunch of
 data loading and conversion tools which make them very easy to use in many
 contexts. Moreover, for tasks where the inputs are text files or semi-structured
@@ -247,8 +242,8 @@ with training data (e.g., supplied as two arrays \texttt{X\_train} and
 \texttt{y\_train} in supervised learning estimators). Its task is to run a
 learning algorithm and to determine model-specific parameters from the training
 data and set these as attributes on the estimator object. As a convention, the
-parameters learned by an estimator are exposed as public attributes whose name
-is suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
+parameters learned by an estimator are exposed as public attributes whose names
+are suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
 learned coefficients of a linear model),
 again to facilitate model inspection.
 In the partial application view,
@@ -262,7 +257,7 @@ compared to an approach were estimators and models are separated.
 To illustrate the initialize-\texttt{fit} sequence,
 let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as:\footnote{
-  \texttt{import} statement are omitted for brevity
+  \texttt{import} statements are omitted for brevity
   throughout this paper.}
 \begin{pythoncode}
 clf = LogisticRegression(penalty="l1")
