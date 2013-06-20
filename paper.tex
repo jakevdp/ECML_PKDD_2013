@@ -537,9 +537,9 @@ y_pred = clf.predict(X_test)
 Note that, in the above example, two distinct hyper-parameter grids are
 considered. This is because it only makes sense to search for \texttt{gamma}
 when \texttt{kernel} is set to \texttt{"rbf"}.
-An SVM with a linear kernel will accept a $\gamma$ parameter,
-but ignore it, so the grid search would waste time
-trying out effectively equivalent parameter settings.
+An SVM with a linear kernel could accept a $\gamma$ parameter,
+but would ignore it and thus waste computing time trying out effectively
+equivalent settings if a single hyper-parameter grid was used insteead.
 Additionally, we see that
 \texttt{GridSearchCV} has a \texttt{predict} method, like any other classifier.
 This is because \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} in fact
@@ -562,7 +562,7 @@ In other places of the library, in particular in the vectorization code
 for unstructured inputs, the toolkit is also designed to be
 extensible. Here, estimators provide hooks for user-defined code: objects or
 functions that provide a specific API can be given as arguments at vectorizer
-construction time. The library then calls into this code.
+construction time. The library then calls into this code to obtain the desired behavior.
 Again, such external user code can be kept agnostic of the \sklearn
 class hierarchy.
 Communication proceeds by passing object of standard Python/NumPy types.
