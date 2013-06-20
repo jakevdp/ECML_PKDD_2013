@@ -307,22 +307,15 @@ snippet:
 y_pred = clf.predict(X_test)
 \end{pythoncode}
 
-Some unsupervised learning
-estimators may also implement the \texttt{predict} interface.
-The code in Figure~\ref{kmeans-predict} fits a $k$-means model with $k=10$
-on training data \texttt{X\_train},
-then uses the model's \texttt{predict} method
-to obtain cluster labels (integer indices) for unseen data \texttt{X\_test}.
-
-\begin{figure}[h]
+Some unsupervised learning estimators may also implement the \texttt{predict}
+interface. The code in the snippet below fits a $k$-means model with $k=10$ on
+training data \texttt{X\_train}, and then uses the  \texttt{predict} method to
+obtain cluster labels (integer indices) for unseen data \texttt{X\_test}.
 \begin{pythoncode}
 km = KMeans(n_clusters=10)
 km.fit(X_train)
 clust_pred = km.predict(X_test)
 \end{pythoncode}
-\caption{Finding closest centroids for unseen data after $k$-means clustering.}
-\label{kmeans-predict}
-\end{figure}
 
 Along with the \texttt{predict} method, predictors may also implement methods
 for quantifying the certainty of a prediction. In the case of estimators
@@ -480,13 +473,11 @@ each of the transformers.
 
 \texttt{Pipeline} and \texttt{FeatureUnion} can be
 combined to create complex and nested workflows.
-Figure~\ref{union+pipeline} illustrates how to create a complex estimator
+The following snippet illustrates how to create a complex estimator
 that computes both linear PCA and kernel PCA features on \texttt{X\_train}
 (through a \texttt{FeatureUnion}),
 selects the 10 best features in the combination according to an ANOVA test
-and feeds those to an $\ell_2$-regularized logistic regression model.
-
-\begin{figure}[h]
+and feeds those to an $\ell_2$-regularized logistic regression model:
 \begin{pythoncode}
 fu = FeatureUnion([("pca", PCA()),
                    ("kpca", KernelPCA(kernel="rbf"))])
@@ -496,9 +487,6 @@ Pipeline([("feat_union", fu),
           ("log_reg", LogisticRegression(penalty="l2"))
 ]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
-\caption{Combined use of \texttt{Pipeline} and \texttt{FeatureUnion}.}
-\label{union+pipeline}
-\end{figure}
 
 \subsection{Model selection}
 
