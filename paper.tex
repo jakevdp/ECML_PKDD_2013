@@ -563,10 +563,9 @@ In other places of the library, in particular in the vectorization code
 for unstructured inputs, the toolkit is also designed to be
 extensible. Here, estimators provide hooks for user-defined code: objects or
 functions that provide a specific API can be given as arguments at vectorizer
-construction time. The library then calls into this code to obtain the desired behavior.
+construction time. The library then calls into this code, communicating with it by passing objects of standard Python/Numpy types.
 Again, such external user code can be kept agnostic of the \sklearn
 class hierarchy.
-Communication proceeds by passing object of standard Python/NumPy types.
 
 Our rule of thumb is that user code should not be tied to \sklearn---which is a
 \textit{library}, and not a \textit{framework}. This principle indeed avoids a
