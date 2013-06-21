@@ -254,12 +254,14 @@ The choice to let a single object serve dual purpose as estimator and model
 simplifies the \sklearn class hierarchy
 compared to an approach were estimators and models are separated.
 
-To illustrate the initialize-\texttt{fit} sequence,
+To illustrate the initialize-fit sequence,
 let us consider a supervised learning task using logistic regression.
-Given the API defined above, solving this problem is as simple as:\footnote{
-  \texttt{import} statements are omitted for brevity
-  throughout this paper.}
+Given the API defined above, solving this problem is as simple as the following
+example.
+\newpage
 \begin{pythoncode}
+from sklearn.linear_model import LogisticRegression
+
 clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
 \end{pythoncode}
@@ -306,7 +308,10 @@ Some unsupervised learning estimators may also implement the \texttt{predict}
 interface. The code in the snippet below fits a $k$-means model with $k=10$ on
 training data \texttt{X\_train}, and then uses the  \texttt{predict} method to
 obtain cluster labels (integer indices) for unseen data \texttt{X\_test}.
+\newpage
 \begin{pythoncode}
+from sklearn.cluster import KMeans
+
 km = KMeans(n_clusters=10)
 km.fit(X_train)
 clust_pred = km.predict(X_test)
@@ -342,6 +347,8 @@ if one wanted to preprocess the inputs \texttt{X\_train} before fitting the
 logistic regression estimator, e.g., by standardizing the feature values, one
 could thus simply write:
 \begin{pythoncode}
+from sklearn.preprocessing import StandardScaler
+
 scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
@@ -404,6 +411,8 @@ for performing multiclass classification.
 A different scheme can be achieved
 by a meta-estimator wrapping a logistic regression estimator:
 \begin{pythoncode}
+from sklearn.multiclass import OneVsOneClassifier
+
 ovo_lr = OneVsOneClassifier(LogisticRegression(penalty="l1"))
 \end{pythoncode}
 For learning, the \texttt{OneVsOneClassifier} object
@@ -469,8 +478,13 @@ The following snippet illustrates how to create a complex estimator
 that computes both linear PCA and kernel PCA features on \texttt{X\_train}
 (through a \texttt{FeatureUnion}),
 selects the 10 best features in the combination according to an ANOVA test
-and feeds those to an $\ell_2$-regularized logistic regression model:
+and feeds those to an $\ell_2$-regularized logistic regression model.
+\newpage
 \begin{pythoncode}
+from sklearn.pipeline import FeatureUnion, Pipeline
+from sklearn.decomposition import PCA, KernelPCA
+from sklearn.feature_selection import SelectKBest
+
 fu = FeatureUnion([("pca", PCA()),
                    ("kpca", KernelPCA(kernel="rbf"))])
 
@@ -525,6 +539,9 @@ hyper-parameter settings for an SVM classifier (SVC)
 that maximize $F_1$ score
 through 10-fold cross-validation on the training set.
 \begin{pythoncode}
+from sklearn.grid_search import GridSearchCV
+from sklearn.svm import SVC
+
 param_grid = [
   {"kernel": ["linear"], "C": [1, 10, 100, 1000]},
   {"kernel": ["rbf"], "C": [1, 10, 100, 1000],
