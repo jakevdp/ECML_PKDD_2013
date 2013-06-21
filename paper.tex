@@ -115,7 +115,7 @@ show 183 unique contributors to the codebase.
 
 In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
 benchmarked against several competitors. In this paper, we instead focus on an
-in-depth discussion and analysis of the design choices made for building the
+in-depth discussion and analysis of the design choices made when building the
 library. We first present in section \ref{sec:core-api} the central application
 programming interface (API) and then describe, in section \ref{sec:advanced-api},
 advanced API mechanisms built from the core interface. Section
@@ -242,8 +242,8 @@ with training data (e.g., supplied as two arrays \texttt{X\_train} and
 \texttt{y\_train} in supervised learning estimators). Its task is to run a
 learning algorithm and to determine model-specific parameters from the training
 data and set these as attributes on the estimator object. As a convention, the
-parameters learned by an estimator are exposed as public attributes whose names
-are suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
+parameters learned by an estimator are exposed as public attributes with names
+suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
 learned coefficients of a linear model),
 again to facilitate model inspection.
 In the partial application view,
@@ -538,9 +538,9 @@ y_pred = clf.predict(X_test)
 Note that, in the above example, two distinct hyper-parameter grids are
 considered. This is because it only makes sense to search for \texttt{gamma}
 when \texttt{kernel} is set to \texttt{"rbf"}.
-An SVM with a linear kernel could accept a $\gamma$ parameter,
-but would ignore it and thus waste computing time trying out effectively
-equivalent settings if a single hyper-parameter grid was used insteead.
+An SVM with a linear kernel accepts a $\gamma$ parameter,
+but actually ignores it. Computing time would thus be wasted, trying out effectively
+equivalent settings, if a single hyper-parameter grid was used instead.
 Additionally, we see that
 \texttt{GridSearchCV} has a \texttt{predict} method, like any other classifier.
 This is because \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} in fact
