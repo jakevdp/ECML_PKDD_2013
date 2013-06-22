@@ -516,9 +516,8 @@ various such cross-validation schemes, including K-Fold (default), Leave-One-Out
 and Bootstrap. The score function used by default is the \texttt{score} method
 provided by the estimator. However, the library provides a large variety of
 score functions that the user can choose from,
-including accuracy and $F_1$-score for classification;
-$R^2$ score or mean squared error for regression;
-and the Rand index for clustering.
+including accuracy, AUC, $F_1$ score (classification),
+$R^2$ score and mean squared error (regression).
 
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} differ in the way they
 search the hyper-parameter grid.  \texttt{GridSearchCV} exhaustively searches
