@@ -441,8 +441,8 @@ is only necessary in advanced use cases.
 A distinguishing feature of the \sklearn API is its ability to
 compose new estimators from several base estimators. Composition mechanisms can
 be used to combine typical machine learning workflows into a single object which
-is itself an estimator. Thanks to duck typing, composed
-estimators can be used wherever usual estimators can be used. In particular,
+is itself an estimator, and can be used wherever usual estimators can be used.
+In particular,
 they integrate within model selection routines, allowing one to optimize at once
 every step of a complex workflow. Composition of estimators can be done in two
 ways: either sequentially through \texttt{Pipeline} objects or in a parallel
@@ -567,12 +567,14 @@ delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 \subsection{Extending scikit-learn}
 
 To ease code reuse, simplify implementation and skip the introduction of
-superfluous classes, the principle of \textit{duck typing} is exploited
-throughout the codebase. This technique allows for both extensibility and
+superfluous classes, the Python principle of \textit{duck typing} is exploited
+throughout the codebase. This means that estimators are defined by interface,
+not by inheritance, where the interface is entirely implicit
+as far as the programming language is concerned.
+Duck typing allows both for extensibility and
 flexibility: as long as an estimator follows the API and conventions
 outlined in Section~\ref{sec:core-api}, then it can be used in lieu of a
-built-in estimator (e.g., it can be plugged into pipelines or grid search).
-That is, estimators are defined only by interface, not by inheritance,
+built-in estimator (e.g., it can be plugged into pipelines or grid search)
 and external developers are not forced to inherit from any \sklearn class.
 
 In other places of the library, in particular in the vectorization code
