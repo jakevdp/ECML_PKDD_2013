@@ -497,15 +497,14 @@ Pipeline([("feat_union", union),
 \subsection{Model selection}
 
 As introduced in Section~\ref{sec:estimators}, hyper-parameters set in the
-constructor of an estimator determine its behavior. In particular, depending on
-the problem, some hyper-parameters produce estimators that are better than
-others. The problem of \textit{model selection} is therefore to find, within
+constructor of an estimator
+determine the behavior of its learning algorithm
+and hence the performance of the resulting model on unseen data.
+The problem of \textit{model selection} is therefore to find, within
 some hyper-parameter space, the best combination of hyper-parameters, with
 respect to some user-chosen criterion. For example, in the case of a decision
 tree, too small values of the \texttt{max\_depth} parameter will make the tree
-underfit while too large values will make the tree overfit the training data.
-The problem is therefore to find the best trade-off in order to maximize
-the performance of the tree on unseen data.
+underfit, while too large values will make it overfit.
 
 In \sklearn, model selection is supported in two distinct meta-estimators,
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV}.  They take as inputs an
