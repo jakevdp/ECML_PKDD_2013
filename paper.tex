@@ -86,7 +86,7 @@ and scientific packages centered around the NumPy and SciPy libraries. NumPy
 \citep{vanderwalt2011} augments Python with a numeric array data type and proper
 array computing primitives, while SciPy \citep{varoquaux2013scipy} extends it
 further by making common numerical operations available, either by implementing
-those in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
+these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
 implementations. In a similar vein, \sklearn extends Python with a set of
 composable machine learning operations.
 
@@ -156,7 +156,7 @@ broad principles:
        as sequences or combinations of transformations to data.
        Some learning algorithms are also naturally viewed
        as meta-algorithms parametrized on other algorithms.
-       Whenever possible, those algorithms are implemented and composed from
+       Whenever possible, such algorithms are implemented and composed from
        existing building blocks.
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
@@ -181,8 +181,8 @@ variables of the problem.
 In \sklearn, we chose a representation of data that is as close as
 possible to the matrix representation: datasets are encoded as NumPy
 multidimensional arrays for dense data and as SciPy sparse matrices for sparse
-data. While those may seem rather unsophisticated data representations when
-compared to more object-oriented constructs, such as those used by
+data. While these may seem rather unsophisticated data representations when
+compared to more object-oriented constructs, such as the ones used by
 Weka \citep{hall2009weka}, they bring the prime advantage of allowing us to rely
 on all NumPy and SciPy vector operations while keeping
 the code short and readable.  This design choice has also been motivated by
@@ -282,7 +282,7 @@ the same training data, one would simply have to replace
 In \sklearn, classical learning algorithms are not the only objects to be
 implemented as estimators. For example, preprocessing routines (e.g., scaling of
 features) or feature extraction techniques (e.g., vectorization of text
-documents) also implement the same interface. Even those estimators that are
+documents) also implement the same interface. Even processing steps that are
 entirely stateless and therefore do not require the \texttt{fit} method to
 perform any useful work implement the estimator interface. As we will illustrate
 in the next sections, this design pattern is indeed of prime importance for
@@ -428,7 +428,7 @@ Since meta-estimators require users to construct nested objects,
 the decision to implement a meta-estimator
 rather than fold the behavior it implements
 into existing estimators classes
-is always based on a trade-off between genericity and ease of use.
+is always based on a trade-off between generality and ease of use.
 Relating to the example just given,
 all \sklearn classifiers are designed to do multiclass classification
 and the use of the \texttt{multiclass} module
@@ -512,8 +512,9 @@ In \sklearn, model selection is supported in two distinct meta-estimators,
 estimator (basic or composite), whose hyper-parameters must be optimized, and a
 hyper-parameter grid, which defines the values to search. Optionally, they can
 also take a cross-validation scheme and a score function.  The library provides
-various such cross-validation schemes, including K-Fold (default), Leave-One-Out
-and Bootstrap. The score function used by default is the \texttt{score} method
+various such cross-validation schemes, including $k$-fold (default),
+leave-one-out and bootstrapping.
+The score function used by default is the \texttt{score} method
 provided by the estimator. However, the library provides a large variety of
 score functions that the user can choose from,
 including accuracy, AUC, $F_1$ score (classification),
@@ -568,10 +569,10 @@ delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 
 To ease code reuse, simplify implementation and skip the introduction of
 superfluous classes, the principle of \textit{duck typing} is exploited
-throughout the codebase. This technique allows both for extensibility and
+throughout the codebase. This technique allows for both extensibility and
 flexibility: as long as an estimator follows the API and conventions
 outlined in Section~\ref{sec:core-api}, then it can be used in lieu of a
-built-in estimator (e.g., it can plugged into pipelines or grid search).
+built-in estimator (e.g., it can be plugged into pipelines or grid search).
 That is, estimators are defined only by interface, not by inheritance,
 and external developers are not forced to inherit from any \sklearn class.
 
@@ -587,9 +588,9 @@ Our rule of thumb is that user code should not be tied to \sklearn---which is a
 \textit{library}, and not a \textit{framework}. This principle indeed avoids a
 well-known problem with object-oriented design, which is that users wanting a
 ``banana'' should not get ``a gorilla holding the banana and the entire jungle''
-(J.~Armstrong, cited by \citealp[p.~213]{seibel2009coders}).  That is, programs
-using \sklearn should be easily reusable with other machine learning toolkits or
-in other contexts, because they don't need to be intimately tied to it.
+(J.~Armstrong, cited by \citealp[p.~213]{seibel2009coders}).
+That is, programs using \sklearn should not be intimately tied to it,
+so that their code can be reused with other toolkits or in other contexts.
 
 
 \section{Implementation}
