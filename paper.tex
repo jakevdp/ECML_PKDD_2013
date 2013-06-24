@@ -118,10 +118,11 @@ user base. Its popularity can be gaged from various indicators such as hundreds
 of citations in scientific publications, successes in various machine learning
 challenges (e.g., Kaggle), or significant statistics derived from our
 repositories and mailing list.  At the time of writing, the project is watched
-by 1309 people and forked 667 times on GitHub; the mailing list receives
-more than 300 mails per month; and version control logs
+by 1309 people and forked 667 times on GitHub; the mailing list receives more
+than 300 mails per month; version control logs
 % ddaa494c116e3c16bf032003c5cccbed851733d2
-show 183 unique contributors to the codebase.
+show 183 unique contributors to the codebase and the online documentation
+website receives 37k unique visitors and 295k page views per month.
 
 In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
 benchmarked against several competitors. In this paper, we instead focus on an
@@ -458,20 +459,19 @@ every step of a complex workflow. Composition of estimators can be done in two
 ways: either sequentially through \texttt{Pipeline} objects or in a parallel
 fashion through \texttt{FeatureUnion} objects.
 
-\texttt{Pipeline} objects chain multiple estimators into a
-single one. This is useful since a machine learning workflow typically involves
-a fixed sequence of processing steps (e.g., feature extraction,
-dimensionality reduction, learning and making predictions). A sequence
-of $N$ such steps can be combined into a \texttt{Pipeline}
-if the first $N-1$ steps are transformers; the last can
-be either a predictor or a transformer. Conceptually, fitting a pipeline to a
-training set amounts to the following recursive procedure: i) when only one step
-remains, call its \texttt{fit} method; ii) otherwise, \texttt{fit} the first
-step, use it to \texttt{transform} the training set and \texttt{fit} the rest of
-the pipeline with the transformed data. The pipeline exposes all the methods the
-last estimator in the pipe exposes. That is, if the last estimator is a
-predictor, the pipeline can itself be used as a predictor. If the last estimator
-is a transformer, then the pipeline is itself a transformer.
+\texttt{Pipeline} objects chain multiple estimators into a single one. This is
+useful since a machine learning workflow typically involves a fixed sequence of
+processing steps (e.g., feature extraction, dimensionality reduction, learning
+and making predictions). A sequence of $N$ such steps can be combined into a
+\texttt{Pipeline} if the first $N-1$ steps are transformers; the last can be
+either a predictor, a transformer or both. Conceptually, fitting a pipeline to
+a training set amounts to the following recursive procedure: i) when only one
+step remains, call its \texttt{fit} method; ii) otherwise, \texttt{fit} the
+first step, use it to \texttt{transform} the training set and \texttt{fit} the
+rest of the pipeline with the transformed data. The pipeline exposes all the
+methods the last estimator in the pipe exposes. That is, if the last estimator
+is a predictor, the pipeline can itself be used as a predictor. If the last
+estimator is a transformer, then the pipeline is itself a transformer.
 
 \texttt{FeatureUnion} objects combine multiple transformers into a single one
 that concatenates their outputs. A union of two transformers that
@@ -521,7 +521,7 @@ estimator (basic or composite), whose hyper-parameters must be optimized, and a
 hyper-parameter grid, which defines the values to search. Optionally, they can
 also take a cross-validation scheme and a score function.  The library provides
 various such cross-validation schemes, including $k$-fold (default),
-leave-one-out and bootstrapping.
+leave-one-out and iterated shuffled $k$-folds with optional sub-sampling.
 The score function used by default is the \texttt{score} method
 provided by the estimator. However, the library provides a large variety of
 score functions that the user can choose from,
@@ -686,8 +686,8 @@ will be resolved in the future.
 At present, the library does not support some classical machine learning tasks,
 including neural networks, ensemble meta-estimators for
 bagging or subsampling strategies and missing value completion algorithms.
-Topics like structured prediction or reinforcement learning are
-considered off-topic for the project, since they would require quite different
+Tasks like structured prediction or reinforcement learning are
+considered off-scope for the project, since they would require quite different
 data representations and APIs.
 
 At a lower-level, parallel processing is a potential point of improvement.
