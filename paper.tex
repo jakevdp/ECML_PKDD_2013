@@ -677,24 +677,7 @@ We make no attempt to hide this batch-oriented processing from the user,
 allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
 
-
-\section{Conclusions and future work}
-\label{sec:conclusions}
-
-We have discussed the scikit-learn API
-and the way it maps machine learning concepts and tasks
-onto objects and operations in the Python programming language.
-We motivated choices and compromises made in its design.
-We argue that the API is powerful, usable and extensible,
-as witnessed by the appearance of third-party packages
-that follow the scikit-learn conventions and tie into the toolkit.\footnote{
-  E.g.\ nolearn, \url{http://pythonhosted.org/nolearn};
-  this mention does not imply endorsement of this package.}
-While part of the scikit-learn API is necessarily Python-specific,
-core concepts may be applicable to
-machine learning applications and toolkits
-written in other (dynamic) programming languages.
-
+\section{Future Work}
 A \sklearn~1.0 release is nearing,
 but several problems must still be resolved.
 At present, the library does not support some classical machine learning tasks,
@@ -729,6 +712,37 @@ not a way of preserving compatibility between versions.
 Also, it has security problems because its deserializer
 may execute arbitrary Python code,
 so models from untrusted sources cannot be safely ``unpickled''.
+
+
+\section{Conclusions and future work}
+\label{sec:conclusions}
+
+We have discussed the scikit-learn API
+and the way it maps machine learning concepts and tasks
+onto objects and operations in the Python programming language.
+We have shown how a consistent API across the package makes scikit-learn
+very \textbf{usable} in practice: experimenting with different learning
+algorithm is as simple as substituting a new class definition.
+Through composition interfaces such as Pipelines, Feature Unions,
+and meta-estimators, these simple building blocks lead to an API which is
+\textbf{powerful}, and can accomplish a wide variety of learning tasks
+within a small amount of easy-to-read code.
+Through duck-typing, the consistent API leads to a framework that is
+easily \textbf{extensible}, and allows user-defined estimators to be
+incorporated into the scikit-learn workflow without any explicit object
+inheritance.
+
+The simplicity, power, and extensibility of the scikit-learn API is evidenced
+by the large and growing user-base, the use of scikit-learn to solve real
+problems across a wide array of fields,
+as well as the appearance of third-party packages
+that follow the scikit-learn conventions and tie into the toolkit.\footnote{
+  E.g.\ nolearn, \url{http://pythonhosted.org/nolearn};
+  this mention does not imply endorsement of this package.}
+While part of the scikit-learn API is necessarily Python-specific,
+core concepts may be applicable to
+machine learning applications and toolkits
+written in other (dynamic) programming languages.
 
 \subsection*{Acknowledgements}
 
