@@ -678,8 +678,8 @@ allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
 
 \section{Future Work}
-A \sklearn~1.0 release is nearing,
-but several problems must still be resolved.
+There are several problems with the current scikit-learn interface which
+will be resolved in the future.
 At present, the library does not support some classical machine learning tasks,
 including neural networks, ensemble meta-estimators for
 bagging or subsampling strategies and missing value completion algorithms.
@@ -712,6 +712,9 @@ not a way of preserving compatibility between versions.
 Also, it has security problems because its deserializer
 may execute arbitrary Python code,
 so models from untrusted sources cannot be safely ``unpickled''.
+
+These API issues will be addressed in the future in preparation for
+the 1.0 release of scikit-learn.
 
 
 \section{Conclusions and future work}
