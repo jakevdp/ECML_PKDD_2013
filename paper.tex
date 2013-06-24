@@ -194,7 +194,7 @@ multidimensional arrays for dense data and as SciPy sparse matrices for sparse
 data. While these may seem rather unsophisticated data representations when
 compared to more object-oriented constructs, such as the ones used by
 Weka \citep{hall2009weka}, they bring the prime advantage of allowing us to rely
-on all NumPy and SciPy vector operations while keeping
+on efficient NumPy and SciPy vectorized operations while keeping
 the code short and readable.  This design choice has also been motivated by
 the fact that, given their pervasiveness in many other scientific Python
 packages, many scientific users of Python are already familiar with NumPy dense
@@ -279,8 +279,9 @@ setting the \texttt{penalty} hyper-parameter to \texttt{"l1"}, hence enabling
 $\ell_1$ regularization. Other hyper-parameters (such as \texttt{C}, which
 defines the strength of the regularization) are not explicitly defined and are
 thus set to the default values. Upon calling \texttt{fit}, the model is then
-learned from the training arrays \texttt{X\_train} and \texttt{y\_train}.
-(In this example, \texttt{fit} is called solely for its side effects.)
+learned from the training arrays \texttt{X\_train} and \texttt{y\_train},
+and stored within the object for later use.
+%% (In this example, \texttt{fit} is called solely for its side effects.)
 Since all estimators share the same interface, using a different learning algorithm is
 as simple as replacing the constructor (the class name).
 For example, to build a random forest on
