@@ -133,13 +133,13 @@ benchmarked against several competitors. In this paper, we instead focus on an
 in-depth discussion and analysis of the design choices made when building the
 library. We first present in section \ref{sec:core-api} the central application
 programming interface (API) and then describe, in section \ref{sec:advanced-api},
-advanced API mechanisms built from the core interface. Section
-\ref{sec:implementation} briefly describes the implementation.
+advanced API mechanisms built from the core interface.
+Section \ref{sec:implementation} briefly describes the implementation.
 Section \ref{sec:comparison} then
-compares \emph{scikit-learn} to other major projects in terms of API.
+compares \sklearn to other major projects in terms of API.
 Section \ref{sec:future_work} outlines some of the work to be done before
-the scikit-learn 1.0 release.  Finally, we summarize and conclude in
-section \ref{sec:conclusions}.
+the \sklearn 1.0 release.
+Finally, we summarize and conclude in section \ref{sec:conclusions}.
 
 \section{Core API}
 
@@ -685,7 +685,7 @@ to \sklearn algorithms.
 
 \section{Future work}
 \label{sec:future_work}
-There are several problems with the current scikit-learn interface which
+There are several problems with the current \sklearn interface which
 will be resolved in the future.
 At present, the library does not support some classical machine learning
 algorithms,
@@ -722,16 +722,16 @@ may execute arbitrary Python code,
 so models from untrusted sources cannot be safely ``unpickled''.
 
 These API issues will be addressed in the future in preparation for
-the 1.0 release of scikit-learn.
+the 1.0 release of \sklearn.
 
 
 \section{Conclusion}
 \label{sec:conclusions}
 
-We have discussed the scikit-learn API
+We have discussed the \sklearn API
 and the way it maps machine learning concepts and tasks
 onto objects and operations in the Python programming language.
-We have shown how a consistent API across the package makes scikit-learn
+We have shown how a consistent API across the package makes \sklearn
 very \textbf{usable} in practice: experimenting with different learning
 algorithm is as simple as substituting a new class definition.
 Through composition interfaces such as Pipelines, Feature Unions,
@@ -740,30 +740,30 @@ and meta-estimators, these simple building blocks lead to an API which is
 within a small amount of easy-to-read code.
 Through duck-typing, the consistent API leads to a framework that is
 easily \textbf{extensible}, and allows user-defined estimators to be
-incorporated into the scikit-learn workflow without any explicit object
+incorporated into the \sklearn workflow without any explicit object
 inheritance.
 
-While part of the scikit-learn API is necessarily Python-specific,
+While part of the \sklearn API is necessarily Python-specific,
 core concepts may be applicable to
 machine learning applications and toolkits
 written in other (dynamic) programming languages.
-The simplicity, power, and extensibility of the scikit-learn API is evidenced
-by the large and growing user-base, the use of scikit-learn to solve real
+The power, and extensibility of the \sklearn API is evidenced
+by the large and growing user-base, its use to solve real
 problems across a wide array of fields,
 as well as the appearance of third-party packages
-that follow the scikit-learn conventions. Examples of such packages include
+that follow the \sklearn conventions. Examples of such packages include
 \textit{astroML}\footnote{\url{http://astroml.org/}}
 \citep{vanderplas2012astroML}, a package providing
 machine learning tools for astronomers and
 \textit{wiseRF}\footnote{\url{http://wise.io}}, a commercial random forest
 implementation. The source code of
 the recently-proposed sparse multiclass
-algorithm \citep{mblondel-mlj2013}, released as
+algorithm of \citet{mblondel-mlj2013}, released as
 part of the
 \textit{lightning}\footnote{\url{https://github.com/mblondel/lightning}}
-package, also follows the scikit-learn conventions. To maximize ease of use, we
-encourage more researchers to follow the scikit-learn conventions when
-releasing their software in the future.
+package, also follows the \sklearn conventions.
+To maximize ease of use, we encourage researchers
+to follow these conventions when releasing machine learning software.
 
 
 \subsection*{Acknowledgements}
