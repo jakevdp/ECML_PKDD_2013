@@ -738,17 +738,27 @@ easily \textbf{extensible}, and allows user-defined estimators to be
 incorporated into the scikit-learn workflow without any explicit object
 inheritance.
 
-The simplicity, power, and extensibility of the scikit-learn API is evidenced
-by the large and growing user-base, the use of scikit-learn to solve real
-problems across a wide array of fields,
-as well as the appearance of third-party packages
-that follow the scikit-learn conventions and tie into the toolkit.\footnote{
-  E.g.\ nolearn, \url{http://pythonhosted.org/nolearn};
-  this mention does not imply endorsement of this package.}
 While part of the scikit-learn API is necessarily Python-specific,
 core concepts may be applicable to
 machine learning applications and toolkits
 written in other (dynamic) programming languages.
+The simplicity, power, and extensibility of the scikit-learn API is evidenced
+by the large and growing user-base, the use of scikit-learn to solve real
+problems across a wide array of fields,
+as well as the appearance of third-party packages
+that follow the scikit-learn conventions. Examples of such packages include
+\textit{astroML}\footnote{\url{http://astroml.org/}}, a package providing
+machine learning tools for astronomers and
+\textit{wiseRF}\footnote{\url{http://wise.io}}, a commercial random forest
+implementation. The source code of 
+the recently-proposed sparse multiclass
+algorithm \citep{mblondel-mlj2013}, released as
+part of the 
+\textit{lightning}\footnote{\url{https://github.com/mblondel/lightning}}
+package, also follows the scikit-learn conventions. To maximize ease of use, we
+encourage more researchers to follow the scikit-learn conventions when
+releasing their software in the future.
+
 
 \subsection*{Acknowledgements}
 
