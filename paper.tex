@@ -81,7 +81,8 @@ programming environment that is accessible to non-machine learning experts and
 reusable in various scientific areas. The project is not a novel domain-specific
 language, but a library that provides machine learning idioms to a general-
 purpose high-level language. Among other things, it includes classical learning
-algorithms, model selection tools and preprocessing procedures. The project is
+algorithms; model evalutation, selection and evaluation tools; and
+preprocessing procedures. The project is
 distributed under the simplified BSD license, encouraging its use in both
 academic and commercial settings.
 
@@ -189,9 +190,9 @@ between input variables $X_1, ..., X_p$, called features, and
 some output variable $Y$. A sample is then defined as a tuple of values $([x_1,
 ..., x_p]^\mathrm{T}, y)$ of these variables and a dataset as a collection of
 such samples.  As such, matrices of numerical values constitute a natural and
-widely used representation in machine learning. In this view, each row in the
-matrix then corresponds to a sample of the dataset and each column to one of the
-variables of the problem.
+a widely used representation in machine learning: each row in the
+matrix corresponds to one sample of the dataset and each column to one
+variable of the problem.
 
 In \sklearn, we chose a representation of data that is as close as
 possible to the matrix representation: datasets are encoded as NumPy
@@ -342,8 +343,8 @@ Finally, predictors should also provide a \texttt{score} function to assess the
 performance on some input data. In supervised learning estimators, this method
 takes as inputs arrays \texttt{X\_test} and \texttt{y\_test} and typically
 computes the coefficient of determination between \texttt{y\_test} and
-\texttt{predict(X\_test)} in the case of classification, or the mean squared
-error in the case of regression. Not however that, from an API point of view,
+\texttt{predict(X\_test)} in regression, or the accuracy
+in classification. Not however that, from an API point of view,
 the only guideline is that the \texttt{score} method returns a value
 that quantifies the quality of its predictions (the higher, the better).
 Unsupervised learning estimators may also exposes a \texttt{score} function
