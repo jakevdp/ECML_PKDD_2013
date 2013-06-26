@@ -640,28 +640,30 @@ In particular, \sklearn includes modified versions of \textsf{LIBSVM} and \texts
 \citep{chang2011libsvm,fan2008}, both written in C{}\verb!++!
 and wrapped using Cython modules.
 
-\section{Comparison with other packages}
-
+\section{Related software}
 \label{sec:comparison}
 
-\textcolor{red}{TODO: emphasize scikit-learn's place in the overall scipy ecosystem, and its role in spurring the development of more basic tools.}\\
 
 Recent years have witnessed a rising interest in machine learning and data mining
 with applications in many fields.
 With this rise comes a host of machine learning packages
 (both open source and proprietary) with which \sklearn competes.
-
-Many machine learning packages exist, with new ones still often appearing,
-that are intended to be used as command-line tools
+Although it can also be used through its Java API, Weka \citep{hall2009weka} is
+popularly used through its graphical user interface (GUI). We argue that a GUI
+lacks flexibility, makes experiments difficult to reproduce and has a high
+maintenance cost from a development point of view. For these reasons, we make no
+attempt to provide such a GUI in \sklearn.
+Other existing machine learning packages 
+such as SofiaML \citep{sculley2010web}
+and Vowpal~Wabbit \citep{langford2009sparse}
+are intended to be used as command-line tools
 (and sometimes do not offer any type of API).
-Examples include Weka \citep{hall2009weka}, SofiaML \citep{sculley2010web}
-and Vowpal~Wabbit \citep{langford2009sparse}.
 While these packages have the advantage
 that their users are not tied to a particular programming language,
-the users will find that they still need to do programming,
+the users will find that they still need programming to process inputs/outputs,
 and will do so in a variety of languages.
 We argue that this makes it harder for researchers and developers
-to exchange software and collaborate on software.
+to exchange and collaborate on software.
 
 In comparison to specialized languages for numeric and statistical programming
 such as \textsc{matlab} and R \citep{r},
