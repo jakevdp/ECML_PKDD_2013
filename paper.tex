@@ -682,15 +682,16 @@ that have $O(1)$ space complexity and can be updated online.
 The API is designed around the Python concept of an \textit{iterable}
 (supported in the language by a restricted form of co-routines called
 \textit{generators}).
-While the text vectorization part of \sklearn
-also uses iterables to some extent,
-the emphasis is still on (mini-)batch processing,
+While the text vectorizers part of \sklearn
+also use iterables to some extent,
+they still produce entire sparse matrices, intended to be used for batch or
+mini-batch learning. This is the case
 even in the stateless, O(1) memory vectorizers
 that implement the hashing trick of \citet{weinberger2009}.
 This way of processing, as argued earlier in Section~\ref{sec:arrays},
 reduces various forms of overhead
-and makes effective use of the abundance of memory in modern computers.
-We make no attempt to hide this batch-oriented processing from the user,
+and allows effective use of the vectorized operations provided by NumPy and 
+SciPy.  We make no attempt to hide this batch-oriented processing from the user,
 allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
 
