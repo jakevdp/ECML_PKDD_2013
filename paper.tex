@@ -597,7 +597,7 @@ In other places of the library, in particular in the vectorization code
 for unstructured input, the toolkit is also designed to be
 extensible. Here, estimators provide hooks for user-defined code: objects or
 functions that provide a specific API can be given as arguments at vectorizer
-construction time. The library then calls into this code, communicating with it by passing objects of standard Python/Numpy types.
+construction time. The library then calls into this code, communicating with it by passing objects of standard Python/NumPy types.
 Again, such external user code can be kept agnostic of the \sklearn
 class hierarchy.
 
@@ -615,9 +615,9 @@ so that their code can be reused with other toolkits or in other contexts.
 
 Our implementation guidelines emphasize writing efficient but readable code.
 In particular, we focus on making the codebase easily maintainable and
-understandable in order to favour external contributions. Whenever practicable,
+understandable in order to favor external contributions. Whenever practicable,
 algorithms implemented in \sklearn are written in Python,
-using Numpy vector operations for numerical work.
+using NumPy vector operations for numerical work.
 This allows for the code to remain concise, readable and
 efficient. For critical algorithms that cannot be easily and efficiently
 expressed as NumPy operations, we rely on Cython \citep{behnel2011cython}
@@ -632,7 +632,7 @@ To facilitate the installation and thus adoption of \sklearn,
 the set of external dependencies is kept to a bare minimum:
 only Python, NumPy and SciPy are required for a functioning installation.
 Binary distributions of these are available for the major platforms.
-Visualisation functionality depends on Matplotlib \citep{hunter2007matplotlib}
+Visualization functionality depends on Matplotlib \citep{hunter2007matplotlib}
 and/or Graphviz \citep{gansner2000},
 but neither is required to do machine learning.
 When feasible, external libraries are integrated into the codebase.
@@ -713,7 +713,7 @@ considered off-scope for the project, since they would require quite different
 data representations and APIs.
 
 At a lower-level, parallel processing is a potential point of improvement.
-Some estimators in \sklearn are already able to leverage multi-core processors,
+Some estimators in \sklearn are already able to leverage multicore processors,
 but only in a coarse-grained fashion.
 At present, parallel processing is difficult to accomplish in the Python environment;
 \sklearn targets the main implementation, CPython,
@@ -782,12 +782,12 @@ package, also follows the \sklearn conventions.
 To maximize ease of use, we encourage more researchers
 to follow these conventions when releasing their software.
 
-\subsection*{Acknowledgements}
+\subsection*{Acknowledgments}
 
 The authors and contributors acknowledge active support from INRIA. Past and
 present sponsors of the project also include Google for funding
 scholarships through its Summer of Code program,
-the Python Software Fundation and Tinyclues for funding coding sprints.
+the Python Software Foundation and Tinyclues for funding coding sprints.
 
 {\small
 \bibliographystyle{abbrvnat}
