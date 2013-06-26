@@ -179,7 +179,7 @@ broad principles:
        existing building blocks.
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
-       a default and appropriate value is defined by the library.
+       an appropriate default value is defined by the library.
        The default value should cause the operation to be performed
        in a sensible way (giving a baseline solution for the task at hand).
 \end{description}
@@ -208,7 +208,7 @@ the code short and readable.  This design choice has also been motivated by
 the fact that, given their pervasiveness in many other scientific Python
 packages, many scientific users of Python are already familiar with NumPy dense
 arrays and SciPy sparse matrices.
-From a practical point of view, these formats also provide a bunch of
+From a practical point of view, these formats also provide a collection of
 data loading and conversion tools which make them very easy to use in many
 contexts. Moreover, for tasks where the inputs are text files or semi-structured
 objects, we provide \textit{vectorizer} objects that efficiently convert such
@@ -236,7 +236,7 @@ The \textit{estimator} interface is at the core of the
 library. It defines instantiation mechanisms of objects and exposes a
 \texttt{fit} method for learning a model from training data.  All supervised and
 unsupervised learning algorithms (e.g., for classification, regression or
-clustering) are offered as objects implementing that interface. Machine
+clustering) are offered as objects implementing this interface. Machine
 learning tasks like feature extraction, feature selection or dimensionality
 reduction are also provided as estimators.
 
@@ -295,13 +295,13 @@ Since all estimators share the same interface, using a different learning algori
 as simple as replacing the constructor (the class name).
 For example, to build a random forest on
 the same training data, one would simply have to replace
-\texttt{LogisticRegression(penalty="l1")} in the snippet above by \\
+\texttt{LogisticRegression(penalty="l1")} in the snippet above by
 \texttt{RandomForestClassifier()}.
 
 In \sklearn, classical learning algorithms are not the only objects to be
 implemented as estimators. For example, preprocessing routines (e.g., scaling of
 features) or feature extraction techniques (e.g., vectorization of text
-documents) also implement the same interface. Even processing steps that are
+documents) also implement the \textit{estimator} interface. Even processing steps that are
 entirely stateless and therefore do not require the \texttt{fit} method to
 perform any useful work implement the estimator interface. As we will illustrate
 in the next sections, this design pattern is indeed of prime importance for
@@ -408,7 +408,7 @@ returning cluster labels assigned to the training samples.
 
 Building on the core interface introduced in the previous section, we now
 present advanced API mechanisms for building meta-estimators,
-composing complex estimators and then selecting models. We also discuss design
+composing complex estimators and selecting models. We also discuss design
 choices allowing for an easy use and extension of \sklearn.
 
 \subsection{Meta-estimators}
@@ -459,7 +459,7 @@ is only necessary in advanced use cases.
 A distinguishing feature of the \sklearn API is its ability to
 compose new estimators from several base estimators. Composition mechanisms can
 be used to combine typical machine learning workflows into a single object which
-is itself an estimator, and can be used wherever usual estimators can be used.
+is itself an estimator, and can be employed wherever usual estimators can be used.
 In particular,
 they integrate within model selection routines, allowing one to optimize at once
 every step of a complex workflow. Composition of estimators can be done in two
@@ -514,11 +514,11 @@ Pipeline([("feat_union", union),
 
 As introduced in Section~\ref{sec:estimators}, hyper-parameters set in the
 constructor of an estimator
-determine the behavior of its learning algorithm
+determine the behavior of the learning algorithm
 and hence the performance of the resulting model on unseen data.
 The problem of \textit{model selection} is therefore to find, within
 some hyper-parameter space, the best combination of hyper-parameters, with
-respect to some user-chosen criterion. For example, in the case of a decision
+respect to some user-specified criterion. For example, in the case of a decision
 tree, too small values of the \texttt{max\_depth} parameter will make the tree
 underfit, while too large values will make it overfit.
 
@@ -621,7 +621,7 @@ using NumPy vector operations for numerical work.
 This allows for the code to remain concise, readable and
 efficient. For critical algorithms that cannot be easily and efficiently
 expressed as NumPy operations, we rely on Cython \citep{behnel2011cython}
-to achieve decent performance and scalability. Cython is a
+to achieve competative performance and scalability. Cython is a
 compiled programming language that extends Python with static typing. It
 produces efficient C extension modules that are directly importable from the
 Python run-time system. Examples of algorithms written in Cython include
