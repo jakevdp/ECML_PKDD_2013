@@ -79,8 +79,8 @@ library for the Python programming language. The ambition of the project is to
 provide efficient and well-established machine learning tools within a
 programming environment that is accessible to non-machine learning experts and
 reusable in various scientific areas. The project is not a novel domain-specific
-language, but a library that provides machine learning idioms to a general-
-purpose high-level language. Among other things, it includes classical learning
+language, but a library that provides machine learning idioms to a
+general-purpose high-level language. Among other things, it includes classical learning
 algorithms, model evaluation and selection tools, as well as
 preprocessing procedures. The project is
 distributed under the simplified BSD license, encouraging its use in both
@@ -97,9 +97,10 @@ use.
 
 From its core, the library has been designed to tie in with the set of numeric
 and scientific packages centered around the NumPy and SciPy libraries. NumPy
-\citep{vanderwalt2011} augments Python with a numeric array data type and proper
-array computing primitives, while SciPy \citep{varoquaux2013scipy} extends it
-further by making common numerical operations available, either by implementing
+\citep{vanderwalt2011} augments Python with a contiguous numeric array datatype
+and fast array computing primitives,
+while SciPy \citep{varoquaux2013scipy} extends it
+further with common numerical operations, either by implementing
 these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
 implementations. The \textit{scikits} were created to complement SciPy with
 domain-specific toolkits. Currently, the two most popular and feature-complete
@@ -108,40 +109,39 @@ ones are by far \sklearn for machine learning and
 processing.
 
 Started in 2007, \sklearn is developed by an international team of a dozen of
-core developers, mostly researchers from various fields (e.g., machine learning,
-natural language processing, neuroscience, astrophysics, etc.). The project also benefits
-from many occasional contributors proposing small code or documentation fixes or
+core developers, mostly researchers from various fields (e.g.,
+computer science, neuroscience, astrophysics). The project also benefits
+from many occasional contributors proposing small bugfixes or
 improvements. Development proceeds on GitHub\footnote{\url{https://github.com/scikit-learn}},
 a platform which greatly facilitates this kind of
 collaboration. Because of the large number of developers, emphasis is
 put on keeping the project maintainable. In particular, code must follow
 specific quality guidelines, such as style consistency and unit-test coverage.
-Complete documentation and examples are required for all features,
-and major modifications must pass code review by at least two
+Documentation and examples are required for all features,
+and major changes must pass code review by at least two
 developers not involved in the implementation of the proposed change.
 
-Over the past few years, the project has proved valuable to an ever increasing
-user base. Its popularity can be gauged from various indicators such as the hundreds
+\sklearn's popularity can be gauged from various indicators such as the hundreds
 of citations in scientific publications, successes in various machine learning
-challenges (e.g., Kaggle), or significant statistics derived from our
+challenges (e.g., Kaggle), and statistics derived from our
 repositories and mailing list.  At the time of writing, the project is watched
 by 1365 people and forked 693 times on GitHub; the mailing list receives more
 than 300 mails per month; version control logs
 % ddaa494c116e3c16bf032003c5cccbed851733d2
 show 183 unique contributors to the codebase and the online documentation
-website receives 37,000 unique visitors and 295,000 page views per month.
+receives 37,000 unique visitors and 295,000 pageviews per month.
 
 In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
-benchmarked against several competitors. In this paper, we instead focus on an
-in-depth discussion and analysis of the design choices made when building the
-library. We first present in section \ref{sec:core-api} the central application
-programming interface (API) and then describe, in section \ref{sec:advanced-api},
-advanced API mechanisms built from the core interface.
+benchmarked against several competitors. In this paper, we instead present an
+in-depth analysis of design choices made when building the
+library. We first present in section~\ref{sec:core-api} the central application
+programming interface (API) and then describe, in section~\ref{sec:advanced-api},
+advanced API mechanisms built on the core interface.
 Section \ref{sec:implementation} briefly describes the implementation.
 Section \ref{sec:comparison} then
 compares \sklearn to other major projects in terms of API.
 Section \ref{sec:future_work} outlines some of the work to be done before
-the \sklearn 1.0 release.
+a \sklearn 1.0 release.
 Finally, we summarize and conclude in section \ref{sec:conclusions}.
 
 \section{Core API}
