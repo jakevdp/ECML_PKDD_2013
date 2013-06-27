@@ -281,7 +281,7 @@ In the partial application view,
 \texttt{fit} is a function from data to a model of that data.
 As such, it always returns the estimator object it was called on,
 which now serves as a model of its input and can be used to perform predictions or transformations of input data.
-The choice to let a single object serve dual purpose as estimator and model
+The choice to let a single object serves dual purpose as estimator and model
 simplifies the \sklearn class hierarchy
 compared to an approach were estimators and models are separated.
 
@@ -362,7 +362,7 @@ computes the coefficient of determination between \texttt{y\_test} and
 in classification.
 The only requirement is that the \texttt{score} method return a value
 that quantifies the quality of its predictions (the higher, the better).
-Unsupervised learning estimators may also exposes a \texttt{score} function
+Unsupervised learning estimators may also expose a \texttt{score} function
 to compute, for instance, the likelihood of the given data under its model.
 
 \subsection{Transformers}
