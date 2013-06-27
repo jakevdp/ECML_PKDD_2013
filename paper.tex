@@ -655,10 +655,12 @@ with applications in many fields.
 With this rise comes a host of machine learning packages
 (both open source and proprietary) with which \sklearn competes.
 Although it can also be used through its Java API, Weka \citep{hall2009weka} is
-popularly used through its graphical user interface (GUI). We argue that a GUI
-lacks flexibility, makes experiments difficult to reproduce and has a high
-maintenance cost from a development point of view. For these reasons, we make no
-attempt to provide such a GUI in \sklearn.
+popularly used through its graphical user interface (GUI). The target audience
+of the \sklearn is capable of programming, and therefore we focus on developing
+a usable and consistent API, rather than expend effort into creating a GUI. In
+addition, running machine learning through a GUI makes reproducibility difficult
+(although WEKA has developed a GUI for managing such workflows).
+
 Other existing machine learning packages 
 such as SofiaML\footnote{\url{http://code.google.com/p/sofia-ml/}}
 and Vowpal~Wabbit\footnote{\url{http://hunch.net/$\sim$vw/}}
@@ -668,8 +670,12 @@ While these packages have the advantage
 that their users are not tied to a particular programming language,
 the users will find that they still need programming to process input/output,
 and will do so in a variety of languages.
-We argue that this makes it harder for researchers and developers
-to exchange and collaborate on software.
+The focus of \sklearn to incorporate the entire package into a single package still
+allows for the use of external tools to process input/output, however gives the added
+benefit of being able to run these processes within the same development environment.
+In addition, this makes it easier for researchers and developers
+to exchange and collaborate on software, as dependencies and setup are kept to a
+minimum.
 
 In comparison to specialized languages for numeric and statistical programming
 such as \textsc{matlab} and R \citep{r},
@@ -679,11 +685,17 @@ while NumPy and SciPy extend it with functionality
 similar to that offered by \textsc{matlab} and R.
 Python has strong language and standard library support for such tasks as
 string/text processing, interprocess communication, networking
-and many of the other tasks that machine learning programs
+and many of the other auxiliary tasks that machine learning programs
 (whether academic or commercial) routinely need to perform.
-However, \textsc{matlab} and R remain the preferred language of many
-researchers. As such, much scientific software is still open-sourced primarily
-in these two languages.
+While support for many of these tasks is improving in languages such as
+\textsc{matlab} and R, they still languish behind python in their general purpose
+applicability.
+In many applications of machine learning these tasks, such as data access,
+data preprocessing and reporting, can be a more significant task than applying 
+the machine learning algorithm.
+%However, \textsc{matlab} and R remain the preferred language of many
+%researchers. As such, much scientific software is still open-sourced primarily
+%in these two languages.
 
 Another package that deserves mention is the Gensim topic modeling toolkit
 \citep{rehurek2010gensim},
@@ -706,10 +718,9 @@ SciPy.  We make no attempt to hide this batch-oriented processing from the user,
 allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
 
-\section{Future work}
+\section{Future directions}
 \label{sec:future_work}
-There are several problems with the current \sklearn interface which
-will be resolved in the future.
+There are several directions that the \sklearn contributors aim to focus on in future development.
 At present, the library does not support some classical machine learning
 algorithms,
 including neural networks, ensemble meta-estimators for
