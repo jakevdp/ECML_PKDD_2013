@@ -198,13 +198,14 @@ broad principles:
 \label{sec:arrays}
 
 In most machine learning tasks, data is modeled as a set of variables.  For
-example, in a classification or regression task, the goal is to find a mapping
+example in supervised learning task, the goal is to find a mapping
 between input variables $X_1, ..., X_p$, called features, and
-some output variable $Y$. A sample is then defined as a pair of
+some discrete as in classification task or continous as in regression task
+output variables $Y$. A sample is then defined as a pair of
 values $([x_1,..., x_p]^\mathrm{T}, y)$ of these variables. A widely used
 representation of a dataset, a collection of
-such samples, is a pair of matrix with numerical values: one for the input
-values and one for the output values. Each row of these matrix
+such samples, is a pair of matrices with numerical values: one for the input
+values and one for the output values. Each row of these matrices
 corresponds to one sample of the dataset and each column to one variable of
 the problem.
 
