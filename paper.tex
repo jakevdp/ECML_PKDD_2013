@@ -104,7 +104,7 @@ further with common numerical operations, either by implementing
 these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
 implementations. The \textit{scikits} were created to complement SciPy with
 domain-specific toolkits. Currently, the two most popular and feature-complete
-ones are by far \sklearn for machine learning and 
+ones are by far \sklearn and
 \textit{scikit-image}\footnote{\url{http://scikit-image.org}} for image
 processing.
 
@@ -131,10 +131,13 @@ than 300 mails per month; version control logs
 show 183 unique contributors to the codebase and the online documentation
 receives 37,000 unique visitors and 295,000 pageviews per month.
 
-In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
-benchmarked against several competitors. In this paper, we instead present an
-in-depth analysis of design choices made when building the
-library. We first present in section~\ref{sec:core-api} the central application
+\citet{pedregosa2011} briefly presented \sklearn and
+benchmarked it against several competitors.
+In this paper, we instead present an
+in-depth analysis of design choices made when building the library,
+detailing how we organized and operationalized
+common machine learning concepts.
+We first present in section~\ref{sec:core-api} the central application
 programming interface (API) and then describe, in section~\ref{sec:advanced-api},
 advanced API mechanisms built on the core interface.
 Section \ref{sec:implementation} briefly describes the implementation.
@@ -142,7 +145,7 @@ Section \ref{sec:comparison} then
 compares \sklearn to other major projects in terms of API.
 Section \ref{sec:future_work} outlines some of the work to be done before
 a \sklearn 1.0 release.
-Finally, we summarize and conclude in section \ref{sec:conclusions}.
+We summarize and conclude in section \ref{sec:conclusions}.
 
 \section{Core API}
 
