@@ -596,7 +596,7 @@ and external developers are not forced to inherit from any \sklearn class.
 In other places of the library, in particular in the vectorization code
 for unstructured input, the toolkit is also designed to be
 extensible. Here, estimators provide hooks for user-defined code: objects or
-functions that provide a specific API can be given as arguments at vectorizer
+functions that follow a specific API can be given as arguments at vectorizer
 construction time. The library then calls into this code, communicating with it by passing objects of standard Python/NumPy types.
 Again, such external user code can be kept agnostic of the \sklearn
 class hierarchy.
