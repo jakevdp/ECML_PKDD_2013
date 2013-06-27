@@ -530,9 +530,10 @@ determine the behavior of the learning algorithm
 and hence the performance of the resulting model on unseen data.
 The problem of \textit{model selection} is therefore to find, within
 some hyper-parameter space, the best combination of hyper-parameters, with
-respect to some user-specified criterion. For example, in the case of a decision
-tree, too small values of the \texttt{max\_depth} parameter will make the tree
-underfit, while too large values will make it overfit.
+respect to some user-specified criterion. For example, a decision
+tree with too small values of the maximal tree depth
+parameter  will lead to underfitting, while too large
+values will make it overfit.
 
 In \sklearn, model selection is supported in two distinct meta-estimators,
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV}.  They take as input an
