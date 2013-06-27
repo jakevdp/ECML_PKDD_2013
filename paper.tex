@@ -475,7 +475,8 @@ fashion through \texttt{FeatureUnion} objects.
 \texttt{Pipeline} objects chain multiple estimators into a single one. This is
 useful since a machine learning workflow typically involves a fixed sequence of
 processing steps (e.g., feature extraction, dimensionality reduction, learning
-and making predictions). A sequence of $N$ such steps can be combined into a
+and making predictions), many of which perform some kind of learning.
+A sequence of $N$ such steps can be combined into a
 \texttt{Pipeline} if the first $N-1$ steps are transformers; the last can be
 either a predictor, a transformer or both. Conceptually, fitting a pipeline to
 a training set amounts to the following recursive procedure: i) when only one
