@@ -478,7 +478,9 @@ processing steps (e.g., feature extraction, dimensionality reduction, learning
 and making predictions), many of which perform some kind of learning.
 A sequence of $N$ such steps can be combined into a
 \texttt{Pipeline} if the first $N-1$ steps are transformers; the last can be
-either a predictor, a transformer or both. Conceptually, fitting a pipeline to
+either a predictor, a transformer or both.
+
+Conceptually, fitting a pipeline to
 a training set amounts to the following recursive procedure: i) when only one
 step remains, call its \texttt{fit} method; ii) otherwise, \texttt{fit} the
 first step, use it to \texttt{transform} the training set and \texttt{fit} the
