@@ -198,12 +198,13 @@ broad principles:
 In most machine learning tasks, data is modeled as a set of variables.  For
 example, in a classification or regression task, the goal is to find a mapping
 between input variables $X_1, ..., X_p$, called features, and
-some output variable $Y$. A sample is then defined as a tuple of values $([x_1,
-..., x_p]^\mathrm{T}, y)$ of these variables and a dataset as a collection of
-such samples.  As such, matrices of numerical values constitute a natural and
-widely used representation in machine learning: each row in the
-matrix corresponds to one sample of the dataset and each column to one
-variable of the problem.
+some output variable $Y$. A sample is then defined as a pair of input/output
+values $([x_1,..., x_p]^\mathrm{T}, y)$. of these variables. A widely used
+representation of a dataset, a collection of
+such samples, is a set of two matrix of numerical values: one for the input
+values and one for the output values. Each row of these matrix
+corresponds to one sample of the dataset and each column to one variable of
+the problem.
 
 In \sklearn, we chose a representation of data that is as close as
 possible to the matrix representation: datasets are encoded as NumPy
