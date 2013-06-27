@@ -574,7 +574,7 @@ An SVM with a linear kernel accepts a $\gamma$ parameter,
 but actually ignores it. Computing time would thus be wasted, trying out effectively
 equivalent settings, if a single hyper-parameter grid was used instead.
 Additionally, we see that
-\texttt{GridSearchCV} has a \texttt{predict} method, like any other classifier.
+\texttt{GridSearchCV} has a \texttt{predict} method, just like any other classifier.
 This is because \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} in fact
 delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 \texttt{score} methods to the best estimator
