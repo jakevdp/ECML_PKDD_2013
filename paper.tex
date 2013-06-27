@@ -295,17 +295,17 @@ clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
 \end{pythoncode}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
-setting the \texttt{penalty} hyper-parameter to \texttt{"l1"}, hence enabling
-$\ell_1$ regularization. Other hyper-parameters (such as \texttt{C}, which
-defines the strength of the regularization) are not explicitly defined and are
-thus set to the default values. Upon calling \texttt{fit}, the model is then
+setting the \texttt{penalty} hyper-parameter to \texttt{"l1"} for
+$\ell_1$ regularization. Other hyper-parameters (such as \texttt{C},
+the strength of the regularization) are not explicitly given and
+thus set to the default values. Upon calling \texttt{fit}, a model is
 learned from the training arrays \texttt{X\_train} and \texttt{y\_train},
 and stored within the object for later use.
 %% (In this example, \texttt{fit} is called solely for its side effects.)
 Since all estimators share the same interface, using a different learning algorithm is
-as simple as replacing the constructor (the class name).
-For example, to build a random forest on
-the same training data, one would simply have to replace
+as simple as replacing the constructor (the class name);
+to build a random forest on
+the same data, one would simply replace
 \texttt{LogisticRegression(penalty="l1")} in the snippet above by
 \texttt{RandomForestClassifier()}.
 
@@ -358,8 +358,8 @@ performance on some input data. In supervised learning estimators, this method
 takes as input arrays \texttt{X\_test} and \texttt{y\_test} and typically
 computes the coefficient of determination between \texttt{y\_test} and
 \texttt{predict(X\_test)} in regression, or the accuracy
-in classification. From an API point of view,
-the only guideline is that the \texttt{score} method returns a value
+in classification.
+The only requirement is that the \texttt{score} method return a value
 that quantifies the quality of its predictions (the higher, the better).
 Unsupervised learning estimators may also exposes a \texttt{score} function
 to compute, for instance, the likelihood of the given data under its model.
@@ -521,7 +521,7 @@ union = FeatureUnion([("pca", PCA()),
 Pipeline([("feat_union", union),
           ("feat_sel", SelectKBest(k=10)),
           ("log_reg", LogisticRegression(penalty="l2"))
-          ]).fit(X_train, y_train).predict(X_test)
+         ]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
 
 \subsection{Model selection}
