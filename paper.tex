@@ -587,7 +587,7 @@ y_pred = clf.predict(X_test)
 \end{pythoncode}
 Note that, in the above example, two distinct hyper-parameter grids are
 considered. This is because it only makes sense to search for \texttt{gamma}
-when \texttt{kernel} is set to \texttt{"rbf"}.
+when \texttt{kernel} is set to a radial basis function kernel \texttt{"rbf"}.
 An SVM with a linear kernel accepts a $\gamma$ parameter, but ignores it,
 so using a single parameter grid would waste computing time
 trying out effectively equivalent settings.
