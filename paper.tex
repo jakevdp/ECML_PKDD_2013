@@ -104,7 +104,7 @@ further with common numerical operations, either by implementing
 these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
 implementations. The \textit{scikits} were created to complement SciPy with
 domain-specific toolkits. Currently, the two most popular and feature-complete
-ones are by far \sklearn for machine learning and 
+ones are by far \sklearn for machine learning and
 \textit{scikit-image}\footnote{\url{http://scikit-image.org}} for image
 processing.
 
@@ -173,8 +173,10 @@ broad principles:
        algorithms are stored and exposed as public attributes.
   \item[Non-proliferation of classes.]
        Learning algorithms are the only objects to be of custom classes.
-       Datasets and hyper-parameter names and values are represented as standard
-       Python, NumPy or SciPy objects whenever possible.
+       Datasets are represented as standard Python list, NumPy array or
+       Scipy sparse matrices.
+       Hyper-parameter names and values are represented as standard
+       Python string or number whenever possible.
        This keeps \sklearn easy to use and easy to combine with other libraries.
   \item[Composition.]
        Many machine learning tasks are expressible
@@ -666,7 +668,7 @@ a usable and consistent API, rather than expend effort into creating a GUI. In
 addition, running machine learning through a GUI makes reproducibility difficult
 (although Weka has developed a GUI for managing such workflows).
 
-Other existing machine learning packages 
+Other existing machine learning packages
 such as SofiaML\footnote{\url{http://code.google.com/p/sofia-ml/}}
 and Vowpal~Wabbit\footnote{\url{http://hunch.net/$\sim$vw/}}
 are intended to be used as command-line tools
@@ -696,7 +698,7 @@ While support for many of these tasks is improving in languages such as
 \textsc{matlab} and R, they still lag behind Python in their general purpose
 applicability.
 In many applications of machine learning these tasks, such as data access,
-data preprocessing and reporting, can be a more significant task than applying 
+data preprocessing and reporting, can be a more significant task than applying
 the actual learning algorithm.
 
 Another package that deserves mention is the Gensim topic modeling toolkit
@@ -715,7 +717,7 @@ even in the stateless, O(1) memory vectorizers
 that implement the hashing trick of \citet{weinberger2009}.
 This way of processing, as argued earlier in Section~\ref{sec:arrays},
 reduces various forms of overhead
-and allows effective use of the vectorized operations provided by NumPy and 
+and allows effective use of the vectorized operations provided by NumPy and
 SciPy.  We make no attempt to hide this batch-oriented processing from the user,
 allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
