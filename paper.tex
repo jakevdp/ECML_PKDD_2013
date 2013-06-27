@@ -336,7 +336,7 @@ clust_pred = km.predict(X_test)
 \end{pythoncode}
 
 Along with the \texttt{predict} method, predictors may also implement methods
-for quantifying the certainty of a prediction. In the case of estimators
+for quantifying the confidence of a prediction. In the case of estimators
 implementing linear models, the \texttt{decision\_function} method can be used
 to measure the distance of the samples from the discriminating hyperplane. Some
 predictors also provide a \texttt{predict\_proba} method which returns
