@@ -519,7 +519,7 @@ union = FeatureUnion([("pca", PCA()),
 Pipeline([("feat_union", union),
           ("feat_sel", SelectKBest(k=10)),
           ("log_reg", LogisticRegression(penalty="l2"))
-]).fit(X_train, y_train).predict(X_test)
+          ]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
 
 \subsection{Model selection}
