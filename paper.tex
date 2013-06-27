@@ -176,8 +176,9 @@ broad principles:
        algorithms are stored and exposed as public attributes.
   \item[Non-proliferation of classes.]
        Learning algorithms are the only objects to be of custom classes.
-       Datasets and hyper-parameter names and values are represented as standard
-       Python, NumPy or SciPy objects whenever possible.
+       Datasets are represented as NumPy arrays or SciPy sparse matrices.
+       Hyper-parameter names and values are represented as standard
+       Python strings or numbers whenever possible.
        This keeps \sklearn easy to use and easy to combine with other libraries.
   \item[Composition.]
        Many machine learning tasks are expressible
@@ -199,12 +200,13 @@ broad principles:
 In most machine learning tasks, data is modeled as a set of variables.  For
 example, in a classification or regression task, the goal is to find a mapping
 between input variables $X_1, ..., X_p$, called features, and
-some output variable $Y$. A sample is then defined as a tuple of values $([x_1,
-..., x_p]^\mathrm{T}, y)$ of these variables and a dataset as a collection of
-such samples.  As such, matrices of numerical values constitute a natural and
-widely used representation in machine learning: each row in the
-matrix corresponds to one sample of the dataset and each column to one
-variable of the problem.
+some output variable $Y$. A sample is then defined as a pair of
+values $([x_1,..., x_p]^\mathrm{T}, y)$ of these variables. A widely used
+representation of a dataset, a collection of
+such samples, is a pair of matrix with numerical values: one for the input
+values and one for the output values. Each row of these matrix
+corresponds to one sample of the dataset and each column to one variable of
+the problem.
 
 In \sklearn, we chose a representation of data that is as close as
 possible to the matrix representation: datasets are encoded as NumPy
@@ -519,7 +521,7 @@ union = FeatureUnion([("pca", PCA()),
 Pipeline([("feat_union", union),
           ("feat_sel", SelectKBest(k=10)),
           ("log_reg", LogisticRegression(penalty="l2"))
-]).fit(X_train, y_train).predict(X_test)
+          ]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
 
 \subsection{Model selection}
@@ -530,9 +532,9 @@ determine the behavior of the learning algorithm
 and hence the performance of the resulting model on unseen data.
 The problem of \textit{model selection} is therefore to find, within
 some hyper-parameter space, the best combination of hyper-parameters, with
-respect to some user-specified criterion. For example, in the case of a decision
-tree, too small values of the \texttt{max\_depth} parameter will make the tree
-underfit, while too large values will make it overfit.
+respect to some user-specified criterion. For example, a decision
+tree with too small a value for the maximal tree depth
+parameter will tend to underfit, while too large a value will make it overfit.
 
 In \sklearn, model selection is supported in two distinct meta-estimators,
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV}.  They take as input an
@@ -669,7 +671,7 @@ a usable and consistent API, rather than expend effort into creating a GUI. In
 addition, running machine learning through a GUI makes reproducibility difficult
 (although Weka has developed a GUI for managing such workflows).
 
-Other existing machine learning packages 
+Other existing machine learning packages
 such as SofiaML\footnote{\url{http://code.google.com/p/sofia-ml/}}
 and Vowpal~Wabbit\footnote{\url{http://hunch.net/$\sim$vw/}}
 are intended to be used as command-line tools
@@ -699,7 +701,7 @@ While support for many of these tasks is improving in languages such as
 \textsc{matlab} and R, they still lag behind Python in their general purpose
 applicability.
 In many applications of machine learning these tasks, such as data access,
-data preprocessing and reporting, can be a more significant task than applying 
+data preprocessing and reporting, can be a more significant task than applying
 the actual learning algorithm.
 
 Another package that deserves mention is the Gensim topic modeling toolkit
@@ -718,7 +720,7 @@ even in the stateless, O(1) memory vectorizers
 that implement the hashing trick of \citet{weinberger2009}.
 This way of processing, as argued earlier in Section~\ref{sec:arrays},
 reduces various forms of overhead
-and allows effective use of the vectorized operations provided by NumPy and 
+and allows effective use of the vectorized operations provided by NumPy and
 SciPy.  We make no attempt to hide this batch-oriented processing from the user,
 allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
