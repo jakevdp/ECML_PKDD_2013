@@ -151,7 +151,13 @@ Finally, we summarize and conclude in section \ref{sec:conclusions}.
 All objects within \sklearn share a uniform common basic API consisting of three
 complementary interfaces: an \textit{estimator} interface for building and
 fitting models, a \textit{predictor} interface for making predictions and a
-\textit{transformer} interface for converting data. As much as possible, our
+\textit{transformer} interface for converting data. In this section, we describe
+these three interfaces, after reviewing our general principles and data
+representation choices.
+
+\subsection{General principles}
+
+As much as possible, our
 design choices have been guided so as to avoid the proliferation of framework
 code. We try to adopt simple conventions and to limit to a minimum the number of
 methods an object must implement. The API is designed to adhere to the following
