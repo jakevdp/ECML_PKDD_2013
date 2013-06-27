@@ -341,10 +341,10 @@ km.fit(X_train)
 clust_pred = km.predict(X_test)
 \end{pythoncode}
 
-Along with the \texttt{predict} method, predictors may also implement methods
-for quantifying the confidence of a prediction. In the case of estimators
-implementing linear models, the \texttt{decision\_function} method can be used
-to measure the distance of the samples from the discriminating hyperplane. Some
+Apart from \texttt{predict}, predictors may also implement methods
+for quantifying the confidence of a prediction. In the case of
+linear models, the \texttt{decision\_function} method returns
+the distance of the samples to the separating hyperplane. Some
 predictors also provide a \texttt{predict\_proba} method which returns
 class probabilities for the input samples \texttt{X\_test}.
 
@@ -367,9 +367,9 @@ interface which defines a \texttt{transform} method. It takes as input some new
 data \texttt{X\_test} and yields as output a transformed version of
 \texttt{X\_test}. Preprocessing, feature selection and dimensionality reduction
 algorithms are all provided as transformers within the library.  In our example,
-if one wanted to preprocess the input \texttt{X\_train} before fitting the
-logistic regression estimator, e.g., by standardizing the feature values, one
-could thus simply write:
+to standardize the input \texttt{X\_train} to zero mean and unit variance
+before fitting the logistic regression estimator,
+one would write:
 \begin{pythoncode}
 from sklearn.preprocessing import StandardScaler
 
