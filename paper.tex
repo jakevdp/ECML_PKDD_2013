@@ -658,7 +658,6 @@ and wrapped using Cython modules.
 \section{Related software}
 \label{sec:comparison}
 
-
 Recent years have witnessed a rising interest in machine learning and data mining
 with applications in many fields.
 With this rise comes a host of machine learning packages
@@ -679,16 +678,17 @@ While these packages have the advantage
 that their users are not tied to a particular programming language,
 the users will find that they still need programming to process input/output,
 and will do so in a variety of languages.
-The focus of \sklearn to incorporate the entire process into a single package still
-allows for the use of external tools to process input/output, however gives the added
-benefit of being able to run these processes within the same development environment.
-In addition, this makes it easier for researchers and developers
+By contrast, \sklearn allows users to implement that entire workflow
+in a single program, written in a single language,
+and developed in a single working environment.
+This also makes it easier for researchers and developers
 to exchange and collaborate on software, as dependencies and setup are kept to a
 minimum.
 
-In comparison to specialized languages for numeric and statistical programming
-such as \textsc{matlab} and R \citep{r},
-Python has the distinct advantage
+Similar benefits hold in the case of specialized languages
+for numeric and statistical programming
+such as \textsc{matlab} and R \citep{r}.
+In comparison to these, though, Python has the distinct advantage
 that it is a \textit{general purpose} language,
 while NumPy and SciPy extend it with functionality
 similar to that offered by \textsc{matlab} and R.
@@ -703,9 +703,11 @@ In many applications of machine learning these tasks, such as data access,
 data preprocessing and reporting, can be a more significant task than applying
 the actual learning algorithm.
 
-Another package that deserves mention is the Gensim topic modeling toolkit
+Within the realm of Python,
+a package that deserves mention is the Gensim topic modeling toolkit
 \citep{rehurek2010gensim},
-which exemplifies API design for scalable processing of ``big data''.
+which exemplifies a different style of API design
+geared toward scalable processing of ``big data''.
 Gensim's way of dealing with large datasets is to use algorithms
 that have $O(1)$ space complexity and can be updated online.
 The API is designed around the Python concept of an \textit{iterable}
