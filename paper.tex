@@ -58,7 +58,7 @@ scikit-learn project}
 \maketitle
 
 \begin{abstract}
-The \sklearn project is an increasingly popular machine learning
+\sklearn is an increasingly popular machine learning
 library. Written in Python, it is designed to be simple and efficient, accessible to
 non-experts, and reusable in various contexts. In this paper, we present and
 discuss our design choices for the application programming interface (API) of
@@ -74,7 +74,7 @@ faced by users and developers of the library.
 \section{Introduction}
 
 The \sklearn project\footnote{\url{http://scikit-learn.org}}
-\citep{pedregosa2011} is an open source machine learning
+\citep{pedregosa2011} provides an open source machine learning
 library for the Python programming language. The ambition of the project is to
 provide efficient and well-established machine learning tools within a
 programming environment that is accessible to non-machine learning experts and
@@ -82,11 +82,11 @@ reusable in various scientific areas. The project is not a novel domain-specific
 language, but a library that provides machine learning idioms to a
 general-purpose high-level language. Among other things, it includes classical learning
 algorithms, model evaluation and selection tools, as well as
-preprocessing procedures. The project is
+preprocessing procedures. The library is
 distributed under the simplified BSD license, encouraging its use in both
 academic and commercial settings.
 
-In itself, the project is a programming library, i.e.\ a collection of classes
+\sklearn is a library, i.e.\ a collection of classes
 and functions that users import into Python programs. Using \sklearn therefore
 requires basic Python programming knowledge. No command-line interface, let
 alone a graphical user interface, is offered for non-programmer users. Instead,
@@ -95,7 +95,7 @@ enhanced replacement IPython \citep{perez2007ipython}, which offer a
 \textsc{matlab}-like working environment specifically designed for scientific
 use.
 
-From its core, the library has been designed to tie in with the set of numeric
+The library has been designed to tie in with the set of numeric
 and scientific packages centered around the NumPy and SciPy libraries. NumPy
 \citep{vanderwalt2011} augments Python with a contiguous numeric array datatype
 and fast array computing primitives,
