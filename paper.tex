@@ -18,7 +18,7 @@
 
 \newcommand{\sklearn}{\textit{scikit-learn}\xspace}
 
-\title{ API design for machine learning software: experiences from the
+\title{API design for machine learning software: experiences from the
 scikit-learn project}
 
 \author{Lars~Buitinck~\inst{1} \and
@@ -37,7 +37,7 @@ scikit-learn project}
         Brian Holt~\inst{12} \and
         Gaël~Varoquaux~\inst{4}}
 
-\institute{Informatics Institute, University of Amsterdam \and
+\institute{ILPS, Informatics Institute, University of Amsterdam \and
            University of Liège \and
            Kobe University \and
            Parietal, INRIA Saclay \and
@@ -58,7 +58,7 @@ scikit-learn project}
 \maketitle
 
 \begin{abstract}
-The \sklearn project is an increasingly popular machine learning
+\sklearn is an increasingly popular machine learning
 library. Written in Python, it is designed to be simple and efficient, accessible to
 non-experts, and reusable in various contexts. In this paper, we present and
 discuss our design choices for the application programming interface (API) of
@@ -71,22 +71,22 @@ faced by users and developers of the library.
 
 \setcounter{footnote}{0}
 
-\section{The scikit-learn project}
+\section{Introduction}
 
 The \sklearn project\footnote{\url{http://scikit-learn.org}}
-\citep{pedregosa2011} is an open source machine learning
+\citep{pedregosa2011} provides an open source machine learning
 library for the Python programming language. The ambition of the project is to
 provide efficient and well-established machine learning tools within a
 programming environment that is accessible to non-machine learning experts and
 reusable in various scientific areas. The project is not a novel domain-specific
-language, but a library that provides machine learning idioms to a general-
-purpose high-level language. Among other things, it includes classical learning
+language, but a library that provides machine learning idioms to a
+general-purpose high-level language. Among other things, it includes classical learning
 algorithms, model evaluation and selection tools, as well as
-preprocessing procedures. The project is
+preprocessing procedures. The library is
 distributed under the simplified BSD license, encouraging its use in both
 academic and commercial settings.
 
-In itself, the project is a programming library, i.e. a collection of classes
+\sklearn is a library, i.e.\ a collection of classes
 and functions that users import into Python programs. Using \sklearn therefore
 requires basic Python programming knowledge. No command-line interface, let
 alone a graphical user interface, is offered for non-programmer users. Instead,
@@ -95,54 +95,57 @@ enhanced replacement IPython \citep{perez2007ipython}, which offer a
 \textsc{matlab}-like working environment specifically designed for scientific
 use.
 
-From its core, the library has been designed to tie in with the set of numeric
+The library has been designed to tie in with the set of numeric
 and scientific packages centered around the NumPy and SciPy libraries. NumPy
-\citep{vanderwalt2011} augments Python with a numeric array data type and proper
-array computing primitives, while SciPy \citep{varoquaux2013scipy} extends it
-further by making common numerical operations available, either by implementing
+\citep{vanderwalt2011} augments Python with a contiguous numeric array datatype
+and fast array computing primitives,
+while SciPy \citep{varoquaux2013scipy} extends it
+further with common numerical operations, either by implementing
 these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
 implementations. The \textit{scikits} were created to complement SciPy with
 domain-specific toolkits. Currently, the two most popular and feature-complete
-ones are by far \sklearn for machine learning and 
-\textit{scikit-image}\footnote{\url{http://scikit-image.org}} for image
-processing.
+ones are by far \sklearn and
+\textit{scikit-image},\footnote{\url{http://scikit-image.org}}
+which does image processing.
 
 Started in 2007, \sklearn is developed by an international team of a dozen of
-core developers, mostly researchers from various fields (e.g., machine learning,
-natural language processing, neuroscience, astrophysics, etc.). The project also benefits
-from many occasional contributors proposing small code or documentation fixes or
+core developers, mostly researchers from various fields (e.g.,
+computer science, neuroscience, astrophysics). The project also benefits
+from many occasional contributors proposing small bugfixes or
 improvements. Development proceeds on GitHub\footnote{\url{https://github.com/scikit-learn}},
 a platform which greatly facilitates this kind of
 collaboration. Because of the large number of developers, emphasis is
 put on keeping the project maintainable. In particular, code must follow
 specific quality guidelines, such as style consistency and unit-test coverage.
-Complete documentation and examples are required for all features,
-and major modifications must pass code review by at least two
+Documentation and examples are required for all features,
+and major changes must pass code review by at least two
 developers not involved in the implementation of the proposed change.
 
-Over the past few years, the project has proved valuable to an ever increasing
-user base. Its popularity can be gauged from various indicators such as the hundreds
+\sklearn's popularity can be gauged from various indicators such as the hundreds
 of citations in scientific publications, successes in various machine learning
-challenges (e.g., Kaggle), or significant statistics derived from our
+challenges (e.g., Kaggle), and statistics derived from our
 repositories and mailing list.  At the time of writing, the project is watched
 by 1365 people and forked 693 times on GitHub; the mailing list receives more
 than 300 mails per month; version control logs
 % ddaa494c116e3c16bf032003c5cccbed851733d2
 show 183 unique contributors to the codebase and the online documentation
-website receives 37,000 unique visitors and 295,000 page views per month.
+receives 37,000 unique visitors and 295,000 pageviews per month.
 
-In a previous paper \citep{pedregosa2011}, \sklearn was briefly presented and
-benchmarked against several competitors. In this paper, we instead focus on an
-in-depth discussion and analysis of the design choices made when building the
-library. We first present in section \ref{sec:core-api} the central application
-programming interface (API) and then describe, in section \ref{sec:advanced-api},
-advanced API mechanisms built from the core interface.
-Section \ref{sec:implementation} briefly describes the implementation.
-Section \ref{sec:comparison} then
-compares \sklearn to other major projects in terms of API.
-Section \ref{sec:future_work} outlines some of the work to be done before
-the \sklearn 1.0 release.
-Finally, we summarize and conclude in section \ref{sec:conclusions}.
+\citet{pedregosa2011} briefly presented \sklearn and
+benchmarked it against several competitors.
+In this paper, we instead present an
+in-depth analysis of design choices made when building the library,
+detailing how we organized and operationalized
+common machine learning concepts.
+We first present in section~\ref{sec:core-api} the central application
+programming interface (API) and then describe, in section~\ref{sec:advanced-api},
+advanced API mechanisms built on the core interface.
+Section~\ref{sec:implementation} briefly describes the implementation.
+Section~\ref{sec:comparison} then
+compares \sklearn to other major projects in terms of API\@.
+Section~\ref{sec:future_work} outlines some of the work to be done before
+a \sklearn 1.0 release.
+We summarize and conclude in section~\ref{sec:conclusions}.
 
 \section{Core API}
 
@@ -173,15 +176,16 @@ broad principles:
        algorithms are stored and exposed as public attributes.
   \item[Non-proliferation of classes.]
        Learning algorithms are the only objects to be of custom classes.
-       Datasets and hyper-parameter names and values are represented as standard
-       Python, NumPy or SciPy classes rather than new ones whenever feasible.
+       Datasets are represented as NumPy arrays or SciPy sparse matrices.
+       Hyper-parameter names and values are represented as standard
+       Python strings or numbers whenever possible.
        This keeps \sklearn easy to use and easy to combine with other libraries.
   \item[Composition.]
        Many machine learning tasks are expressible
        as sequences or combinations of transformations to data.
        Some learning algorithms are also naturally viewed
        as meta-algorithms parametrized on other algorithms.
-       Whenever possible, such algorithms are implemented and composed from
+       Whenever feasible, such algorithms are implemented and composed from
        existing building blocks.
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
@@ -194,14 +198,15 @@ broad principles:
 \label{sec:arrays}
 
 In most machine learning tasks, data is modeled as a set of variables.  For
-example, in a classification or regression task, the goal is to find a mapping
-between input variables $X_1, ..., X_p$, called features, and
-some output variable $Y$. A sample is then defined as a tuple of values $([x_1,
-..., x_p]^\mathrm{T}, y)$ of these variables and a dataset as a collection of
-such samples.  As such, matrices of numerical values constitute a natural and
-widely used representation in machine learning: each row in the
-matrix corresponds to one sample of the dataset and each column to one
-variable of the problem.
+example, in a supervised learning task, the goal is to find a mapping
+from input variables $X_1, \ldots X_p$, called features, to
+some output variables $Y$. A sample is then defined as a pair of
+values $([x_1, \ldots, x_p]^\mathrm{T}, y)$ of these variables. A widely used
+representation of a dataset, a collection of
+such samples, is a pair of matrices with numerical values: one for the input
+values and one for the output values. Each row of these matrices
+corresponds to one sample of the dataset and each column to one variable of
+the problem.
 
 In \sklearn, we chose a representation of data that is as close as
 possible to the matrix representation: datasets are encoded as NumPy
@@ -277,7 +282,7 @@ As such, it always returns the estimator object it was called on,
 which now serves as a model of its input and can be used to perform predictions or transformations of input data.
 The choice to let a single object serve dual purpose as estimator and model
 simplifies the \sklearn class hierarchy
-compared to an approach were estimators and models are separated.
+compared to an approach where estimators and models are separated.
 
 To illustrate the initialize-fit sequence,
 let us consider a supervised learning task using logistic regression.
@@ -290,26 +295,26 @@ clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
 \end{pythoncode}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
-setting the \texttt{penalty} hyper-parameter to \texttt{"l1"}, hence enabling
-$\ell_1$ regularization. Other hyper-parameters (such as \texttt{C}, which
-defines the strength of the regularization) are not explicitly defined and are
-thus set to the default values. Upon calling \texttt{fit}, the model is then
+setting the \texttt{penalty} hyper-parameter to \texttt{"l1"} for
+$\ell_1$ regularization. Other hyper-parameters (such as \texttt{C},
+the strength of the regularization) are not explicitly given and
+thus set to the default values. Upon calling \texttt{fit}, a model is
 learned from the training arrays \texttt{X\_train} and \texttt{y\_train},
 and stored within the object for later use.
 %% (In this example, \texttt{fit} is called solely for its side effects.)
 Since all estimators share the same interface, using a different learning algorithm is
-as simple as replacing the constructor (the class name).
-For example, to build a random forest on
-the same training data, one would simply have to replace
+as simple as replacing the constructor (the class name);
+to build a random forest on
+the same data, one would simply replace
 \texttt{LogisticRegression(penalty="l1")} in the snippet above by
 \texttt{RandomForestClassifier()}.
 
 In \sklearn, classical learning algorithms are not the only objects to be
 implemented as estimators. For example, preprocessing routines (e.g., scaling of
 features) or feature extraction techniques (e.g., vectorization of text
-documents) also implement the \textit{estimator} interface. Even processing steps that are
-entirely stateless and therefore do not require the \texttt{fit} method to
-perform any useful work implement the estimator interface. As we will illustrate
+documents) also implement the \textit{estimator} interface. Even stateless
+processing steps, that do not require the \texttt{fit} method to
+perform useful work, implement the estimator interface. As we will illustrate
 in the next sections, this design pattern is indeed of prime importance for
 consistency, composition and model selection reasons.
 
@@ -341,10 +346,10 @@ km.fit(X_train)
 clust_pred = km.predict(X_test)
 \end{pythoncode}
 
-Along with the \texttt{predict} method, predictors may also implement methods
-for quantifying the confidence of a prediction. In the case of estimators
-implementing linear models, the \texttt{decision\_function} method can be used
-to measure the distance of the samples from the discriminating hyperplane. Some
+Apart from \texttt{predict}, predictors may also implement methods
+for quantifying the confidence of a prediction. In the case of
+linear models, the \texttt{decision\_function} method returns
+the distance of the samples to the separating hyperplane. Some
 predictors also provide a \texttt{predict\_proba} method which returns
 class probabilities for the input samples \texttt{X\_test}.
 
@@ -353,10 +358,10 @@ performance on some input data. In supervised learning estimators, this method
 takes as input arrays \texttt{X\_test} and \texttt{y\_test} and typically
 computes the coefficient of determination between \texttt{y\_test} and
 \texttt{predict(X\_test)} in regression, or the accuracy
-in classification. From an API point of view,
-the only guideline is that the \texttt{score} method returns a value
+in classification.
+The only requirement is that the \texttt{score} method return a value
 that quantifies the quality of its predictions (the higher, the better).
-Unsupervised learning estimators may also exposes a \texttt{score} function
+Unsupervised learning estimators may also expose a \texttt{score} function
 to compute, for instance, the likelihood of the given data under its model.
 
 \subsection{Transformers}
@@ -367,9 +372,9 @@ interface which defines a \texttt{transform} method. It takes as input some new
 data \texttt{X\_test} and yields as output a transformed version of
 \texttt{X\_test}. Preprocessing, feature selection and dimensionality reduction
 algorithms are all provided as transformers within the library.  In our example,
-if one wanted to preprocess the input \texttt{X\_train} before fitting the
-logistic regression estimator, e.g., by standardizing the feature values, one
-could thus simply write:
+to standardize the input \texttt{X\_train} to zero mean and unit variance
+before fitting the logistic regression estimator,
+one would write:
 \begin{pythoncode}
 from sklearn.preprocessing import StandardScaler
 
@@ -450,7 +455,7 @@ of separating object instantiation and actual learning.
 
 Since meta-estimators require users to construct nested objects,
 the decision to implement a meta-estimator
-rather than fold the behavior it implements
+rather than integrate the behavior it implements
 into existing estimators classes
 is always based on a trade-off between generality and ease of use.
 Relating to the example just given,
@@ -475,9 +480,12 @@ fashion through \texttt{FeatureUnion} objects.
 \texttt{Pipeline} objects chain multiple estimators into a single one. This is
 useful since a machine learning workflow typically involves a fixed sequence of
 processing steps (e.g., feature extraction, dimensionality reduction, learning
-and making predictions). A sequence of $N$ such steps can be combined into a
+and making predictions), many of which perform some kind of learning.
+A sequence of $N$ such steps can be combined into a
 \texttt{Pipeline} if the first $N-1$ steps are transformers; the last can be
-either a predictor, a transformer or both. Conceptually, fitting a pipeline to
+either a predictor, a transformer or both.
+
+Conceptually, fitting a pipeline to
 a training set amounts to the following recursive procedure: i) when only one
 step remains, call its \texttt{fit} method; ii) otherwise, \texttt{fit} the
 first step, use it to \texttt{transform} the training set and \texttt{fit} the
@@ -513,7 +521,7 @@ union = FeatureUnion([("pca", PCA()),
 Pipeline([("feat_union", union),
           ("feat_sel", SelectKBest(k=10)),
           ("log_reg", LogisticRegression(penalty="l2"))
-]).fit(X_train, y_train).predict(X_test)
+         ]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
 
 \subsection{Model selection}
@@ -524,33 +532,36 @@ determine the behavior of the learning algorithm
 and hence the performance of the resulting model on unseen data.
 The problem of \textit{model selection} is therefore to find, within
 some hyper-parameter space, the best combination of hyper-parameters, with
-respect to some user-specified criterion. For example, in the case of a decision
-tree, too small values of the \texttt{max\_depth} parameter will make the tree
-underfit, while too large values will make it overfit.
+respect to some user-specified criterion. For example, a decision
+tree with too small a value for the maximal tree depth
+parameter will tend to underfit, while too large a value will make it overfit.
 
 In \sklearn, model selection is supported in two distinct meta-estimators,
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV}.  They take as input an
 estimator (basic or composite), whose hyper-parameters must be optimized, and a
-hyper-parameter grid, which defines the values to search. Optionally, they can
-also take a cross-validation scheme and a score function.  The library provides
-various such cross-validation schemes, including $k$-fold (default),
-leave-one-out and iterated shuffled $k$-folds with optional sub-sampling.
-The score function used by default is the \texttt{score} method
-provided by the estimator. However, the library provides a large variety of
-score functions that the user can choose from,
-including accuracy, AUC, $F_1$ score (classification),
-$R^2$ score and mean squared error (regression).
+set of hyperparameter settings to search through.
+This set is represented as a mapping of parameter names
+to a set of discrete choices in the case of grid search,
+which exhaustively enumerates the ``grid'' (cartesian product)
+of complete parameter combinations.
+Randomized search is a smarter algorithm
+that avoids the combinatorial explosion in grid search
+by sampling a fixed number of times from its parameter distributions
+(see \citealp{bergstra2012}).
 
-\texttt{GridSearchCV} and \texttt{RandomizedSearchCV} differ in the way they
-search the hyper-parameter grid.  \texttt{GridSearchCV} exhaustively searches
-for all hyper-parameter combinations from the grid. This scheme can be expensive
-when there are many possible hyper-parameter combinations.
-\texttt{RandomizedSearchCV}, on the other hand, only searches for a limited
-number of combinations, randomly sampled from the grid. Such scheme has been
-shown to work well in practice while considerably reducing the computational
-cost \citep{bergstra2012}. For each hyper-parameter combination and each train /
-validation split generated by the cross-validation scheme, \texttt{GridSearchCV}
-and \texttt{RandomizedSearchCV} fit the base estimator on the training set and
+Optionally, the model selection algorithms
+also take a cross-validation scheme and a score function.  \sklearn provides
+various such cross-validation schemes, including $k$-fold (default),
+stratified $k$-fold and leave-one-out.
+The score function used by default is the estimator's \texttt{score} method,
+but the library provides a variety of
+alternatives that the user can choose from,
+including accuracy, AUC and $F_1$ score for classification,
+$R^2$ score and mean squared error for regression.
+
+For each hyper-parameter combination and each train/validation split
+generated by the cross-validation scheme, \texttt{GridSearchCV}
+and \texttt{RandomizedSearchCV} fit their base estimator on the training set and
 evaluate its performance on the validation set.  In the end, the best performing
 model on average is retained and exposed as the public attribute
 \texttt{best\_estimator\_}.
@@ -573,16 +584,14 @@ clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 \end{pythoncode}
-Note that, in the above example, two distinct hyper-parameter grids are
-considered. This is because it only makes sense to search for \texttt{gamma}
-when \texttt{kernel} is set to \texttt{"rbf"}.
-An SVM with a linear kernel accepts a $\gamma$ parameter,
-but actually ignores it. Computing time would thus be wasted, trying out effectively
-equivalent settings, if a single hyper-parameter grid was used instead.
+In this example, two distinct hyper-parameter grids are
+considered for the linear and radial basis function (RBF) kernels;
+an SVM with a linear kernel accepts a $\gamma$ parameter, but ignores it,
+so using a single parameter grid would waste computing time
+trying out effectively equivalent settings.
 Additionally, we see that
-\texttt{GridSearchCV} has a \texttt{predict} method, just like any other classifier.
-This is because \texttt{GridSearchCV} and \texttt{RandomizedSearchCV} in fact
-delegate the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
+\texttt{GridSearchCV} has a \texttt{predict} method, just like any other classifier:
+it delegates the \texttt{predict}, \texttt{predict\_proba}, \texttt{transform} and
 \texttt{score} methods to the best estimator
 (optionally after re-fitting it on the whole training set).
 
@@ -649,19 +658,18 @@ and wrapped using Cython modules.
 \section{Related software}
 \label{sec:comparison}
 
-
 Recent years have witnessed a rising interest in machine learning and data mining
 with applications in many fields.
 With this rise comes a host of machine learning packages
 (both open source and proprietary) with which \sklearn competes.
 Although it can also be used through its Java API, Weka \citep{hall2009weka} is
 popularly used through its graphical user interface (GUI). The target audience
-of the \sklearn is capable of programming, and therefore we focus on developing
-a usable and consistent API, rather than expend effort into creating a GUI. In
+of \sklearn is capable of programming, and therefore we focus on developing
+a usable and consistent API, rather than expend effort into creating a GUI\@. In
 addition, running machine learning through a GUI makes reproducibility difficult
-(although WEKA has developed a GUI for managing such workflows).
+(although Weka has developed a GUI for managing such workflows).
 
-Other existing machine learning packages 
+Other existing machine learning packages
 such as SofiaML\footnote{\url{http://code.google.com/p/sofia-ml/}}
 and Vowpal~Wabbit\footnote{\url{http://hunch.net/$\sim$vw/}}
 are intended to be used as command-line tools
@@ -670,16 +678,17 @@ While these packages have the advantage
 that their users are not tied to a particular programming language,
 the users will find that they still need programming to process input/output,
 and will do so in a variety of languages.
-The focus of \sklearn to incorporate the entire package into a single package still
-allows for the use of external tools to process input/output, however gives the added
-benefit of being able to run these processes within the same development environment.
-In addition, this makes it easier for researchers and developers
+By contrast, \sklearn allows users to implement that entire workflow
+in a single program, written in a single language,
+and developed in a single working environment.
+This also makes it easier for researchers and developers
 to exchange and collaborate on software, as dependencies and setup are kept to a
 minimum.
 
-In comparison to specialized languages for numeric and statistical programming
-such as \textsc{matlab} and R \citep{r},
-Python has the distinct advantage
+Similar benefits hold in the case of specialized languages
+for numeric and statistical programming
+such as \textsc{matlab} and R \citep{r}.
+In comparison to these, though, Python has the distinct advantage
 that it is a \textit{general purpose} language,
 while NumPy and SciPy extend it with functionality
 similar to that offered by \textsc{matlab} and R.
@@ -688,18 +697,17 @@ string/text processing, interprocess communication, networking
 and many of the other auxiliary tasks that machine learning programs
 (whether academic or commercial) routinely need to perform.
 While support for many of these tasks is improving in languages such as
-\textsc{matlab} and R, they still languish behind python in their general purpose
+\textsc{matlab} and R, they still lag behind Python in their general purpose
 applicability.
 In many applications of machine learning these tasks, such as data access,
-data preprocessing and reporting, can be a more significant task than applying 
-the machine learning algorithm.
-%However, \textsc{matlab} and R remain the preferred language of many
-%researchers. As such, much scientific software is still open-sourced primarily
-%in these two languages.
+data preprocessing and reporting, can be a more significant task than applying
+the actual learning algorithm.
 
-Another package that deserves mention is the Gensim topic modeling toolkit
+Within the realm of Python,
+a package that deserves mention is the Gensim topic modeling toolkit
 \citep{rehurek2010gensim},
-which exemplifies API design for scalable processing of ``big data''.
+which exemplifies a different style of API design
+geared toward scalable processing of ``big data''.
 Gensim's way of dealing with large datasets is to use algorithms
 that have $O(1)$ space complexity and can be updated online.
 The API is designed around the Python concept of an \textit{iterable}
@@ -713,21 +721,22 @@ even in the stateless, O(1) memory vectorizers
 that implement the hashing trick of \citet{weinberger2009}.
 This way of processing, as argued earlier in Section~\ref{sec:arrays},
 reduces various forms of overhead
-and allows effective use of the vectorized operations provided by NumPy and 
+and allows effective use of the vectorized operations provided by NumPy and
 SciPy.  We make no attempt to hide this batch-oriented processing from the user,
 allowing control over the amount of memory actually dedicated
 to \sklearn algorithms.
 
 \section{Future directions}
 \label{sec:future_work}
-There are several directions that the \sklearn contributors aim to focus on in future development.
+There are several directions that the \sklearn project
+aims to focus on in future development.
 At present, the library does not support some classical machine learning
 algorithms,
 including neural networks, ensemble meta-estimators for
 bagging or subsampling strategies and missing value completion algorithms.
-Tasks like structured prediction or reinforcement learning are
-considered off-scope for the project, since they would require quite different
-data representations and APIs.
+However, tasks like structured prediction or reinforcement learning are
+considered out of scope for the project,
+since they would require quite different data representations and APIs.
 
 At a lower-level, parallel processing is a potential point of improvement.
 Some estimators in \sklearn are already able to leverage multicore processors,
@@ -772,7 +781,7 @@ Through composition interfaces such as Pipelines, Feature Unions,
 and meta-estimators, these simple building blocks lead to an API which is
 \textbf{powerful}, and can accomplish a wide variety of learning tasks
 within a small amount of easy-to-read code.
-Through duck-typing, the consistent API leads to a framework that is
+Through duck-typing, the consistent API leads to a library that is
 easily \textbf{extensible}, and allows user-defined estimators to be
 incorporated into the \sklearn workflow without any explicit object
 inheritance.
@@ -801,10 +810,14 @@ to follow these conventions when releasing their software.
 
 \subsection*{Acknowledgments}
 
-The authors and contributors acknowledge active support from INRIA. Past and
+The authors and contributors acknowledge active support from INRIA\@. Past and
 present sponsors of the project also include Google for funding
 scholarships through its Summer of Code program,
 the Python Software Foundation and Tinyclues for funding coding sprints.
+
+Gilles~Louppe and Arnaud~Joly are research fellows of the Belgian
+Fonds de la Recherche Scientifique (FNRS)
+and acknowledge its financial support.
 
 {\small
 \bibliographystyle{abbrvnat}
