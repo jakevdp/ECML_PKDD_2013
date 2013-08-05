@@ -102,13 +102,14 @@ and fast array computing primitives,
 while SciPy \citep{varoquaux2013scipy} extends it
 further with common numerical operations, either by implementing
 these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
-implementations. The \textit{scikits} were created to complement SciPy with
+implementations. Building upon this stack, a series of libraries called
+\textit{scikits} were created, to complement SciPy with
 domain-specific toolkits. Currently, the two most popular and feature-complete
 ones are by far \sklearn and
-\textit{scikit-image},\footnote{\url{http://scikit-image.org}}
+\textit{scikit-image}\footnote{\url{http://scikit-image.org}},
 which does image processing.
 
-Started in 2007, \sklearn is developed by an international team of a dozen of
+Started in 2007, \sklearn is developed by an international team of over a dozen
 core developers, mostly researchers from various fields (e.g.,
 computer science, neuroscience, astrophysics). The project also benefits
 from many occasional contributors proposing small bugfixes or
@@ -143,9 +144,10 @@ advanced API mechanisms built on the core interface.
 Section~\ref{sec:implementation} briefly describes the implementation.
 Section~\ref{sec:comparison} then
 compares \sklearn to other major projects in terms of API\@.
-Section~\ref{sec:future_work} outlines some of the work to be done before
+Section~\ref{sec:future_work} outlines some of the objectives and goals for
 a \sklearn 1.0 release.
-We summarize and conclude in section~\ref{sec:conclusions}.
+We conclude by summarizing the major points of this paper in
+section~\ref{sec:conclusions}.
 
 \section{Core API}
 
@@ -175,7 +177,7 @@ broad principles:
        Constructor parameters and parameter values determined by learning
        algorithms are stored and exposed as public attributes.
   \item[Non-proliferation of classes.]
-       Learning algorithms are the only objects to be of custom classes.
+       Learning algorithms are the only objects to be represented using custom classes.
        Datasets are represented as NumPy arrays or SciPy sparse matrices.
        Hyper-parameter names and values are represented as standard
        Python strings or numbers whenever possible.
@@ -263,17 +265,17 @@ For the sake of convenient model inspection, hyper-parameters are set as public 
 which is especially important in model selection settings.
 For ease of use, default hyper-parameter values are also provided
 for all built-in estimators.
-These default values are set to be relevant in most common
+These default values are set to be relevant in many common
 situations in order to make estimators as effective as possible
 \textit{out-of-box} for non-experts.
 
 Actual learning is performed by the \texttt{fit} method. This method is called
-with training data (e.g., supplied as two arrays \texttt{X\_train} and
+with training data (e.g. supplied as two arrays \texttt{X\_train} and
 \texttt{y\_train} in supervised learning estimators). Its task is to run a
 learning algorithm and to determine model-specific parameters from the training
 data and set these as attributes on the estimator object. As a convention, the
 parameters learned by an estimator are exposed as public attributes with names
-suffixed with a trailing underscore (e.g., \texttt{coef\_} for the
+suffixed with a trailing underscore (e.g. \texttt{coef\_} for the
 learned coefficients of a linear model),
 again to facilitate model inspection.
 In the partial application view,
@@ -420,14 +422,14 @@ returning cluster labels assigned to the training samples.
 Building on the core interface introduced in the previous section, we now
 present advanced API mechanisms for building meta-estimators,
 composing complex estimators and selecting models. We also discuss design
-choices allowing for an easy use and extension of \sklearn.
+choices allowing for the easy usage and extension of \sklearn.
 
 \subsection{Meta-estimators}
 
 Some machine learning algorithms are expressed naturally
 as meta-algorithms parametrized on simpler algorithms.
 Examples include ensemble methods which
-build and combine several simpler models (e.g., decision trees), or multiclass
+build and combine several simpler models (e.g. decision trees), or multiclass
 and multilabel classification schemes which can be used to turn a binary
 classifier into a multiclass or multilabel classifier. In \sklearn, such algorithms are
 implemented as \textit{meta-estimators}. They take as input an existing base
@@ -472,8 +474,8 @@ compose new estimators from several base estimators. Composition mechanisms can
 be used to combine typical machine learning workflows into a single object which
 is itself an estimator, and can be employed wherever usual estimators can be used.
 In particular,
-they integrate within model selection routines, allowing one to optimize at once
-every step of a complex workflow. Composition of estimators can be done in two
+they integrate within model selection routines, allowing one to optimize
+every step of a complex workflow at once. Composition of estimators can be done in two
 ways: either sequentially through \texttt{Pipeline} objects or in a parallel
 fashion through \texttt{FeatureUnion} objects.
 
@@ -649,7 +651,7 @@ only Python, NumPy and SciPy are required for a functioning installation.
 Binary distributions of these are available for the major platforms.
 Visualization functionality depends on Matplotlib \citep{hunter2007matplotlib}
 and/or Graphviz \citep{gansner2000},
-but neither is required to do machine learning.
+however neither is required to install or use \sklearn.
 When feasible, external libraries are integrated into the codebase.
 In particular, \sklearn includes modified versions of \textsf{LIBSVM} and \textsf{LIBLINEAR}
 \citep{chang2011libsvm,fan2008}, both written in C{}\verb!++!
@@ -708,7 +710,7 @@ a package that deserves mention is the Gensim topic modeling toolkit
 \citep{rehurek2010gensim},
 which exemplifies a different style of API design
 geared toward scalable processing of ``big data''.
-Gensim's way of dealing with large datasets is to use algorithms
+Gensim's method of dealing with large datasets is to use algorithms
 that have $O(1)$ space complexity and can be updated online.
 The API is designed around the Python concept of an \textit{iterable}
 (supported in the language by a restricted form of co-routines called
