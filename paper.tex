@@ -473,10 +473,11 @@ A distinguishing feature of the \sklearn API is its ability to
 compose new estimators from several base estimators. Composition mechanisms can
 be used to combine typical machine learning workflows into a single object which
 is itself an estimator, and can be employed wherever usual estimators can be used.
-In particular,
-they integrate within model selection routines, allowing one to optimize
-every step of a complex workflow at once. Composition of estimators can be done in two
-ways: either sequentially through \texttt{Pipeline} objects or in a parallel
+In particular, \sklearn's model selection routines
+can be applied to composite estimators, allowing global optimization
+of all parameters in a complex workflow.
+Composition of estimators can be done in two
+ways: either sequentially through \texttt{Pipeline} objects, or in a parallel
 fashion through \texttt{FeatureUnion} objects.
 
 \texttt{Pipeline} objects chain multiple estimators into a single one. This is
