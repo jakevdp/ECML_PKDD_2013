@@ -349,21 +349,21 @@ clust_pred = km.predict(X_test)
 \end{pythoncode}
 
 Apart from \texttt{predict}, predictors may also implement methods
-for quantifying the confidence of a prediction. In the case of
+that quantify the confidence of predictions. In the case of
 linear models, the \texttt{decision\_function} method returns
-the distance of the samples to the separating hyperplane. Some
+the distance of samples to the separating hyperplane. Some
 predictors also provide a \texttt{predict\_proba} method which returns
-class probabilities for the input samples \texttt{X\_test}.
+class probabilities.
 
-Finally, predictors should also provide a \texttt{score} function to assess the
-performance on some input data. In supervised learning estimators, this method
+Finally, predictors must provide a \texttt{score} function to assess their
+performance on a batch of input data. In supervised estimators, this method
 takes as input arrays \texttt{X\_test} and \texttt{y\_test} and typically
 computes the coefficient of determination between \texttt{y\_test} and
 \texttt{predict(X\_test)} in regression, or the accuracy
 in classification.
 The only requirement is that the \texttt{score} method return a value
 that quantifies the quality of its predictions (the higher, the better).
-Unsupervised learning estimators may also expose a \texttt{score} function
+An unsupervised estimator may also expose a \texttt{score} function
 to compute, for instance, the likelihood of the given data under its model.
 
 \subsection{Transformers}
