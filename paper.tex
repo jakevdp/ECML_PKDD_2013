@@ -281,32 +281,21 @@ In the partial application view,
 It always returns the estimator object it was called on,
 which now serves as a model of its input and can be used to perform predictions or transformations of input data.
 
-The choice to let a single object serve dual purpose as estimator and model
-simplifies the \sklearn API
-compared to an approach where estimators and models are separated,
-forming two parallel class hierarchies.
-While from a mathematical point of view,
-models are more similar to one another than algorithms,
-we argue that this is less true in practical machine learning.
-As an example, consider the case of linear models,
-described mathematically by a weight matrix $w$ and an intercept vector $b$,
-suggesting a class \texttt{LinearModel}
-with such a matrix and vector as attributes.
-However, to use such a model in practice,
-one first needs to know whether the task at hand is
-regression, $y = w^\top x + b$,
-or classification, $y = \arg \max_k[w_{:,k}^\top x + b_k]$,
-calling for two classes.
-Then, the various linear probabilistic classifiers must be distuingished:
-logistic regression, with $P(y \mid x) = \sigma(w^\top x + b)$,
-multinomial naïve Bayes, with $\log P(y \mid x) = w^\top x + b$,
-and the winnow probability estimator \citep{zhang2002}, with
-$P(y \mid x) = \frac{1}{2} (1 + \mathrm{median} \{-1, w^\top x + b, 1 \})$,
-would all need either distinct classes,
-or a common class that remembers the training regime.
-Furthermore, separating estimators and models
-would make online/out-of-core learning
-(not further discussed in the present paper) more complicated.
+
+From the start, the choice to let a single object serve dual purpose as
+estimator and model has mostly been driven by usability and technical
+considerations. From the user point of view, having two coupled instances (i.e.,
+an estimator object, used as a factory, and a model object, produced by the
+estimator) indeed decreases the ease of use and is also more likely to
+unecessarily confuse newcomers. From the developer point of view, decoupling
+estimators from models also creates parallel class hierarchies and increases the
+overall maintenance complexity of the project. For these practical reasons, we
+believe that decoupling estimators from models is not worth the effort. The good
+reason for decoupling however, would be that it makes it possible to ship a
+model in a new environment without having to deal with potentially complex
+software dependencies. Such a feature could however still be implemented in
+\sklearn by making estimators able to export a fitted model to an agnostic model
+description such as PMML.
 
 To illustrate the initialize-fit sequence,
 let us consider a supervised learning task using logistic regression.
