@@ -385,7 +385,7 @@ Since it is common to modify or filter data before feeding it to a learning
 algorithm, some estimators in the library implement a \textit{transformer}
 interface which defines a \texttt{transform} method. It takes as input some new
 data \texttt{X\_test} and yields as output a transformed version of
-\texttt{X\_test}. Preprocessing, feature selection and dimensionality reduction
+\texttt{X\_test}. Preprocessing, feature selection, feature extraction and dimensionality reduction
 algorithms are all provided as transformers within the library.  In our example,
 to standardize the input \texttt{X\_train} to zero mean and unit variance
 before fitting the logistic regression estimator,
