@@ -674,16 +674,18 @@ and wrapped using Cython modules.
 \section{Related software}
 \label{sec:comparison}
 
-Recent years have witnessed a rising interest in machine learning and data mining
-with applications in many fields.
-With this rise comes a host of machine learning packages
-(both open source and proprietary) with which \sklearn competes.
-Although it can also be used through its Java API, Weka \citep{hall2009weka} is
-popularly used through its graphical user interface (GUI). The target audience
-of \sklearn is capable of programming, and therefore we focus on developing
-a usable and consistent API, rather than expend effort into creating a GUI\@. In
-addition, running machine learning through a GUI makes reproducibility difficult
-(although Weka has developed a GUI for managing such workflows).
+Recent years have witnessed a rising interest in machine learning and data
+mining with applications in many fields. With this rise comes a host of machine
+learning packages (both open source and proprietary) with which \sklearn
+competes. Some of those, including Weka~\citep{hall2009weka} or
+Orange~\citep{Demsar2004}, offer and focus on a graphical user interface (GUI)
+which allows novices to easily use and apply machine learning algorithms. By
+contrast, the target audience of \sklearn is capable of programming, and
+therefore we focus on developing a usable and consistent API, rather than expend
+effort into creating a GUI\@. In addition, while GUIs are useful tools, they
+sometimes make reproducibility difficult in the case of complex workflows
+(although those packages usually have developed a GUI for managing complex
+tasks).
 
 Other existing machine learning packages
 such as SofiaML\footnote{\url{http://code.google.com/p/sofia-ml/}}
