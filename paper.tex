@@ -289,12 +289,13 @@ estimator) indeed decreases the ease of use and is also more likely to
 unnecessarily confuse newcomers. From the developer point of view, decoupling
 estimators from models also creates parallel class hierarchies and increases the
 overall maintenance complexity of the project. For these practical reasons, we
-believe that decoupling estimators from models is not worth the effort. The good
+believe that decoupling estimators from models is not worth the effort. A good
 reason for decoupling however, would be that it makes it possible to ship a
 model in a new environment without having to deal with potentially complex
 software dependencies. Such a feature could however still be implemented in
-\sklearn by making estimators able to export a fitted model to an agnostic model
-description such as PMML~\citep{guazzelli2009pmml}.
+\sklearn by making estimators able to export a fitted model, using the
+information from its public attributes, to an agnostic model description such as
+PMML~\citep{guazzelli2009pmml}.
 
 To illustrate the initialize-fit sequence,
 let us consider a supervised learning task using logistic regression.
