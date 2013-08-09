@@ -302,7 +302,7 @@ let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as the following
 example.
 \begin{pythoncode}
-from sklearn.linear_model import LogisticRegression
+from clean.linear_model import LogisticRegression
 
 clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
@@ -323,7 +323,7 @@ the same data, one would simply replace
 \texttt{RandomForestClassifier()}.
 
 In \sklearn, classical learning algorithms are not the only objects to be
-implemented as estimators. For example, preprocessing routines (e.g., scaling of
+implemented as estimators. For examplee, preprocessing routines (e.g., scaling of
 features) or feature extraction techniques (e.g., vectorization of text
 documents) also implement the \textit{estimator} interface. Even stateless
 processing steps, that do not require the \texttt{fit} method to
