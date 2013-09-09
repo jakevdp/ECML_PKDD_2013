@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{authblk}
+\usepackage{dblfloatfix}
 %\usepackage{hyperref}
 \usepackage{minted}
 \usepackage[authoryear,round]{natbib}
@@ -520,11 +521,13 @@ independently on each of the transformers and then joining their outputs.
 
 \texttt{Pipeline} and \texttt{FeatureUnion} can be
 combined to create complex and nested workflows.
-The following snippet illustrates how to create a complex estimator
+Figure~\ref{pca-union} illustrates how to create a complex estimator
 that computes both linear PCA and kernel PCA features on \texttt{X\_train}
 (through a \texttt{FeatureUnion}),
 selects the 10 best features in the combination according to an ANOVA test
 and feeds those to an $\ell_2$-regularized logistic regression model.
+
+\begin{figure*}[b]
 \begin{pythoncode}
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.decomposition import PCA, KernelPCA
@@ -538,6 +541,9 @@ Pipeline([("feat_union", union),
           ("log_reg", LogisticRegression(penalty="l2"))
          ]).fit(X_train, y_train).predict(X_test)
 \end{pythoncode}
+\caption{A union of linear PCA and kernel PCA for feature extraction.}
+\label{pca-union}
+\end{figure*}
 
 \subsection{Model selection}
 
@@ -581,10 +587,7 @@ evaluate its performance on the validation set.  In the end, the best performing
 model on average is retained and exposed as the public attribute
 \texttt{best\_estimator\_}.
 
-The snippet below illustrates how to find
-hyper-parameter settings for an SVM classifier (SVC)
-that maximize $F_1$ score
-through 10-fold cross-validation on the training set.
+\begin{figure*}[b]
 \begin{pythoncode}
 from sklearn.grid_search import GridSearchCV
 from sklearn.svm import SVC
@@ -599,7 +602,15 @@ clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 \end{pythoncode}
-In this example, two distinct hyper-parameter grids are
+\caption{Optimizing the hyper-parameters of an SVM for $F_1$ score.}
+\label{svm-gridsearch}
+\end{figure*}
+
+The code in Figure~\ref{svm-gridsearch} illustrates how to find
+hyper-parameter settings for an SVM classifier (SVC)
+that maximize $F_1$ score
+through 10-fold cross-validation on the training set.
+Two distinct hyper-parameter grids are
 considered for the linear and radial basis function (RBF) kernels;
 an SVM with a linear kernel accepts a $\gamma$ parameter, but ignores it,
 so using a single parameter grid would waste computing time
