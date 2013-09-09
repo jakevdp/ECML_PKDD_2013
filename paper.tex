@@ -1,12 +1,14 @@
-\documentclass{llncs}
+\documentclass{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{authblk}
 %\usepackage{hyperref}
+\usepackage{minted}
 \usepackage[authoryear,round]{natbib}
 \usepackage{xcolor}
 \usepackage{xspace}
-\usepackage{minted}
+\usepackage{url}
 
 \definecolor{rulecolor}{rgb}{0.80,0.80,0.80}
 \newminted{python}{frame=single,rulecolor=\color{rulecolor}}
@@ -21,34 +23,35 @@
 \title{API design for machine learning software: experiences from the
 scikit-learn project}
 
-\author{Lars~Buitinck~\inst{1} \and
-        Gilles~Louppe~\inst{2} \and
-        Mathieu~Blondel~\inst{3} \and
-        Fabian~Pedregosa~\inst{4} \and
-        Andreas~C.~M\"uller~\inst{5} \and
-        Olivier~Grisel~\inst{6} \and
-        Vlad~Niculae~\inst{7} \and
-        Peter~Prettenhofer~\inst{8} \and
-        Alexandre~Gramfort~\inst{4,9} \and
-        Jaques~Grobler~\inst{4} \and
-        Robert~Layton~\inst{10} \and
-        Jake~Vanderplas~\inst{11} \and
-        Arnaud~Joly~\inst{2} \and
-        Brian Holt~\inst{12} \and
-        Gaël~Varoquaux~\inst{4}}
+\author[1]{Lars~Buitinck}
+\author[2]{Gilles~Louppe}
+\author[3]{Mathieu~Blondel}
+\author[4]{Fabian~Pedregosa}
+\author[5]{Andreas~C.~Müller}
+\author[4]{Olivier~Grisel}
+\author[6]{Vlad~Niculae}
+\author[7]{Peter~Prettenhofer}
+\author[4,8]{Alexandre~Gramfort}
+\author[4]{Jaques~Grobler}
+\author[9]{Robert~Layton}
+\author[10]{Jake~Vanderplas}
+\author[2]{Arnaud~Joly}
+\author[11]{Brian Holt}
+\author[4]{Gaël~Varoquaux}
 
-\institute{ILPS, Informatics Institute, University of Amsterdam \and
-           University of Liège \and
-           Kobe University \and
-           Parietal, INRIA Saclay \and
-           University of Bonn \and
-           Independent consultant \and
-           University of Bucharest \and
-           Ciuvo GmbH \and
-           Institut Mines-Telecom, Telecom ParisTech, CNRS LTCI \and
-           University of Ballarat \and
-           University of Washington \and
-           Samsung Electronics Research Institute}
+\affil[1]{Netherlands eScience Center}
+\affil[2]{University of Liège}
+\affil[3]{Kobe University}
+\affil[4]{Parietal, INRIA Saclay}
+\affil[5]{University of Bonn}
+\affil[6]{University of Bucharest}
+\affil[7]{Ciuvo GmbH}
+\affil[8]{Institut Mines-Telecom, Telecom ParisTech, CNRS LTCI}
+\affil[9]{University of Ballarat}
+\affil[10]{University of Washington}
+\affil[11]{Samsung Electronics Research Institute}
+
+\date{}
 
 % Dutch name sorting hack as per http://tex.stackexchange.com/a/40750/2806
 \DeclareRobustCommand{\VAN}[3]{#2}
@@ -57,7 +60,6 @@ scikit-learn project}
 
 \maketitle
 
-\begin{abstract}
 \sklearn is an increasingly popular machine learning
 library. Written in Python, it is designed to be simple and efficient, accessible to
 non-experts, and reusable in various contexts. In this paper, we present and
@@ -67,9 +69,6 @@ by all learning and processing units in the library and then discuss its
 advantages in terms of composition and reusability. The paper also comments on
 implementation details specific to the Python ecosystem and analyzes obstacles
 faced by users and developers of the library.
-\end{abstract}
-
-\setcounter{footnote}{0}
 
 \section{Introduction}
 
