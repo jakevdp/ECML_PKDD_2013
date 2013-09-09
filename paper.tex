@@ -61,20 +61,18 @@ scikit-learn project}
 
 \maketitle
 
-\sklearn is an increasingly popular machine learning
-library. Written in Python, it is designed to be simple and efficient, accessible to
-non-experts, and reusable in various contexts. In this paper, we present and
-discuss our design choices for the application programming interface (API) of
-the project. In particular, we describe the simple and elegant interface shared
-by all learning and processing units in the library and then discuss its
-advantages in terms of composition and reusability. The paper also comments on
-implementation details specific to the Python ecosystem and analyzes obstacles
-faced by users and developers of the library.
+\sklearn is a machine learning library for the Python language.\footnote{\url{http://scikit-learn.org}}
+It is designed to be simple and efficient, accessible to
+non-experts, and reusable in various contexts. In this article, we present and
+discuss the uniform application programming interface shared
+by all learning and processing units in the library,
+and the way it facilitates composition and reusability. We also comment on
+implementation details specific to the Python ecosystem
+and analyze potential obstacles faced by users and developers of the library.
 
 \section{Introduction}
 
-The \sklearn project\footnote{\url{http://scikit-learn.org}}
-\citep{pedregosa2011} provides an open source machine learning
+The \sklearn project \citep{pedregosa2011} provides an open source machine learning
 library for the Python programming language. The ambition of the project is to
 provide efficient and well-established machine learning tools within a
 programming environment that is accessible to non-machine learning experts and
@@ -210,10 +208,10 @@ values and one for the output values. Each row of these matrices
 corresponds to one sample of the dataset and each column to one variable of
 the problem.
 
-In \sklearn, we chose a representation of data that is as close as
-possible to the matrix representation: datasets are encoded as NumPy
-multidimensional arrays for dense data and as SciPy sparse matrices for sparse
-data. While these may seem rather unsophisticated data representations when
+In \sklearn, the data representation is kept as close as possible
+to the matrix representation: datasets are encoded as
+two-dimensional NumPy arrays or SciPy sparse matrices.
+While these may seem rather unsophisticated data representations when
 compared to more object-oriented constructs, such as the ones used by
 Weka \citep{hall2009weka}, they bring the prime advantage of allowing us to rely
 on efficient NumPy and SciPy vectorized operations while keeping
@@ -227,19 +225,19 @@ contexts. Moreover, for tasks where the inputs are text files or semi-structured
 objects, we provide \textit{vectorizer} objects that efficiently convert such
 data to the NumPy or SciPy formats.
 
-For efficiency reasons, the public interface is oriented towards processing
-batches of samples rather than single samples per API call. While classification
-and regression algorithms can indeed make predictions for single samples,
-\sklearn objects are not optimized for this use case. (The few online learning
-algorithms implemented are intended to take mini-batches.) Batch processing makes
+The public interface is oriented towards processing a batch of samples,
+rather than a single sample, in each API call. While classification
+and regression algorithms can make predictions for single samples,
+\sklearn objects are not optimized for this use case. (The online learning
+algorithms in the library are intended to take mini-batches.) Batch processing makes
 optimal use of NumPy and SciPy by preventing the overhead inherent to Python
 function calls or due to per-element dynamic type checking. Although this might
 seem to be an artifact of the Python language, and therefore an implementation
 detail that leaks into the API, we argue that APIs should be designed so as not
-to tie a library to a suboptimal implementation strategy. As such, batch
-processing enables fast implementations in lower-level languages (where memory
+to tie a library to a suboptimal implementation strategy.
+Batch processing also enables fast implementations in lower-level languages, where memory
 hierarchy effects and the possibility of internal parallelization come into
-play).
+play.
 
 
 \subsection{Estimators}
@@ -287,8 +285,8 @@ From the start, the choice to let a single object serve dual purpose as
 estimator and model has mostly been driven by usability and technical
 considerations. From the user point of view, having two coupled instances (i.e.,
 an estimator object, used as a factory, and a model object, produced by the
-estimator) indeed decreases the ease of use and is also more likely to
-unnecessarily confuse newcomers. From the developer point of view, decoupling
+estimator) decreases the ease of use and is also more likely to confuse newcomers.
+From the developer point of view, decoupling
 estimators from models also creates parallel class hierarchies and increases the
 overall maintenance complexity of the project. For these practical reasons, we
 believe that decoupling estimators from models is not worth the effort. A good
@@ -406,18 +404,11 @@ feature space:
 X_test = scaler.transform(X_test)
 \end{pythoncode}
 Transformers also include a variety of learning algorithms, such as
-dimension reduction (PCA, manifold learning), kernel approximation,
+dimensionality reduction (PCA, manifold learning), kernel approximation,
 and other mappings from one feature space to another.
 
-Additionally, by leveraging the fact that \texttt{fit} always returns the
-estimator it was called on, the \texttt{StandardScaler} example above can be
-rewritten in a single line using method chaining:
-\begin{pythoncode}
-X_train = StandardScaler().fit(X_train).transform(X_train)
-\end{pythoncode}
-
-Furthermore, every transformer allows \texttt{fit(X\_train).transform(X\_train)}
-to be written as \texttt{fit\_transform(X\_train)}.
+Every transformer allows \texttt{fit(X).transform(X)}
+to be written as \texttt{fit\_transform(X)}.
 The combined \texttt{fit\_transform} method prevents repeated computations.
 Depending on the transformer,
 it may skip only an input validation step,
@@ -572,7 +563,7 @@ by sampling a fixed number of times from its parameter distributions
 
 Optionally, the model selection algorithms
 also take a cross-validation scheme and a score function.  \sklearn provides
-various such cross-validation schemes, including $k$-fold (default),
+various such schemes, including $k$-fold (default),
 stratified $k$-fold and leave-one-out.
 The score function used by default is the estimator's \texttt{score} method,
 but the library provides a variety of
@@ -638,16 +629,16 @@ In other places of the library, in particular in the vectorization code
 for unstructured input, the toolkit is also designed to be
 extensible. Here, estimators provide hooks for user-defined code: objects or
 functions that follow a specific API can be given as arguments at vectorizer
-construction time. The library then calls into this code, communicating with it by passing objects of standard Python/NumPy types.
-Again, such external user code can be kept agnostic of the \sklearn
-class hierarchy.
+construction time. The library then calls into this code,
+communicating with it by passing objects of standard Python/NumPy types,
+and keeping it agnostic of the \sklearn class hierarchy.
 
 Our rule of thumb is that user code should not be tied to \sklearn---which is a
-\textit{library}, and not a \textit{framework}. This principle indeed avoids a
-well-known problem with object-oriented design, which is that users wanting a
+\textit{library}, and not a framework. This principle avoids a
+common problem with object-oriented design, which is that users wanting a
 ``banana'' should not get ``a gorilla holding the banana and the entire jungle''
 (J.~Armstrong, cited by \citealp[p.~213]{seibel2009coders}).
-That is, programs using \sklearn should not be intimately tied to it,
+Programs using \sklearn should not be intimately tied to it,
 so that their code can be reused with other toolkits or in other contexts.
 
 
@@ -655,39 +646,38 @@ so that their code can be reused with other toolkits or in other contexts.
 \label{sec:implementation}
 
 Our implementation guidelines emphasize writing efficient but readable code.
-In particular, we focus on making the codebase easily maintainable and
-understandable in order to favor external contributions. Whenever practicable,
+In particular, we focus on making the codebase maintainable and
+understandable in order to favor external contributions. Whenever practical,
 algorithms implemented in \sklearn are written in Python,
 using NumPy vector operations for numerical work.
-This allows for the code to remain concise, readable and
-efficient. For critical algorithms that cannot be easily and efficiently
+This allows the code to remain concise, readable and efficient.
+For critical algorithms that cannot be easily and efficiently
 expressed as NumPy operations, we rely on Cython \citep{behnel2011cython}
 to achieve competitive performance and scalability. Cython is a
 compiled programming language that extends Python with static typing. It
-produces efficient C extension modules that are directly importable from the
-Python run-time system. Examples of algorithms written in Cython include
-stochastic gradient descent for linear models, some graph-based clustering
-algorithms and decision trees.
+produces efficient C extension modules that are importable from the
+Python run-time system. Examples of Cython code in \sklearn are
+stochastic gradient descent for linear models, some clustering
+algorithms, and decision trees.
 
-To facilitate the installation and thus adoption of \sklearn,
+To facilitate the installation of \sklearn,
 the set of external dependencies is kept to a bare minimum:
 only Python, NumPy and SciPy are required for a functioning installation.
 Binary distributions of these are available for the major platforms.
-Visualization functionality depends on Matplotlib \citep{hunter2007matplotlib}
-and/or Graphviz \citep{gansner2000},
+Visualization functionality uses on Matplotlib \citep{hunter2007matplotlib}
+and Graphviz \citep{gansner2000},
 but neither is required to perform machine learning or prediction.
 When feasible, external libraries are integrated into the codebase.
 In particular, \sklearn includes modified versions of \textsf{LIBSVM} and \textsf{LIBLINEAR}
 \citep{chang2011libsvm,fan2008}, both written in C{}\verb!++!
-and wrapped using Cython modules.
+and wrapped using Cython.
 
 \section{Related software}
 \label{sec:comparison}
 
-Recent years have witnessed a rising interest in machine learning and data
-mining with applications in many fields. With this rise comes a host of machine
-learning packages (both open source and proprietary) with which \sklearn
-competes. Some of those, including Weka~\citep{hall2009weka} or
+\sklearn competes with a many machine learning packages,
+both open source and proprietary.
+Some of those, including Weka~\citep{hall2009weka} or
 Orange~\citep{Demsar2004}, offer APIs but actually focus on the use of a graphical user interface (GUI)
 which allows novices to easily apply machine learning algorithms. By
 contrast, the target audience of \sklearn is capable of programming, and
@@ -698,13 +688,13 @@ sometimes make reproducibility difficult in the case of complex workflows
 tasks).
 
 Other existing machine learning packages
-such as SofiaML\footnote{\url{https://code.google.com/p/sofia-ml}}~\citep{sculley2009large}
-and Vowpal~Wabbit\footnote{\url{http://hunch.net/$\sim$vw}}
+such as SofiaML\footnote{\url{https://code.google.com/p/sofia-ml}}
+and Vowpal~Wabbit\footnote{\url{http://hunch.net/~vw}}
 are intended to be used as command-line tools
-(and sometimes do not offer any type of API).
+(and sometimes do not offer any kind of API).
 While these packages have the advantage
 that their users are not tied to a particular programming language,
-the users will find that they still need programming to process input/output,
+users will find that they still need programming to process input/output,
 and will do so in a variety of languages.
 By contrast, \sklearn allows users to implement that entire workflow
 in a single program, written in a single language,
@@ -727,8 +717,8 @@ and many of the other auxiliary tasks that machine learning programs
 While support for many of these tasks is improving in languages such as
 \textsc{matlab} and R, they still lag behind Python in their general purpose
 applicability.
-In many applications of machine learning these tasks, such as data access,
-data preprocessing and reporting, can be a more significant task than applying
+In many applications of machine learning, these tasks, such as data access,
+data preprocessing and reporting, can take more work than applying
 the actual learning algorithm.
 
 Within the realm of Python,
@@ -738,15 +728,12 @@ which exemplifies a different style of API design
 geared toward scalable processing of ``big data''.
 Gensim's method of dealing with large datasets is to use algorithms
 that have small space complexity and can be updated online.
-The API is designed around the Python concept of an \textit{iterable}
-(supported in the language by a restricted form of co-routines called
-\textit{generators}).
-While the text vectorizers part of \sklearn
-also use iterables to some extent,
-they still produce entire sparse matrices, intended to be used for batch or
-mini-batch learning. This is the case
-even in the stateless, O(1) memory vectorizers
-that implement the hashing trick of \citet{weinberger2009}.
+The API is designed around the Python concept of an ``iterable''
+(supported in the language by a restricted form of co-routines called generators).
+While the text vectorizers in \sklearn
+also leverage iterables to some extent,
+they still produce entire sparse matrices,
+intended to be used for batch or mini-batch learning.
 This way of processing, as argued earlier in Section~\ref{sec:arrays},
 reduces various forms of overhead
 and allows effective use of the vectorized operations provided by NumPy and
