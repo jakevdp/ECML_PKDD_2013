@@ -727,10 +727,7 @@ of creating multiple OS-level processes,
 and the ensuing inter-process communication.
 Parallel grid search is an example of the latter approach
 which has already been implemented.
-Recent versions of Cython include support for the OpenMP standard
-\citep{dagum1998openmp},
-which is a viable candidate technology
-for more fine-grained multicore support in \sklearn.
+Experiments are underway to implement more fine-grained multicore support.
 
 Finally, a long-term solution for model persistence is missing.
 Currently, Python's \texttt{pickle} module is recommended for serialization,
