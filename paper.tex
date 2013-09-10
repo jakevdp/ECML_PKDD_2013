@@ -2,6 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{authblk}
 \usepackage{dblfloatfix}
 %\usepackage{hyperref}
@@ -195,31 +196,32 @@ The API is designed to adhere to the following principles:
 \subsection{Data representation}
 \label{sec:arrays}
 
-In most machine learning tasks, data is modeled as a set of variables.  For
-example, in a supervised learning task, the goal is to find a mapping
-from input variables $X_1, \ldots X_p$, called features, to
-some output variables $Y$. A sample is then defined as a pair of
-values $([x_1, \ldots, x_p]^\mathrm{T}, y)$ of these variables. A widely used
-representation of a dataset, a collection of
-such samples, is a pair of matrices with numerical values: one for the input
-values and one for the output values. Each row of these matrices
-corresponds to one sample of the dataset and each column to one variable of
-the problem.
+Machine learning revolves around data,
+so good datastructures are paramount to designing software for it.
+In most tasks, data is modeled by a set of $d$ numerical variables,
+so that a single \textit{sample} (instance, observation, event)
+is a vector $x \in \mathbb{R}^d$.
+A collection of such samples is naturally regarded
+as the rows in a matrix $X$ of size $n \times d$.
+In the common case of supervised learning (classification, regression),
+we have an additional vector $y$ of length $n$ at training time
+and want an algorithm to produce such a $y$ for new data.
 
-In \sklearn, the data representation is kept as close as possible
-to the matrix representation: datasets are encoded as
-two-dimensional NumPy arrays or SciPy sparse matrices.
-While these may seem rather unsophisticated data representations when
+\sklearn's data representation is kept as close as possible
+to this matrix formulation: datasets are encoded as
+two-dimensional NumPy arrays or SciPy sparse matrices,
+while target vectors are ``flat'' arrays of numbers or strings.
+While these may seem rather unsophisticated when
 compared to more object-oriented constructs, such as the ones used by
-Weka \citep{hall2009weka}, they bring the prime advantage of allowing us to rely
-on efficient NumPy and SciPy vectorized operations while keeping
-the code short and readable.  This design choice has also been motivated by
-the fact that, given their pervasiveness in many other scientific Python
-packages, many scientific users of Python are already familiar with NumPy dense
-arrays and SciPy sparse matrices.
-These formats also provide a collection of
-data loading and conversion tools which make them very easy to use in many
-contexts. For tasks where the inputs are text files or semi-structured
+Weka \citep{hall2009weka},
+they allow us to rely on efficient NumPy and SciPy vector operations
+while keeping the code ``close to the textbook.''
+Given the pervasiveness of NumPy and SciPy in many other scientific Python
+packages, many scientific users of Python
+will already be familiar with these data structures,
+and a collection of available data loading and conversion tools
+facilitate interoperability.
+For tasks where the inputs are text files or semi-structured
 objects, we provide \textit{vectorizer} objects that efficiently convert such
 data to the NumPy or SciPy formats.
 
