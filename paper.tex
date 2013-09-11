@@ -73,43 +73,43 @@ and analyze potential obstacles faced by users and developers of the library.
 
 \section{Introduction}
 
-The \sklearn project \citep{pedregosa2011} provides an open source machine learning
-library for the Python programming language. The ambition of the project is to
-provide efficient and well-established machine learning tools within a
-programming environment that is accessible to non-machine learning experts and
-reusable in various scientific areas. The project is not a novel domain-specific
-language, but a library that provides machine learning idioms to a
-general-purpose high-level language. It includes classical learning algorithms,
-model evaluation and selection tools, as well as preprocessing procedures.
-The library is distributed under the simplified BSD license,
-encouraging its use in both academia and industry.
+Many science and engineering disciplines are trying to make sense
+of ever-increasing volumes of information.
+Machine learning (ML) promises to alleviate this problem
+by automating the process of finding patterns in the rising sea of data,
+but ML tools can be hard to use
+and in particular, hard to combine
+when multiple algorithms are needed for a task.
 
-\sklearn is a library, i.e.\ a collection of classes
-and functions that users import into Python programs.
-No command-line interface, let alone a graphical user interface,
-is offered for non-programmer users. Instead,
-interactive use is made possible by the Python interactive interpreter, and its
-enhanced replacement IPython \citep{perez2007ipython}, which offers a
-\textsc{matlab}-like working environment especially suited for scientific use.
+The \sklearn project provides a comprehensive suite of machine learning tools,
+packaged as a library for the Python programming language.
+It extends this general-purpose language with machine learning operations:
+learning algorithms, preprocessing tools, model selection procedures
+and a composition mechanism to produce complex ML workflows.
+The ambition of the project is to provide efficient implementations
+of well-established ML algorithms within a
+programming environment that is accessible to non-experts and
+reusable in various scientific areas.
+The library is distributed under the simplified BSD license
+to encourage its use in both academia and industry.
 
-The library has been designed to tie in with the set of numeric
+\sklearn is designed to tie in with the set of numeric
 and scientific packages centered around the NumPy and SciPy libraries. NumPy
 \citep{vanderwalt2011} augments Python with a contiguous numeric array datatype
 and fast array computing primitives,
 while SciPy \citep{varoquaux2013scipy} extends it
 further with common numerical operations, either by implementing
-these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran
-implementations. Building upon this stack, a series of libraries called
-\textit{scikits} were created, to complement SciPy with
-domain-specific toolkits. Currently, the two most popular and feature-complete
-ones are by far \sklearn and
-\textit{scikit-image},\footnote{\url{http://scikit-image.org}}
-which does image processing.
+these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran code.
+The name ``scikit'' derives from (domain-specific) ``SciPy toolkit''
+and is shared with \textit{scikit-image}.\footnote{\url{http://scikit-image.org}}
+IPython \citep{perez2007ipython} and Matplotlib \citep{hunter2007matplotlib}
+complement SciPy to provide a \textsc{matlab}-esque working environment
+suited for scientific use.
 
-Since 2007, \sklearn has been developed by an international team of more than a dozen
-core developers, mostly researchers from various fields (e.g.,
-computer science, neuroscience, astrophysics). The project also benefits
-from many occasional contributors proposing small bugfixes or
+Since 2007, \sklearn has been developed by more than a dozen
+core developers, mostly researchers in various fields
+(a.o.\ computer science, neuroscience, astrophysics). It also benefits
+from occasional contributors proposing small bugfixes or
 improvements. Development proceeds on GitHub\footnote{\url{https://github.com/scikit-learn}},
 a platform which greatly facilitates this kind of
 collaboration. Because of the large number of developers, emphasis is
