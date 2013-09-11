@@ -673,25 +673,31 @@ In many applications of machine learning, these tasks, such as data access,
 data preprocessing and reporting, can take more work than applying
 the actual learning algorithm.
 
-Within the realm of Python,
-a package that deserves mention is the Gensim topic modeling toolkit
-\citep{rehurek2010gensim},
-which exemplifies a different style of API design
-geared toward scalable processing of ``big data''.
+Within the realm of Python, two packages deserve mention.
+The Pylearn2 library \citep{goodfellow2013pylearn2}
+is similar to \sklearn in that aims to facilitate reproducible results
+and model inspection.
+However, it is designed for the audience of machine learning researchers,
+rather than practitioners in other fields.
+This leads to a modular toolkit,
+where each element of an algorithm can be tweaked or replaced as needed.
+This provides more control for the user,
+at the cost of more math to be mastered.
+
+Finally, the Gensim topic modeling toolkit \citep{rehurek2010gensim}
+exemplifies an API geared toward ``big data'' processing.
 Gensim's method of dealing with large datasets is to use algorithms
 that have small space complexity and can be updated online.
 The API is designed around the Python concept of an ``iterable''
 (supported in the language by a restricted form of co-routines called generators).
-While the text vectorizers in \sklearn
-also leverage iterables to some extent,
-they still produce entire sparse matrices,
-intended to be used for batch or mini-batch learning.
-This way of processing, as argued earlier in Section~\ref{sec:arrays},
-reduces various forms of overhead
-and allows effective use of the vectorized operations provided by NumPy and
-SciPy.  We make no attempt to hide this batch-oriented processing from the user,
-allowing control over the amount of memory actually dedicated
-to \sklearn algorithms.
+Some \sklearn estimators, notably Naïve Bayes and linear model SGD,\footnote{
+  Least-squares, logistic regression and SVM models.}
+have a \texttt{partial\_fit} method to learn from a stream of samples
+that is divided into mini-batches (chunks).
+This way of processing, as argued in Section~\ref{sec:arrays},
+allows for more efficient implementation.
+We make no attempt to hide this batch-oriented processing from the user,
+allowing control over the amount of memory dedicated to \sklearn algorithms.
 
 \section{Future directions}
 \label{sec:future_work}
