@@ -479,14 +479,13 @@ that computes both linear PCA and kernel PCA features on \texttt{X\_train}
 (through a \texttt{FeatureUnion}),
 and feeds those to an $\ell_2$-regularized logistic regression model.
 
-\begin{figure*}[b]
+\begin{figure*}[t]
 \begin{pythoncode}
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.decomposition import PCA, KernelPCA
 
 union = FeatureUnion([("pca", PCA()),
                       ("kpca", KernelPCA(kernel="rbf"))])
-
 Pipeline([("feat_union", union),
           ("log_reg", LogisticRegression(penalty="l2"))
          ]).fit(X_train, y_train)
@@ -540,7 +539,7 @@ but \texttt{GridSearchCV} also has a \texttt{predict} method,
 which delegates to the best model's \texttt{predict},
 so the CV object is itself an estimator and a predictor.
 
-\begin{figure*}[b]
+\begin{figure*}[t]
 \begin{pythoncode}
 from sklearn.grid_search import GridSearchCV
 from sklearn.svm import SVC
