@@ -180,12 +180,11 @@ The API is designed to adhere to the following principles:
        Python strings or numbers whenever possible.
        This keeps \sklearn easy to use and easy to combine with other libraries.
   \item[Composition.]
-       Many machine learning tasks are expressible
-       as sequences or combinations of transformations to data.
-       Some learning algorithms are also naturally viewed
-       as meta-algorithms parametrized on other algorithms.
-       Whenever feasible, such algorithms are implemented and composed from
-       existing building blocks.
+       Learning algorithms can be combined into processing pipelines.
+       Ensemble methods and other meta-algorithms
+       are implemented as adapter classes.
+       User-defined algorithms that follow the right conventions
+       can be used as building blocks in the resulting composite algorithms.
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
        an appropriate default value is defined by the library.
