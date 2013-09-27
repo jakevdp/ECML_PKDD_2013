@@ -7,7 +7,7 @@
 \usepackage{dblfloatfix}
 %\usepackage{hyperref}
 \usepackage{minted}
-\usepackage[authoryear,round]{natbib}
+\usepackage[numbers,square]{natbib}
 \usepackage{xcolor}
 \usepackage{xspace}
 \usepackage{url}
@@ -589,7 +589,7 @@ Our rule of thumb is that user code should not be tied to \sklearn---which is a
 \textit{library}, not a framework. We try to avoid a
 common problem with object-oriented design: that users wanting a
 ``banana'' instead get ``a gorilla holding the banana and the entire jungle''
-(J.~Armstrong, cited by \citealp[p.~213]{seibel2009coders}).
+(J.~Armstrong, cited in \citep[p.~213]{seibel2009coders}).
 Programs using \sklearn should not be intimately tied to it,
 so that their code can be reused or in other contexts.
 
@@ -762,12 +762,11 @@ problems across a wide array of fields,
 as well as the appearance of third-party packages
 that follow \sklearn conventions. Examples of such packages include
 \textit{astroML}\footnote{\url{http://astroml.org}}
-\citep{vanderplas2012astroML}, a machine learning toolkit for astronomy,
-and \textit{wiseRF}\footnote{\url{http://wise.io}}, a commercial random forest
-implementation. The source code of the recently-proposed sparse multiclass
-algorithm of \citet{mblondel-mlj2013}, released as part of the
-\textit{lightning}\footnote{\url{https://github.com/mblondel/lightning}}
-package, also follows the \sklearn conventions.
+\citep{vanderplas2012astroML}, a machine learning toolkit for astronomy;
+\textit{wiseRF}\footnote{\url{http://wise.io}}, a commercial random forest implementation;
+and \textit{lightning},\footnote{\url{https://github.com/mblondel/lightning}}
+the source code of a recently-proposed sparse multiclass
+algorithm \citep{mblondel-mlj2013}.
 We encourage researchers to follow these conventions when releasing software.
 
 \subsection*{Acknowledgments}
