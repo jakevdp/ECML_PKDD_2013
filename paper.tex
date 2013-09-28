@@ -94,13 +94,14 @@ The library is distributed under the simplified BSD license
 to encourage its use in both academia and industry.
 
 \sklearn is designed to tie in with the set of numeric
-and scientific packages centered around the NumPy and SciPy libraries. NumPy
-\citep{vanderwalt2011} augments Python with a contiguous numeric array datatype
+and scientific packages centered around the NumPy and SciPy libraries
+\citep{oliphant2007python, vanderwalt2011}.
+NumPy augments Python with a contiguous numeric array datatype
 and fast array computing primitives,
-while SciPy \citep{varoquaux2013scipy} extends it
-further with common numerical operations, either by implementing
-these in Python/NumPy or by wrapping existing C/C{}\verb!++!/Fortran code.
-The name ``scikit'' derives from (domain-specific) ``SciPy toolkit''
+while SciPy extends it further with common numerical operations,
+either by implementing these in Python/NumPy
+or by wrapping existing C/C{}\verb!++!/Fortran code.
+The name ``scikit'' derives from ``SciPy toolkit''
 and is shared with \textit{scikit-image}.\footnote{\url{http://scikit-image.org}}
 IPython \citep{perez2007ipython} and Matplotlib \citep{hunter2007matplotlib}
 complement SciPy to provide a \textsc{matlab}-esque working environment
@@ -208,7 +209,7 @@ and want an algorithm to produce such a $y$ for new data.
 
 \sklearn's data representation is kept as close as possible
 to this matrix formulation: datasets are encoded as
-two-dimensional NumPy arrays or SciPy sparse matrices,
+two-dimensional NumPy arrays or SciPy sparse matrices \citep{vanderwalt2011},
 while target vectors are ``flat'' arrays of numbers or strings.
 While these may seem rather unsophisticated when
 compared to more object-oriented constructs, such as the ones used by
