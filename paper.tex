@@ -254,7 +254,7 @@ learning tasks like feature extraction and selection are also provided as estima
 Estimator initialization and actual learning are strictly separated,
 in a way that is similar to partial function application:
 an estimator is initialized from a set of named hyper-parameter values
-(e.g., the $C$ constant in Support Vector Machines (SVM))
+(e.g., the $C$ constant in Support Vector Machines, SVM)
 and can be considered a function
 that maps these values to actual learning algorithms.
 The constructor does not see any actual data.
@@ -277,7 +277,8 @@ again to facilitate model inspection.
 In the partial application view,
 \texttt{fit} is a function from data to a model of that data.
 It always returns the estimator object it was called on,
-which now serves as a model of its input and can be used to perform predictions or transformations of input data.
+which now serves as a model and can be used to perform predictions
+or transformations of new data.
 
 The choice to let a single object serve dual purpose as
 estimator and model has been driven by usability and technical considerations.
@@ -294,14 +295,16 @@ public attributes, and prediction formulas follow standard textbooks,
 goes a long way in solving this problem.
 
 To illustrate the initialize-fit sequence,
-let us consider a supervised learning task using logistic regression (LR).
+let us consider a supervised learning task using logistic regression.
 Given the API defined above, solving this problem is as simple as the following
 example.
+\begin{footnotesize}
 \begin{pythoncode}
 from sklearn.linear_model import LogisticRegression
 clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
 \end{pythoncode}
+\end{footnotesize}
 In this snippet, a \texttt{LogisticRegression} estimator is first initialized by
 setting the \texttt{penalty} hyper-parameter to \texttt{"l1"} for
 $\ell_1$ regularization. Other hyper-parameters (such as \texttt{C},
@@ -311,8 +314,8 @@ learned from the training arrays \texttt{X\_train} and \texttt{y\_train},
 and stored on the object for later use.
 %% (In this example, \texttt{fit} is called solely for its side effects.)
 Since all estimators share the same interface, using a different learning algorithm is
-as simple as replacing the constructor (the class name);
-to build a random forest on
+as simple as replacing the constructor (the class name).
+To build a random forest on
 the same data, one would simply replace
 \texttt{LogisticRegression(penalty="l1")} in the snippet above by
 \texttt{RandomForestClassifier()}.
@@ -378,7 +381,7 @@ data \texttt{X\_test} and yields as output a transformed version of
 \texttt{X\_test}. Preprocessing, feature selection, feature extraction and dimensionality reduction
 algorithms are all provided as transformers.  In our example,
 to standardize the input \texttt{X\_train} to zero mean and unit variance
-before fitting the LR estimator, one would write:
+before fitting the logistic regression estimator, one would write:
 \begin{small}
 \begin{pythoncode}
 from sklearn.preprocessing import StandardScaler
