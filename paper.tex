@@ -545,24 +545,6 @@ but \texttt{GridSearchCV} also has a \texttt{predict} method,
 which delegates to the best model's \texttt{predict},
 so the CV object is itself an estimator and a predictor.
 
-\begin{figure*}[t]
-\begin{pythoncode}
-from sklearn.grid_search import GridSearchCV
-from sklearn.svm import SVC
-
-param_grid = [
-  {"kernel": ["linear"], "C": [1, 10, 100, 1000]},
-  {"kernel": ["rbf"], "C": [1, 10, 100, 1000],
-   "gamma": [0.001, 0.0001]}
-]
-clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
-clf.fit(X_train, y_train)
-\end{pythoncode}
-\caption{Optimizing the hyper-parameters of a Support Vector Machine for $F_1$
-score.}
-\label{svm-gridsearch}
-\end{figure*}
-
 The code in Figure~\ref{svm-gridsearch} shows how to find
 hyper-parameter settings for an SVM classifier (SVC)
 that maximize $F_1$ score
@@ -600,6 +582,24 @@ common problem with object-oriented design: that users wanting a
 (J.~Armstrong, cited in \citep[p.~213]{seibel2009coders}).
 Programs using \sklearn should not be intimately tied to it,
 so that their code can be reused or in other contexts.
+
+\begin{figure*}[t]
+\begin{pythoncode}
+from sklearn.grid_search import GridSearchCV
+from sklearn.svm import SVC
+
+param_grid = [
+  {"kernel": ["linear"], "C": [1, 10, 100, 1000]},
+  {"kernel": ["rbf"], "C": [1, 10, 100, 1000],
+   "gamma": [0.001, 0.0001]}
+]
+clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
+clf.fit(X_train, y_train)
+\end{pythoncode}
+\caption{Optimizing the hyper-parameters of a Support Vector Machine for $F_1$
+score.}
+\label{svm-gridsearch}
+\end{figure*}
 
 
 \section{Implementation}
