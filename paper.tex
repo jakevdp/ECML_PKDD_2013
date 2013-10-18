@@ -378,12 +378,14 @@ data \texttt{X\_test} and yields as output a transformed version of
 algorithms are all provided as transformers.  In our example,
 to standardize the input \texttt{X\_train} to zero mean and unit variance
 before fitting the LR estimator, one would write:
+\begin{small}
 \begin{pythoncode}
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 \end{pythoncode}
+\end{small}
 Of course, in practice, it is important to apply the same preprocessing to the
 test data \texttt{X\_test}. Since a \texttt{StandardScaler} estimator stores the
 mean and standard deviation that it computed for the training set, transforming
