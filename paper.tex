@@ -254,7 +254,7 @@ learning tasks like feature extraction and selection are also provided as estima
 Estimator initialization and actual learning are strictly separated,
 in a way that is similar to partial function application:
 an estimator is initialized from a set of named hyper-parameter values
-(e.g., the $C$ constant in Support Vector Machines, SVM)
+(e.g., the $C$ constant in support vector machines)
 and can be considered a function
 that maps these values to actual learning algorithms.
 The constructor does not see any actual data.
@@ -565,12 +565,12 @@ which delegates to the best model's \texttt{predict},
 so the CV object is itself an estimator and a predictor.
 
 The code in Figure~\ref{svm-gridsearch} shows how to find
-hyper-parameter settings for an SVM classifier (SVC)
+hyper-parameter settings for an support vector classifier (SVC)
 that maximize $F_1$ score
 through 10-fold cross-validation on the training set.
 Two distinct hyper-parameter grids are
 considered for the linear and radial basis function (RBF) kernels;
-an SVM with a linear kernel accepts a $\gamma$ parameter, but ignores it,
+an SVC with a linear kernel accepts a $\gamma$ parameter, but ignores it,
 so using a single parameter grid would waste computing time
 trying out effectively equivalent settings.
 
