@@ -617,7 +617,7 @@ to achieve competitive performance and scalability. Cython is a
 compiled programming language that extends Python with static typing. It
 produces efficient C extension modules that are importable from the
 Python run-time system. Examples of Cython code in \sklearn are
-stochastic gradient descent for linear models, some clustering
+Stochastic Gradient Descent for linear models, some clustering
 algorithms, and decision trees.
 
 To facilitate the installation of \sklearn,
@@ -635,7 +635,7 @@ and wrapped using Cython.
 \section{Related software}
 \label{sec:comparison}
 
-\sklearn competes with a many machine learning packages,
+\sklearn competes with many machine learning packages,
 both open source and proprietary.
 Some of those, including Weka~\citep{hall2009weka} or
 Orange~\citep{Demsar2004}, offer APIs but actually focus on the use of a graphical user interface (GUI)
@@ -682,14 +682,14 @@ the actual learning algorithm.
 
 Within the realm of Python, two packages deserve mention.
 The Pylearn2 library \citep{goodfellow2013pylearn2}
-is similar to \sklearn in that aims to facilitate reproducible results
+is similar to \sklearn in that it aims to facilitate reproducible results
 and model inspection.
 However, it is designed for the audience of machine learning researchers,
 rather than practitioners in other fields.
 This leads to a modular toolkit,
 where each element of an algorithm can be tweaked or replaced as needed.
 This provides more control for the user,
-at the cost of more math to be mastered.
+at the cost of more advanced concepts to be mastered.
 
 Finally, the Gensim topic modeling toolkit \citep{rehurek2010gensim}
 exemplifies an API geared toward ``big data'' processing.
@@ -697,9 +697,7 @@ Gensim's method of dealing with large datasets is to use algorithms
 that have small space complexity and can be updated online.
 The API is designed around the Python concept of an ``iterable''
 (supported in the language by a restricted form of co-routines called generators).
-Some \sklearn estimators, notably Naïve Bayes and Stochastic Gradient Descent
-(for learning linear models such as
-logistic regression and SVM),
+Some \sklearn estimators, notably Naïve Bayes and Stochastic Gradient Descent,
 have a \texttt{partial\_fit} method to learn from a stream of samples
 that is divided into mini-batches (chunks).
 This way of processing, as argued in Section~\ref{sec:arrays},
