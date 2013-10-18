@@ -697,7 +697,8 @@ Gensim's method of dealing with large datasets is to use algorithms
 that have small space complexity and can be updated online.
 The API is designed around the Python concept of an ``iterable''
 (supported in the language by a restricted form of co-routines called generators).
-Some \sklearn estimators, notably Naïve Bayes and Stochastic Gradient Descent,
+Some \sklearn estimators, among others the implementations of naïve Bayes
+and minibatch $k$-means \citep{sculley2010web},
 have a \texttt{partial\_fit} method to learn from a stream of samples
 that is divided into mini-batches (chunks).
 This way of processing, as argued in Section~\ref{sec:arrays},
