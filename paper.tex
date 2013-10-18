@@ -253,7 +253,7 @@ learning tasks like feature extraction and selection are also provided as estima
 Estimator initialization and actual learning are strictly separated,
 in a way that is similar to partial function application:
 an estimator is initialized from a set of named hyper-parameter values
-(e.g., the $C$ constant in SVMs)
+(e.g., the $C$ constant in Support Vector Machines (SVM))
 and can be considered a function
 that maps these values to actual learning algorithms.
 The constructor does not see any actual data.
@@ -552,7 +552,8 @@ param_grid = [
 clf = GridSearchCV(SVC(), param_grid, scoring="f1", cv=10)
 clf.fit(X_train, y_train)
 \end{pythoncode}
-\caption{Optimizing the hyper-parameters of an SVM for $F_1$ score.}
+\caption{Optimizing the hyper-parameters of a Support Vector Machine for $F_1$
+score.}
 \label{svm-gridsearch}
 \end{figure*}
 
@@ -690,8 +691,9 @@ Gensim's method of dealing with large datasets is to use algorithms
 that have small space complexity and can be updated online.
 The API is designed around the Python concept of an ``iterable''
 (supported in the language by a restricted form of co-routines called generators).
-Some \sklearn estimators, notably Naïve Bayes and linear model SGD,\footnote{
-  Least-squares, logistic regression and SVM models.}
+Some \sklearn estimators, notably Naïve Bayes and Stochastic Gradient Descent
+(for learning linear models such as
+logistic regression and SVM),
 have a \texttt{partial\_fit} method to learn from a stream of samples
 that is divided into mini-batches (chunks).
 This way of processing, as argued in Section~\ref{sec:arrays},
