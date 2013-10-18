@@ -62,6 +62,7 @@ scikit-learn project}
 
 \maketitle
 
+{\bf Abstract}
 \sklearn is a machine learning library for the Python language.\footnote{\url{http://scikit-learn.org}}
 It is designed to be simple and efficient, accessible to
 non-experts, and reusable in various contexts. In this article, we present and
@@ -81,12 +82,12 @@ but ML tools can be hard to use
 and in particular, hard to combine
 when multiple algorithms are needed for a task.
 
-The \sklearn project provides a comprehensive suite of machine learning tools,
-packaged as a Python library.
-It extends this general-purpose language with machine learning operations:
-learning algorithms, preprocessing tools, model selection procedures
+The \sklearn library provides a comprehensive suite of machine learning tools
+for Python.
+It extends this general-purpose programming language with machine learning
+operations: learning algorithms, preprocessing tools, model selection procedures
 and a composition mechanism to produce complex ML workflows.
-The ambition of the project is to provide efficient implementations
+The ambition of the library is to provide efficient implementations
 of well-established algorithms within a
 programming environment that is accessible to non-experts and
 reusable in various scientific areas.
@@ -104,12 +105,12 @@ or by wrapping existing C/C{}\verb!++!/Fortran code.
 The name ``scikit'' derives from ``SciPy toolkit''
 and is shared with \textit{scikit-image}.\footnote{\url{http://scikit-image.org}}
 IPython \citep{perez2007ipython} and Matplotlib \citep{hunter2007matplotlib}
-complement SciPy to provide a \textsc{matlab}-esque working environment
+complement SciPy to provide a \textsc{matlab}-like working environment
 suited for scientific use.
 
 Since 2007, \sklearn has been developed by more than a dozen
 core developers, mostly researchers in various fields
-(a.o.\ computer science, neuroscience, astrophysics). It also benefits
+(among others, computer science, neuroscience, astrophysics). It also benefits
 from occasional contributors proposing small bugfixes or
 improvements. Development proceeds on GitHub\footnote{\url{https://github.com/scikit-learn}},
 a platform which greatly facilitates this kind of
@@ -117,8 +118,8 @@ collaboration. Because of the large number of developers, emphasis is
 put on keeping the project maintainable. In particular, code must follow
 specific quality guidelines, such as style consistency and unit-test coverage.
 Documentation and examples are required for all features,
-and major changes must pass code review by at least two
-developers not involved in the implementation of the proposed change.
+and major changes must pass code review by at least two other
+developers.
 
 \sklearn's popularity can be gauged from various indicators such as the hundreds
 of citations in scientific publications, successes in various machine learning
