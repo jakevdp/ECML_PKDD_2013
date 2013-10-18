@@ -506,11 +506,12 @@ As introduced in Section~\ref{sec:estimators}, hyper-parameters set in the
 constructor of an estimator
 determine the behavior of the learning algorithm
 and hence the performance of the resulting model on unseen data.
-The problem of \textit{model selection} is therefore to find, within
-some hyper-parameter space, the best combination of hyper-parameters, with
-respect to some user-specified criterion. For example, a decision
+For example, a decision
 tree with too small a value for the maximal tree depth
 parameter will tend to underfit, while too large a value will make it overfit.
+The problem of \textit{model selection} is therefore to find, within
+some hyper-parameter space, the best combination of hyper-parameters, with
+respect to some user-specified criterion. 
 
 In \sklearn, model selection is supported by the meta-estimators
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV}.  These take as input an
@@ -520,7 +521,7 @@ This set is represented as a mapping of parameter names
 to a set of discrete choices in the case of grid search,
 which exhaustively enumerates the ``grid'' (cartesian product)
 of complete parameter combinations.
-Randomized search is a smarter algorithm
+Randomized search is a more efficient algorithm
 that avoids the combinatorial explosion in grid search
 by sampling a fixed number of times from its parameter distributions
 \citep{bergstra2012}.
