@@ -162,8 +162,8 @@ representation choices.
 
 As much as possible, \sklearn has been designed in such a way
 as to avoid the proliferation of framework code.
-We adopt simple conventions and limit the number of methods
-an object must implement to a minimum.
+We adopt simple conventions and limit to a minimum the number of methods
+an object must implement.
 The API is designed to adhere to the following principles:
 
 \begin{description}
@@ -289,8 +289,8 @@ estimators from models would create parallel class hierarchies and increases the
 overall maintenance burden.
 A good reason for decoupling would be to make it possible to ship a model
 to a new environment where the full library cannot be installed.
-However, our inspectable setup where model parameters are documented,
-public attributes, and prediction formulas follow standard textbooks,
+However, our inspectable setup where model parameters are documented
+public attributes and prediction formulas follow standard textbooks,
 goes a long way in solving this problem.
 
 To illustrate the initialize-fit sequence,
@@ -528,7 +528,7 @@ tree with too small a value for the maximal tree depth
 parameter will tend to underfit, while too large a value will make it overfit.
 The problem of \textit{model selection} is therefore to find, within
 some hyper-parameter space, the best combination of hyper-parameters, with
-respect to some user-specified criterion. 
+respect to some user-specified criterion.
 
 In \sklearn, model selection is supported by the meta-estimators
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV}.  These take as input an
