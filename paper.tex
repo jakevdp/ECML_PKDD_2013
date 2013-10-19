@@ -564,8 +564,8 @@ which delegates to the best model's \texttt{predict},
 so the CV object is itself an estimator and a predictor.
 
 The code in Figure~\ref{svm-gridsearch} shows how to find
-hyper-parameter settings for an support vector classifier (SVC)
-that maximize $F_1$ score
+hyper-parameter settings for a support vector classifier (SVC)
+that maximizes $F_1$ score
 through 10-fold cross-validation on the training set.
 Two distinct hyper-parameter grids are
 considered for the linear and radial basis function (RBF) kernels;
@@ -593,13 +593,13 @@ construction time. The library then calls into this code,
 communicating with it using objects of standard Python/NumPy types,
 and keeping it agnostic of the \sklearn class hierarchy.
 
-Our rule of thumb is that user code should not be tied to \sklearn---which is a
+Our rule of thumb is that user code should not be tied to \sklearn -- which is a
 \textit{library}, not a framework. We try to avoid a
 common problem with object-oriented design: that users wanting a
 ``banana'' instead get ``a gorilla holding the banana and the entire jungle''
 (J.~Armstrong, cited in \citep[p.~213]{seibel2009coders}).
 Programs using \sklearn should not be intimately tied to it,
-so that their code can be reused or in other contexts.
+so that their code can be reused in other contexts.
 
 \section{Implementation}
 \label{sec:implementation}
