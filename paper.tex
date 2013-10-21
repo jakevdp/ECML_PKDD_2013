@@ -171,16 +171,16 @@ The API is designed to adhere to the following principles:
        All objects (basic or composite) share a consistent interface composed of
        a limited set of methods. This interface is documented in a consistent
        manner for all objects.
-  \item[Inspection.]
-       Constructor parameters and parameter values determined by learning
-       algorithms are stored and exposed as public attributes.
+  \item[Inspectability.]
+       Parameters, whether set by the user or learned from data,
+       are stored and exposed as public attributes.
   \item[Non-proliferation of classes.]
        Learning algorithms are the only objects to be represented using custom classes.
        Datasets are represented as NumPy arrays or SciPy sparse matrices.
-       Hyper-parameter names and values are represented as standard
-       Python strings or numbers whenever possible.
+       User-set parameter names and values are represented as standard
+       Python strings or numbers, not custom objects.
        This keeps \sklearn easy to use and easy to combine with other libraries.
-  \item[Composition.]
+  \item[Composability.]
        Learning algorithms can be combined into processing pipelines.
        Ensemble methods and other meta-algorithms
        are implemented as adapter classes.
@@ -188,9 +188,8 @@ The API is designed to adhere to the following principles:
        can be used as building blocks in the resulting composite algorithms.
   \item[Sensible defaults.]
        Whenever an operation requires a user-defined parameter,
-       an appropriate default value is defined by the library.
-       The default value should cause the operation to be performed
-       in a sensible way (giving a baseline solution for the task at hand).
+       a sensible default value is defined by the library
+       to give a baseline solution for the task at hand.
 \end{description}
 
 \subsection{Data representation}
@@ -299,7 +298,8 @@ Given the API defined above, solving this problem is as simple as the following
 example.
 \begin{footnotesize}
 \begin{pythoncode}
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import \
+    LogisticRegression
 clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
 \end{pythoncode}
@@ -325,7 +325,7 @@ features) or feature extraction techniques (e.g., vectorization of text
 documents) also implement the \textit{estimator} interface. Even stateless
 processing steps, that do not require the \texttt{fit} method to
 perform useful work, implement the estimator interface. As we will illustrate
-in the next sections, this design pattern is indeed of prime importance for
+in the next sections, this design pattern is of prime importance for
 consistency, composition and model selection reasons.
 
 \subsection{Predictors}
@@ -389,16 +389,15 @@ scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 \end{pythoncode}
 \end{small}
-Of course, in practice, it is important to apply the same preprocessing to the
-test data \texttt{X\_test}. Since a \texttt{StandardScaler} estimator stores the
-mean and standard deviation that it computed for the training set, transforming
-an unseen test set \texttt{X\_test} maps it into the appropriate region of
-feature space:
-\begin{pythoncode}
-X_test = scaler.transform(X_test)
-\end{pythoncode}
+To obtain good results, it is necessary to apply the exact same preprocessing to the
+test data \texttt{X\_test}.
+For this reason, a \texttt{StandardScaler} stores the mean and standard deviation
+that it computed for the training set
+and will use these when asked to \texttt{transform}
+an unseen set of samples \texttt{X\_test}:
+
 Transformers also include a variety of learning algorithms, such as
-dimensionality reduction (PCA, manifold learning), kernel approximation,
+dimensionality reduction, manifold learning, kernel approximation,
 and other mappings from one feature space to another.
 
 Every transformer allows \texttt{fit(X).transform(X)}
@@ -519,21 +518,20 @@ score.}
 \label{svm-gridsearch}
 \end{figure*}
 
-As introduced in Section~\ref{sec:estimators}, hyper-parameters set in the
-constructor of an estimator
+Hyper-parameters values set in the constructor of an estimator
+(Section~\ref{sec:estimators})
 determine the behavior of the learning algorithm
-and hence the performance of the resulting model on unseen data.
-For example, a decision
-tree with too small a value for the maximal tree depth
-parameter will tend to underfit, while too large a value will make it overfit.
-The problem of \textit{model selection} is therefore to find, within
-some hyper-parameter space, the best combination of hyper-parameters, with
-respect to some user-specified criterion.
+and the performance of the resulting model on unseen data.
+The problem of \textit{model selection} is to find
+the optimal combination of hyper-parameters, with
+respect to some user-specified criterion. For example, a decision
+tree with too small a maximal tree depth parameter will fit its training set badly,
+while too large a value will make it overfit.
 
 In \sklearn, model selection is supported by the meta-estimators
 \texttt{GridSearchCV} and \texttt{RandomizedSearchCV}.  These take as input an
-estimator (basic or composite), whose hyper-parameters must be optimized, and a
-set of hyperparameter settings to search through.
+estimator, basic or composite,
+and a set of hyperparameter settings to search through.
 This set is represented as a mapping of parameter names
 to a set of discrete choices in the case of grid search,
 which exhaustively enumerates the ``grid'' (cartesian product)
@@ -563,14 +561,14 @@ but \texttt{GridSearchCV} also has a \texttt{predict} method,
 which delegates to the best model's \texttt{predict},
 so the CV object is itself an estimator and a predictor.
 
-The code in Figure~\ref{svm-gridsearch} shows how to find
-hyper-parameter settings for a support vector classifier (SVC)
-that maximizes $F_1$ score
-through 10-fold cross-validation on the training set.
+Figure~\ref{svm-gridsearch} shows code that finds
+settings for an SVM classifier (SVC)
+that maximize $F_1$ score
+through 10-fold cross-validation.
 Two distinct hyper-parameter grids are
-considered for the linear and radial basis function (RBF) kernels;
-an SVC with a linear kernel accepts a $\gamma$ parameter, but ignores it,
-so using a single parameter grid would waste computing time
+considered for the linear and radial basis function (RBF) kernels:
+an SVM with a linear kernel accepts a $\gamma$ parameter, but ignores it,
+so using a single grid would waste computing time
 trying out effectively equivalent settings.
 
 \subsection{Extending scikit-learn}
@@ -627,9 +625,8 @@ Visualization functionality uses Matplotlib \citep{hunter2007matplotlib}
 and Graphviz \citep{gansner2000},
 but neither is required to perform machine learning or prediction.
 When feasible, external libraries are integrated into the codebase.
-In particular, \sklearn includes modified versions of \textsf{LIBSVM} and \textsf{LIBLINEAR}
-\citep{chang2011libsvm,fan2008}, both written in C{}\verb!++!
-and wrapped using Cython.
+In particular, \sklearn includes modified versions of the C{}\verb!++! libraries
+\textsf{LIBSVM} and \textsf{LIBLINEAR} \citep{chang2011libsvm,fan2008}.
 
 \section{Related software}
 \label{sec:comparison}
@@ -649,15 +646,14 @@ tasks).
 Other machine learning packages,
 such as SofiaML\footnote{\url{https://code.google.com/p/sofia-ml}}
 and Vowpal~Wabbit,\footnote{\url{http://hunch.net/~vw}}
-are often designed as command-line tools
-and may not offer any kind of API\@.
+are often designed as command-line tools without any kind of API\@.
 While this has the advantage that users are not tied
 to a particular programming language,
 they will find that they still need programming to process input/output,
 and will do so in a variety of languages.
 By contrast, \sklearn allows users to implement that entire workflow
-in a single program, written in a single language.
-This also makes it easier for researchers and developers
+in a single language.
+This makes it easier for researchers and developers
 to exchange and collaborate on software, as dependencies and setup are kept to a
 minimum.
 
@@ -665,7 +661,7 @@ Similar benefits hold in the case of specialized languages
 for numeric and statistical programming
 such as \textsc{matlab} and R \citep{r}.
 In comparison to these, though, Python has the distinct advantage
-that it is a \textit{general purpose} language,
+that it is a \textit{general-purpose} language,
 while NumPy and SciPy extend it with functionality
 similar to that offered by \textsc{matlab} and R.
 Python has strong language and standard library support for such tasks as
@@ -673,10 +669,9 @@ string/text processing, interprocess communication, networking
 and many of the other auxiliary tasks that machine learning programs
 (whether academic or commercial) routinely need to perform.
 While support for many of these tasks is improving in languages such as
-\textsc{matlab} and R, they still lag behind Python in their general purpose
-applicability.
-In many applications of machine learning, these tasks, such as data access,
-data preprocessing and reporting, can take more work than applying
+\textsc{matlab} and R, they still lag behind Python in this regard.
+In many applications of machine learning, data access,
+preprocessing, and reporting can take more work than applying
 the actual learning algorithm.
 
 Within the realm of Python, two packages deserve mention.
@@ -696,12 +691,12 @@ Gensim's method of dealing with large datasets is to use algorithms
 that have small space complexity and can be updated online.
 The API is designed around the Python concept of an ``iterable''
 (supported in the language by a restricted form of co-routines called generators).
-Some \sklearn estimators, among which the implementations of naïve Bayes
+Some \sklearn estimators, including the implementations of naïve Bayes
 and minibatch $k$-means,
 have a \texttt{partial\_fit} method to learn from a stream of samples
 that is divided into mini-batches (chunks).
 This way of processing, as argued in Section~\ref{sec:arrays},
-allows for more efficient implementation.
+allows for efficient implementation.
 We make no attempt to hide this batch-oriented processing from the user,
 allowing control over the amount of memory dedicated to \sklearn algorithms.
 
@@ -722,11 +717,10 @@ but only in a coarse-grained fashion.
 Parallel processing is difficult to accomplish in the Python environment;
 \sklearn targets the main implementation, CPython,
 which cannot execute Python code on multiple CPUs simultaneously.
-It follows that any parallel task decomposition must either be done
+It follows that parallel task decomposition must either be done
 inside Cython modules,
 or at a level high enough to warrant the overhead
-of creating multiple OS-level processes,
-and the ensuing inter-process communication.
+of inter-process communication.
 Parallel grid search is an example of the latter approach
 which has already been implemented.
 Experiments are underway to implement more fine-grained multicore support.
