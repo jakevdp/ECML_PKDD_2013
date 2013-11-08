@@ -22,8 +22,7 @@
 
 \newcommand{\sklearn}{\textit{scikit-learn}\xspace}
 
-\title{API design for machine learning software: experiences from the
-scikit-learn project}
+\title{API design for machine learning: experiences from scikit-learn}
 
 \author[1]{Lars~Buitinck}
 \author[2]{Gilles~Louppe}
@@ -298,8 +297,7 @@ Given the API defined above, solving this problem is as simple as the following
 example.
 \begin{footnotesize}
 \begin{pythoncode}
-from sklearn.linear_model import \
-    LogisticRegression
+from sklearn.linear_model import LogisticRegression
 clf = LogisticRegression(penalty="l1")
 clf.fit(X_train, y_train)
 \end{pythoncode}
