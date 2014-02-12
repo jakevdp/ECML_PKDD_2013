@@ -394,6 +394,12 @@ to be written as \texttt{fit\_transform(X)}.
 This combined operation prevents repeated computations,
 either by skipping only an input validation step,
 or by using a more efficient algorithm for the transformation.
+For example, dimensionality reduction
+using truncated singular value decomposition (SVD)
+computes $U_k \Sigma_k V_k^\mathsf{T} \approx X$ in its \texttt{fit} phase;
+its transform phase then computes $X_k = XV$,
+but the combined \texttt{fit\_transform}
+can compute the same result more economically as $X_k = U\Sigma^\mathsf{T}$.
 In the same spirit, clustering algorithms provide a \texttt{fit\_predict}
 that is equivalent to \texttt{fit} followed by \texttt{predict},
 returning cluster labels for the training samples.
