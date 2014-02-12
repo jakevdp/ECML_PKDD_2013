@@ -61,14 +61,18 @@
 
 \maketitle
 
-\sklearn is a machine learning library for the Python language.\footnote{\url{http://scikit-learn.org}}
-It is designed to be simple and efficient, accessible to
-non-experts, and reusable in various contexts. In this article, we present and
-discuss the uniform application programming interface shared
-by all learning and processing units in the library,
-and the way it facilitates composition and reusability. We also comment on
-implementation details specific to the Python ecosystem
-and analyze potential obstacles faced by users and developers of the library.
+We describe a general, high-level application programming interface (API)
+for machine learning and data mining.
+This API, originally conceived for the Python library \sklearn
+but now adopted by several machine learning packages,
+is designed to be domain-independent and accessible
+to workers in the wide variety of scientific and engineering fields
+that employ machine learning.
+We present and discuss how a small set of primitive concepts
+facilititates composition of operations into complex workflows.\footnote{
+  An earlier version of this paper was presented at the ECML~PKDD
+  Workshop on Languages for Machine Learning \citep{buitinck2013ecml}.
+}
 
 \section{Introduction}
 
